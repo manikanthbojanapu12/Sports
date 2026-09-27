@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Out of Bounds | Stackly Sports Academy</title>
+  <meta name="description" content="The requested training resource is out of bounds. Return to Stackly Sports Academy.">
+  <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: var(--bg-dark); color: #fff; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px;">
+  
+  <div class="page-wrapper" style="max-width: 680px; width: 100%; text-align: center;">
+    
+    <!-- Brand Header -->
+    <div style="margin-bottom: 24px;">
+      <a href="index.html" style="display: inline-flex; align-items: center;">
+        <img src="assets/stacklylogo-transparent.webp" alt="Stackly Sports Academy" style="height: 48px; filter: drop-shadow(0 4px 15px rgba(0,240,255,0.4));">
+      </a>
+    </div>
+
+    <!-- 404 Headline Card -->
+    <div class="sports-glass-card" style="padding: 45px 35px; border-radius: 26px;">
+      <span class="sports-badge sports-badge-pulse" style="font-size: 0.92rem; padding: 6px 18px; margin-bottom: 16px;">
+        <i class="fas fa-flag"></i> WHISTLE BLOWN • OUT OF BOUNDS
+      </span>
+
+      <h1 style="font-size: 5rem; line-height: 1; margin: 15px 0; font-family: var(--font-display); letter-spacing: 2px;">
+        4<span style="color: var(--accent); text-shadow: 0 0 25px rgba(0,240,255,0.6);"><i class="fas fa-futbol"></i></span>4
+      </h1>
+
+      <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 12px;">Play Stoppage — Page Not Found</h2>
+
+      <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 30px; font-size: 1.05rem; line-height: 1.6;">
+        You've sprinted beyond the touchline! The training resource or page you are looking for has been relocated or substituted.
+      </p>
+
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="index.html" class="btn btn-primary" style="padding: 14px 32px; font-size: 1.05rem;">
+          <i class="fa-solid fa-house"></i> Go to Homepage
+        </a>
+        <button type="button" onclick="history.back()" class="btn btn-outline" style="padding: 14px 32px; font-size: 1.05rem; cursor: pointer;">
+          <i class="fa-solid fa-arrow-left"></i> Go Back
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

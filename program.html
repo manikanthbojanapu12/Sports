@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Programs | Stackly Sports Academy</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="page-wrapper">
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+        </a>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        <div class="nav-links">
+        <div class="mobile-menu-header">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+            <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="program.html" class="active">Program</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        <div class="mobile-auth-wrapper" data-auth-nav>
+            <a href="signin.html" class="btn btn-outline">Sign In</a>
+            <a href="signup.html" class="btn btn-primary">Get Started</a>
+        </div>
+        </div>
+        <div class="nav-auth-buttons" data-auth-nav style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+                <a href="signin.html" class="btn btn-outline" style="padding: 10px 25px; font-size: 1.05rem;">Sign In</a>
+                <a href="signup.html" class="btn btn-primary" style="padding: 10px 25px; font-size: 1.05rem;">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+    </nav>
+    <header class="page-hero">
+        <video class="page-hero__video" src="video/boxing.mp4" autoplay loop muted playsinline></video>
+        <div class="page-hero__overlay"></div>
+        <div class="page-hero__inner">
+            <p class="page-hero__eyebrow anim-slide-left del-100"><i class="fas fa-list-check"></i> Training Programs</p>
+            <h1 class="anim-zoom-in del-200">Six Sports. <span class="highlight">One Standard of Excellence.</span></h1>
+            <p class="anim-fade-up del-300">Structured programs for every level — from first-touch beginners to competitive athletes chasing regional titles. Pick a sport, pick a path, and start training with purpose.</p>
+        </div>
+    </header>
+    <section class="content-section">
+        <div class="container">
+            <div class="grid grid-4 gap-3">
+                <div class="stat-chip anim-zoom-in del-100 hover-lift">
+                    <h3>6</h3>
+                    <p style="margin: 0;">Sports Programs</p>
+                </div>
+                <div class="stat-chip anim-zoom-in del-200 hover-lift">
+                    <h3>30+</h3>
+                    <p style="margin: 0;">Certified Coaches</p>
+                </div>
+                <div class="stat-chip anim-zoom-in del-300 hover-lift">
+                    <h3>15</h3>
+                    <p style="margin: 0;">Courts & Fields</p>
+                </div>
+                <div class="stat-chip anim-zoom-in del-400 hover-lift">
+                    <h3>7</h3>
+                    <p style="margin: 0;">Days a Week Access</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-section alt bg-light-section">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; color: #00f0ff; margin-bottom: 5px;"><i class="fas fa-layer-group"></i> Choose Your Sport</p>
+                <h2>Programs Designed for <span class="highlight">Every Athlete</span></h2>
+                <p style="max-width: 700px; margin: 0 auto;">Every program includes structured drills, video feedback, and progress tracking — tailored to the demands of the sport.</p>
+            </div>
+            <div class="grid grid-3 gap-3">
+                <div class="card-light hover-lift anim-fade-up del-100" style="padding: 0; overflow: hidden;">
+                    <div class="img-zoom" style="height: 220px;">
+                        <img src="assets/football.webp" alt="Football Training">
+                    </div>
+                    <div style="padding: 26px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <i class="fas fa-futbol highlight" style="font-size: 1.6rem; margin-bottom: 10px;"></i>
+                        <h3 class="text-light" style="color: #ffffff;">Football Training</h3>
+                        <p>Ball control, tactical positioning, and match-fitness conditioning for all skill levels.</p>
+                        <a href="404.html" class="btn btn-outline" style="margin-top: auto; align-self: flex-start;">Enroll Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card-light hover-lift anim-zoom-in del-200" style="padding: 0; overflow: hidden;">
+                    <div class="img-zoom" style="height: 220px;">
+                        <img src="assets/basketball.webp" alt="Basketball Coaching">
+                    </div>
+                    <div style="padding: 26px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <i class="fas fa-basketball highlight" style="font-size: 1.6rem; margin-bottom: 10px;"></i>
+                        <h3 class="text-light" style="color: #ffffff;">Basketball Coaching</h3>
+                        <p>Footwork, shooting mechanics, and defensive rotations coached by championship-level staff.</p>
+                        <a href="404.html" class="btn btn-outline" style="margin-top: auto; align-self: flex-start;">Enroll Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card-light hover-lift anim-slide-left del-300" style="padding: 0; overflow: hidden;">
+                    <div class="img-zoom" style="height: 220px;">
+                        <img src="assets/cricket.webp" alt="Cricket Nets">
+                    </div>
+                    <div style="padding: 26px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <i class="fas fa-baseball highlight" style="font-size: 1.6rem; margin-bottom: 10px;"></i>
+                        <h3 class="text-light" style="color: #ffffff;">Cricket Nets</h3>
+                        <p>Batting technique, spin & pace bowling drills, and match-situation practice in the nets.</p>
+                        <a href="404.html" class="btn btn-outline" style="margin-top: auto; align-self: flex-start;">Enroll Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card-light hover-lift anim-fade-up del-100" style="padding: 0; overflow: hidden;">
+                    <div class="img-zoom" style="height: 220px;">
+                        <img src="assets/Tennis.webp" alt="Tennis Academy">
+                    </div>
+                    <div style="padding: 26px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <i class="fas fa-table-tennis-paddle-ball highlight" style="font-size: 1.6rem; margin-bottom: 10px;"></i>
+                        <h3 class="text-light" style="color: #ffffff;">Tennis Academy</h3>
+                        <p>Stroke mechanics, footwork patterns, and singles/doubles strategy from grand-slam veterans.</p>
+                        <a href="404.html" class="btn btn-outline" style="margin-top: auto; align-self: flex-start;">Enroll Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card-light hover-lift anim-zoom-in del-200" style="padding: 0; overflow: hidden;">
+                    <div class="img-zoom" style="height: 220px;">
+                        <img src="assets/volleyball.webp" alt="Volleyball Program">
+                    </div>
+                    <div style="padding: 26px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <i class="fas fa-volleyball highlight" style="font-size: 1.6rem; margin-bottom: 10px;"></i>
+                        <h3 class="text-light" style="color: #ffffff;">Volleyball Program</h3>
+                        <p>Serve-receive systems, blocking technique, and rotation strategy for competitive squads.</p>
+                        <a href="404.html" class="btn btn-outline" style="margin-top: auto; align-self: flex-start;">Enroll Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card-light hover-lift anim-slide-right del-300" style="padding: 0; overflow: hidden;">
+                    <div class="img-zoom" style="height: 220px;">
+                        <img src="assets/running-track-.webp" alt="Athletics Track">
+                    </div>
+                    <div style="padding: 26px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <i class="fas fa-person-running highlight" style="font-size: 1.6rem; margin-bottom: 10px;"></i>
+                        <h3 class="text-light" style="color: #ffffff;">Athletics Track</h3>
+                        <p>Sprint mechanics, endurance conditioning, and field-event coaching on our all-weather track.</p>
+                        <a href="404.html" class="btn btn-outline" style="margin-top: auto; align-self: flex-start;">Enroll Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-section">
+        <div class="container grid grid-2 gap-4 align-center">
+            <div class="img-zoom anim-slide-right hover-glow" style="height: 520px; box-shadow: 0 20px 45px rgba(0,0,0,0.3);">
+                <img src="assets/trainingcenter.webp" alt="Athlete training process">
+            </div>
+            <div class="anim-slide-left del-200">
+                <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-cogs highlight"></i> How It Works</p>
+                <h2>From Enrollment to <span class="highlight">Match-Ready</span> in Four Steps</h2>
+                <div class="timeline" style="margin-top: 30px;">
+                    <div class="timeline-item anim-fade-up del-100">
+                        <div class="timeline-icon"><i class="fas fa-file-signature"></i></div>
+                        <h4>Pick Your Program</h4>
+                        <p>Choose your sport and membership tier — beginner, intermediate, or competitive tracks available.</p>
+                    </div>
+                    <div class="timeline-item anim-fade-up del-200">
+                        <div class="timeline-icon"><i class="fas fa-clipboard-check"></i></div>
+                        <h4>Complete Your Skill Assessment</h4>
+                        <p>Coaches evaluate your current ability to build a training plan matched to your goals.</p>
+                    </div>
+                    <div class="timeline-item anim-fade-up del-300">
+                        <div class="timeline-icon"><i class="fas fa-calendar-check"></i></div>
+                        <h4>Join Structured Sessions</h4>
+                        <p>Train on a fixed weekly schedule with drills, conditioning, and technical coaching.</p>
+                    </div>
+                    <div class="timeline-item anim-fade-up del-400">
+                        <div class="timeline-icon"><i class="fas fa-trophy"></i></div>
+                        <h4>Compete & Progress</h4>
+                        <p>Test your skills in internal scrimmages, local tournaments, and progress reviews.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- NEW SECTION 1: 4-Stage Athlete Development & Combine Pathway -->
+    <section class="content-section athletic-bg-grid" style="background: #080d1a;">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-route"></i> Career Pathway</span>
+                <h2>4-Stage Athlete <span class="highlight">Development Pipeline</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">A transparent, milestone-driven progression system engineered to take athletes from grassroots fundamentals to professional draft readiness.</p>
+            </div>
+
+            <div class="grid grid-4 gap-3">
+                <div class="pathway-step-card anim-fade-up del-100">
+                    <div class="pathway-step-num">01</div>
+                    <span class="sports-badge sports-badge-volt" style="margin-bottom: 15px;">Stage 1</span>
+                    <h3 style="color: #fff; font-size: 1.35rem; margin-bottom: 10px;">Foundation & Motor Mechanics</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Agility ladders, kinetic chain activation, sport-specific hand-eye coordination, and foundational movement patterns.</p>
+                    <div style="margin-top: 15px; font-size: 0.85rem; color: #cbd5e1;"><i class="fas fa-clock" style="color: var(--accent); margin-right: 6px;"></i> Months 1 - 3</div>
+                </div>
+
+                <div class="pathway-step-card anim-fade-up del-200">
+                    <div class="pathway-step-num">02</div>
+                    <span class="sports-badge sports-badge-cyan" style="margin-bottom: 15px;">Stage 2</span>
+                    <h3 style="color: #fff; font-size: 1.35rem; margin-bottom: 10px;">Varsity Technical Execution</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Position-specific high-pressure reps, tactical board IQ, reactive agility drills, and rotational power development.</p>
+                    <div style="margin-top: 15px; font-size: 0.85rem; color: #cbd5e1;"><i class="fas fa-clock" style="color: var(--accent-secondary); margin-right: 6px;"></i> Months 4 - 8</div>
+                </div>
+
+                <div class="pathway-step-card anim-fade-up del-300">
+                    <div class="pathway-step-num">03</div>
+                    <span class="sports-badge sports-badge-volt" style="margin-bottom: 15px;">Stage 3</span>
+                    <h3 style="color: #fff; font-size: 1.35rem; margin-bottom: 10px;">Elite Academy & Showcase</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Full-tempo competitive scrimmages, high-speed camera swing/stride analysis, and collegiate scout showcases.</p>
+                    <div style="margin-top: 15px; font-size: 0.85rem; color: #cbd5e1;"><i class="fas fa-clock" style="color: var(--accent); margin-right: 6px;"></i> Months 9 - 14</div>
+                </div>
+
+                <div class="pathway-step-card anim-fade-up del-400">
+                    <div class="pathway-step-num">04</div>
+                    <span class="sports-badge sports-badge-pulse" style="margin-bottom: 15px;">Stage 4</span>
+                    <h3 style="color: #fff; font-size: 1.35rem; margin-bottom: 10px;">Pro Combine & Draft Readiness</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Laser combine testing prep (40yd dash, vertical, 5-10-5), media training, agent showcase days, and contract prep.</p>
+                    <div style="margin-top: 15px; font-size: 0.85rem; color: #cbd5e1;"><i class="fas fa-clock" style="color: var(--accent-crimson); margin-right: 6px;"></i> Advanced / Pro</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 2: Weekly Sample Microcycle & Periodization Drill Planner -->
+    <section class="content-section" style="background: linear-gradient(180deg, #080d1a 0%, #0c1424 100%);">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-calendar-days"></i> Periodization Structure</span>
+                <h2>Weekly Sample <span class="highlight-cyan">Training Microcycle</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">See how elite athletes structure power development, technical sessions, aerobic recovery, and high-intensity match play throughout the week.</p>
+            </div>
+
+            <div class="grid grid-3 gap-3">
+                <div class="sports-glass-card anim-slide-left del-100">
+                    <div class="d-flex justify-between align-center" style="margin-bottom: 12px;">
+                        <h4 style="color: var(--accent); margin: 0; font-size: 1.2rem;">MON / TUE</h4>
+                        <span class="sports-badge sports-badge-volt">Speed & Max Power</span>
+                    </div>
+                    <ul style="display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem; color: #cbd5e1;">
+                        <li><i class="fas fa-bolt" style="color: var(--accent); margin-right: 8px;"></i> 20m Laser Sprints & Sled Pushes</li>
+                        <li><i class="fas fa-dumbbell" style="color: var(--accent); margin-right: 8px;"></i> Olympic Hang Cleans & Trap Bar Jumps</li>
+                        <li><i class="fas fa-futbol" style="color: var(--accent); margin-right: 8px;"></i> High-Tempo Small-Sided Possession Drills</li>
+                    </ul>
+                </div>
+
+                <div class="sports-glass-card cyan-glow anim-fade-up del-200">
+                    <div class="d-flex justify-between align-center" style="margin-bottom: 12px;">
+                        <h4 style="color: var(--accent-secondary); margin: 0; font-size: 1.2rem;">WED / THU</h4>
+                        <span class="sports-badge sports-badge-cyan">Tactics & Kinetic Lab</span>
+                    </div>
+                    <ul style="display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem; color: #cbd5e1;">
+                        <li><i class="fas fa-video" style="color: var(--accent-secondary); margin-right: 8px;"></i> 3D Biomechanics Optical Breakdown</li>
+                        <li><i class="fas fa-chess" style="color: var(--accent-secondary); margin-right: 8px;"></i> Defensive Zone Rotations & Set Pieces</li>
+                        <li><i class="fas fa-heart-pulse" style="color: var(--accent-secondary); margin-right: 8px;"></i> Zone 2 Aerobic Base Flush & Mobility</li>
+                    </ul>
+                </div>
+
+                <div class="sports-glass-card anim-slide-right del-300">
+                    <div class="d-flex justify-between align-center" style="margin-bottom: 12px;">
+                        <h4 style="color: var(--accent-crimson); margin: 0; font-size: 1.2rem;">FRI / SAT</h4>
+                        <span class="sports-badge sports-badge-pulse">Match Simulation</span>
+                    </div>
+                    <ul style="display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem; color: #cbd5e1;">
+                        <li><i class="fas fa-trophy" style="color: var(--accent-crimson); margin-right: 8px;"></i> 90-Minute Regulation Showcase Match</li>
+                        <li><i class="fas fa-chart-line" style="color: var(--accent-crimson); margin-right: 8px;"></i> Real-Time GPS Heart Rate Telemetry Log</li>
+                        <li><i class="fas fa-snowflake" style="color: var(--accent-crimson); margin-right: 8px;"></i> Hydro Contrast Recovery & Physiotherapy</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 3: Athlete Combine Testing Standards & Benchmark Evaluator -->
+    <section class="content-section athletic-bg-grid">
+        <div class="container">
+            <div class="grid grid-2 gap-4 align-center">
+                <div class="anim-slide-left">
+                    <span class="section-eyebrow"><i class="fas fa-stopwatch"></i> Combine Testing Standards</span>
+                    <h2>Benchmark Your <span class="highlight">Combine Metrics</span></h2>
+                    <p>Enter your 40-yard dash time and standing vertical leap to benchmark your athletic output against Division 1 varsity percentiles and Academy standards.</p>
+                    <div style="background: rgba(18,29,51,0.6); padding: 20px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); margin-top: 20px;">
+                        <div style="font-weight: 700; color: #fff; margin-bottom: 8px;"><i class="fas fa-shield-alt" style="color: var(--accent); margin-right: 8px;"></i> Stackly Verified Combine Guarantee</div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0;">All testing conducted with Freelap Dual-Laser electronic timing gates with +/- 0.01 second calibration.</p>
+                    </div>
+                </div>
+
+                <div class="calc-card-container anim-slide-right">
+                    <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.4rem;"><i class="fas fa-gauge-high" style="color: var(--accent-secondary); margin-right: 8px;"></i> Combine Index Calculator</h3>
+                    
+                    <div class="calc-field-group">
+                        <label for="bench-dash">40-Yard Sprint Time: <span id="bench-dash-val" style="color: var(--accent); font-weight: 700;">4.65s</span></label>
+                        <input type="range" min="4.2" max="6.0" step="0.05" value="4.65" class="calc-range-slider" id="bench-dash" oninput="document.getElementById('bench-dash-val').textContent = this.value + 's'">
+                    </div>
+
+                    <div class="calc-field-group">
+                        <label for="bench-jump">Standing Vertical Leap: <span id="bench-jump-val" style="color: var(--accent-secondary); font-weight: 700;">32 in</span></label>
+                        <input type="range" min="15" max="45" value="32" class="calc-range-slider" id="bench-jump" oninput="document.getElementById('bench-jump-val').textContent = this.value + ' in'">
+                    </div>
+
+                    <div class="calc-result-box">
+                        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 4px;">Athletic Combine Percentile Rating</div>
+                        <div id="bench-rating-output" style="font-family: var(--font-display); font-size: 3.2rem; font-weight: 700; color: var(--accent-secondary); line-height: 1;">86 PT INDEX</div>
+                        <div id="bench-tier-output" style="margin-top: 10px; font-weight: 700; color: var(--accent); font-size: 1.1rem;">Elite Varsity Prospect</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section alt bg-light-section">
+        <div class="container" style="max-width: 800px;">
+            <div class="section-header section-header-center anim-fade-up">
+                <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; color: #00f0ff; margin-bottom: 5px;"><i class="fas fa-circle-question"></i> Got Questions?</p>
+                <h2 class="text-light">Frequently Asked <span class="highlight">Questions</span></h2>
+            </div>
+            <div class="anim-fade-up del-100">
+                <div class="faq-item open">
+                    <button class="faq-q">Do I need prior experience to join a program? <i class="fas fa-plus"></i></button>
+                    <div class="faq-a"><p>Not at all. Every program has a beginner track with fundamentals-first coaching. Our assessment simply helps place you in the right group.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">Can I switch between sports programs? <i class="fas fa-plus"></i></button>
+                    <div class="faq-a"><p>Yes — Standard and Premium members can move between sports each month with no extra fee. Just let your coach know in advance.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">How many sessions are included per week? <i class="fas fa-plus"></i></button>
+                    <div class="faq-a"><p>Basic includes weekend sessions, Standard adds weekly strategy sessions, and Premium includes daily intensive practice access.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">Is equipment provided during training? <i class="fas fa-plus"></i></button>
+                    <div class="faq-a"><p>Basic equipment rentals are included in every plan. Premium members get priority access to pro-grade gear.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">Do you offer programs for children? <i class="fas fa-plus"></i></button>
+                    <div class="faq-a"><p>Yes, our Youth Development track covers ages 8+ across all six sports, with age-appropriate coaching and safety protocols.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-section">
+        <div class="container">
+            <div class="event-banner anim-zoom-in">
+                <p style="text-transform: uppercase; letter-spacing: 2px; font-weight: bold; color: var(--accent); margin-bottom: 10px;"><i class="fas fa-bolt"></i> Training Starts Now</p>
+                <h2 style="font-size: 2.6rem; margin-bottom: 15px;">Pick Your Sport. <span class="highlight">Start Training This Week.</span></h2>
+                <p style="max-width: 600px; margin: 0 auto 25px; color: rgba(255,255,255,0.75);">Spots are limited per training group to keep coaching personal. Reserve yours today.</p>
+                <div class="d-flex justify-center gap-2" style="flex-wrap: wrap;">
+                    <a href="404.html" class="btn btn-primary">Get Started Today <i class="fas fa-arrow-right"></i></a>
+                    <a href="404.html" class="btn btn-outline">View Membership Plans <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="grid grid-4 gap-4" style="padding-top: 60px; padding-bottom: 40px;">
+            <div class="anim-slide-right del-100" style="display: flex; flex-direction: column;">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly" style="height: 35px; width: auto; margin-bottom: 25px; align-self: flex-start; object-fit: contain;">
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #a0b8c7; margin-bottom: 30px; font-weight: 500;">Elite multi-sports academy providing world-class coaching, premium facilities, and a thriving community. Join 10,000+ athletes scaling their performance with us.</p>
+                <div class="footer-social">
+                    <a href="404.html" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="404.html" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="404.html" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+            <div class="anim-slide-right del-200">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Programs</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Football Training</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Basketball Coaching</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Tennis Academy</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Cricket Nets</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Athletics Track</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Memberships</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-300">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Quick Links</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="index.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Home</a></li>
+                    <li><a href="about.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">About</a></li>
+                    <li><a href="program.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Program</a></li>
+                    <li><a href="pricing.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Pricing</a></li>
+                    <li><a href="blog.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Blog</a></li>
+                    <li><a href="contact.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Contact</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-400">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Stackly Academy HQ</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+                    <li style="display: flex; gap: 15px; align-items: flex-start; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--accent); margin-top: 4px; font-size: 1.1rem;"></i>
+                        <span>MMR Complex, Chinna Thirupathi,<br>Salem, TN 636008</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-phone-alt" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>+91 (0) 427 492 849</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-envelope" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>support@stacklyacademy.com</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-clock" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding: 25px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative;">
+            <p style="color: #a0b8c7; font-size: 0.9rem; margin: 0; font-weight: 500;">&copy; 2026 Stackly Academy. All rights reserved.</p>
+            <div style="display: flex; gap: 25px;">
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Privacy Policy</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Terms of Service</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">SLA Commitment</a>
+            </div>
+            <a href="#" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: var(--accent); color: var(--bg-dark); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; transition: transform 0.3s;">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+    <script src="script.js"></script>
+    </div>
+</body>
+</html>

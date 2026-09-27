@@ -1,0 +1,743 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academy Insights | Stackly Sports Academy</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .featured-post {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            align-items: stretch;
+            gap: 0;
+            border-radius: 22px;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(16, 28, 52, 0.95) 0%, rgba(8, 15, 28, 0.98) 100%);
+            border: 1.5px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+        }
+        .featured-post .img-zoom { border-radius: 0; height: 100%; min-height: 380px; }
+        .featured-post .img-zoom img { min-height: 380px; }
+        .featured-post-copy {
+            padding: 45px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #ffffff;
+        }
+        .featured-badge {
+            align-self: flex-start;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+            color: #050912;
+            font-weight: 800;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 30px;
+            margin-bottom: 16px;
+        }
+        .featured-post-copy .blog-date {
+            color: #00f0ff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .featured-post-copy h2 { color: #ffffff !important; font-size: 2rem; margin-bottom: 14px; line-height: 1.25; }
+        .featured-post-copy p { color: #cbd5e1; margin-bottom: 24px; }
+        .blog-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 45px; }
+        .blog-filter-btn {
+            background: rgba(16, 28, 52, 0.75);
+            border: 1.5px solid rgba(0, 240, 255, 0.2);
+            color: #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        .blog-filter-btn:hover {
+            border-color: var(--accent);
+            color: #ffffff;
+            transform: translateY(-3px);
+            background: rgba(0, 240, 255, 0.12);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+        }
+        .blog-filter-btn.active {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+            border-color: var(--accent);
+            color: #050912;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+        }
+        .blog-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+        .blog-card .img-zoom { border-radius: 0; height: 210px; }
+        .blog-card-body { padding: 26px; display: flex; flex-direction: column; flex: 1; }
+        .blog-card-tag {
+            align-self: flex-start;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            color: #00f0ff;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 30px;
+            margin-bottom: 12px;
+        }
+        .blog-card-body .blog-date { color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px; display: block; }
+        .blog-card-body h3 { color: #ffffff !important; font-size: 1.25rem; margin-bottom: 10px; line-height: 1.35; }
+        .blog-card-body p { color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px; flex: 1; }
+        .blog-read-more {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--accent); font-weight: 700; font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .blog-read-more i { transition: transform 0.3s; color: var(--accent); }
+        .blog-read-more:hover { color: #ffffff; }
+        .blog-read-more:hover i { transform: translateX(4px); }
+        .blog-card.is-hidden { display: none; }
+        .coach-desk {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            background: var(--bg-card);
+            border-radius: 22px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .coach-desk__weeks { display: flex; flex-direction: column; gap: 10px; }
+        .coach-desk__week {
+            display: flex; align-items: center; gap: 14px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 14px 16px; cursor: pointer; text-align: left;
+            color: var(--text-muted); transition: var(--transition); font-family: inherit;
+        }
+        .coach-desk__week:hover { border-color: var(--accent); }
+        .coach-desk__week.is-active { background: rgba(0, 240, 255, 0.12); border-color: var(--accent); color: #fff; }
+        .coach-desk__week-num { font-weight: 800; font-size: 1.1rem; color: var(--accent); }
+        .coach-desk__week-label { font-weight: 600; font-size: 0.95rem; }
+        .coach-desk__panel { position: relative; padding: 10px 0; }
+        .coach-desk__coach { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+        .coach-desk__coach img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+        .coach-desk__coach div h5 { margin: 0; color: #fff; font-size: 1rem; }
+        .coach-desk__coach div span { color: var(--accent); font-size: 0.85rem; font-weight: 600; }
+        .coach-desk__panel-meta { color: var(--accent); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.8rem; }
+        .coach-desk__panel-title { color: #fff; font-size: 1.6rem; margin: 10px 0 12px; }
+        .coach-desk__panel-body { color: var(--text-muted); margin-bottom: 0; }
+        @media (max-width: 768px) {
+            .featured-post { grid-template-columns: 1fr; }
+            .coach-desk { grid-template-columns: 1fr; padding: 26px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <nav class="navbar scrolled">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+        </a>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        <div class="nav-links">
+        <div class="mobile-menu-header">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+            <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="program.html">Program</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        <div class="mobile-auth-wrapper" data-auth-nav>
+            <a href="signin.html" class="btn btn-outline">Sign In</a>
+            <a href="signup.html" class="btn btn-primary">Get Started</a>
+        </div>
+        </div>
+        <div class="nav-auth-buttons" data-auth-nav style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+                <a href="signin.html" class="btn btn-outline" style="padding: 10px 25px; font-size: 1.05rem;">Sign In</a>
+                <a href="signup.html" class="btn btn-primary" style="padding: 10px 25px; font-size: 1.05rem;">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+    </nav>
+    <header class="page-hero">
+        <video class="page-hero__video" src="video/video.mp4" autoplay loop muted playsinline></video>
+        <div class="page-hero__overlay"></div>
+        <div class="page-hero__inner anim-fade-up">
+            <p class="page-hero__eyebrow"><i class="fas fa-futbol"></i> Coach's Playbook</p>
+            <h1>Academy <span class="highlight">Insights</span></h1>
+            <p>Training drills, nutrition science, mindset coaching, and matchday stories straight from the Stackly coaching staff — built to help every athlete train smarter.</p>
+        </div>
+    </header>
+    <section class="container" style="padding-top: 50px; padding-bottom: 20px;">
+        <div class="featured-post anim-zoom-in">
+            <div class="img-zoom">
+                <img src="assets/academycenter.webp" alt="Featured training session">
+            </div>
+            <div class="featured-post-copy">
+                <span class="featured-badge">Featured Article</span>
+                <span class="blog-date"><i class="fas fa-calendar-alt"></i> July 15, 2026 · Training</span>
+                <h2>Building Explosive First-Step Speed: The Drill Our Sprinters Swear By</h2>
+                <p>Our athletics coordinators break down the exact 15-minute warm-up sequence used by our track athletes to shave real time off their first five steps — no fancy equipment required, just intent and repetition.</p>
+                <a href="404.html" class="btn btn-primary" style="align-self: flex-start;">Read Full Story <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+    <section class="container" style="padding-top: 20px;">
+        <div class="section-header section-header-center anim-fade-up">
+            <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-layer-group"></i> BROWSE BY TOPIC</p>
+            <h2>Latest From The <span class="highlight">Coaching Staff</span></h2>
+        </div>
+        <div class="blog-filters anim-fade-up del-100">
+            <button class="blog-filter-btn active" data-filter="all">All</button>
+            <button class="blog-filter-btn" data-filter="training">Training</button>
+            <button class="blog-filter-btn" data-filter="nutrition">Nutrition</button>
+            <button class="blog-filter-btn" data-filter="mindset">Mindset</button>
+            <button class="blog-filter-btn" data-filter="matchday">Matchday</button>
+        </div>
+        <div class="grid grid-3 gap-3" id="blogGrid">
+            <article class="card-light blog-card hover-lift anim-fade-up del-100" data-category="training">
+                <div class="img-zoom">
+                    <img src="assets/academy.webp" alt="Footwork training drill">
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-card-tag">Training</span>
+                    <span class="blog-date">June 28, 2026</span>
+                    <h3>5 Footwork Drills to Sharpen Your First Touch</h3>
+                    <p>Quick-feet ladder patterns and reaction cues our youth squads use before every session to build cleaner ball control under pressure.</p>
+                    <a href="404.html" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="card-light blog-card hover-lift anim-fade-up del-200" data-category="nutrition">
+                <div class="img-zoom">
+                    <img src="assets/volleyball.webp" alt="Pre-match meal plate">
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-card-tag">Nutrition</span>
+                    <span class="blog-date">June 20, 2026</span>
+                    <h3>Fueling Young Athletes: A Coach's Guide to Pre-Match Meals</h3>
+                    <p>What to eat three hours out, ninety minutes out, and at half-time — a simple fuelling timeline every parent can follow.</p>
+                    <a href="404.html" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="card-light blog-card hover-lift anim-fade-up del-300" data-category="mindset">
+                <div class="img-zoom">
+                    <img src="assets/running-track-.webp" alt="Athlete focused before a match">
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-card-tag">Mindset</span>
+                    <span class="blog-date">June 12, 2026</span>
+                    <h3>Turning Pressure Into Performance: A Mental Reset Routine</h3>
+                    <p>A 3-step breathing and visualization cue our sports psychologist teaches athletes to use in the last minute before kickoff.</p>
+                    <a href="404.html" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="card-light blog-card hover-lift anim-fade-up del-400" data-category="matchday">
+                <div class="img-zoom">
+                    <img src="assets/chess.webp" alt="Team celebrating on matchday">
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-card-tag">Matchday</span>
+                    <span class="blog-date">June 05, 2026</span>
+                    <h3>Matchday Rituals of Our Under-18 Champions Squad</h3>
+                    <p>Inside the warm-up playlist, locker-room huddle, and pre-kickoff routine that carried our U-18s to the regional title.</p>
+                    <a href="404.html" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="card-light blog-card hover-lift anim-fade-up del-100" data-category="training">
+                <div class="img-zoom">
+                    <img src="assets/running-track-.webp" alt="Sprint training on the track">
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-card-tag">Training</span>
+                    <span class="blog-date">May 28, 2026</span>
+                    <h3>Building Explosive Speed Off the Line in 6 Weeks</h3>
+                    <p>A progressive block of resisted sprints and plyometrics designed to add real acceleration before your next season starts.</p>
+                    <a href="404.html" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+            <article class="card-light blog-card hover-lift anim-fade-up del-200" data-category="mindset">
+                <div class="img-zoom">
+                    <img src="assets/img1.webp" alt="Coach mentoring an athlete">
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-card-tag">Mindset</span>
+                    <span class="blog-date">May 20, 2026</span>
+                    <h3>Why Confident Athletes Recover From Mistakes Faster</h3>
+                    <p>The self-talk framework our mentors use to help players reset within seconds of a missed shot or dropped catch.</p>
+                    <a href="404.html" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+        <p id="blogEmptyState" style="text-align: center; color: var(--text-muted); display: none; margin-top: 20px;">No articles in this category yet — check back soon.</p>
+    </section>
+    <section class="container" style="padding-top: 50px;">
+        <div class="section-header section-header-center anim-fade-up">
+            <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; color: var(--accent); margin-bottom: 5px;"><i class="fas fa-clipboard-list"></i> FOUNDER &amp; COACH DESK</p>
+            <h2>Weekly <span class="highlight">Coaching Tips</span></h2>
+            <p style="max-width: 700px; margin: 0 auto;">Short field notes from our head coaches — pick a week to open the tip we shared with our athletes that cycle.</p>
+        </div>
+        <div class="coach-desk anim-fade-up del-100" id="coachDesk">
+            <div class="coach-desk__weeks" role="tablist">
+                <button type="button" class="coach-desk__week is-active" role="tab" aria-selected="true" data-week="0"
+                    data-title="Week 01 — Warm Up Like a Pro"
+                    data-body="A rushed warm-up is the #1 cause of avoidable soft-tissue injuries we see. We now run a mandatory 12-minute dynamic warm-up before every session — hips, ankles, and shoulders first, ball work last."
+                    data-tags="Injury Prevention,Warm-up,Fundamentals">
+                    <span class="coach-desk__week-num">01</span>
+                    <span class="coach-desk__week-label">Warm up like a pro</span>
+                </button>
+                <button type="button" class="coach-desk__week" role="tab" aria-selected="false" data-week="1"
+                    data-title="Week 02 — Recovery Days Matter"
+                    data-body="Talented athletes don't skip rest, they schedule it. We build one full recovery day into every weekly plan — light stretching, hydration, and 8+ hours of sleep outperform an extra training session every time."
+                    data-tags="Recovery,Sleep,Longevity">
+                    <span class="coach-desk__week-num">02</span>
+                    <span class="coach-desk__week-label">Recovery days matter</span>
+                </button>
+                <button type="button" class="coach-desk__week" role="tab" aria-selected="false" data-week="2"
+                    data-title="Week 03 — Set Season Goals Early"
+                    data-body="Athletes who write down one skill goal and one team goal at the start of the season improve twice as fast. We use a simple one-page tracker reviewed with a coach every month."
+                    data-tags="Goal Setting,Tracking,Motivation">
+                    <span class="coach-desk__week-num">03</span>
+                    <span class="coach-desk__week-label">Set season goals early</span>
+                </button>
+                <button type="button" class="coach-desk__week" role="tab" aria-selected="false" data-week="3"
+                    data-title="Week 04 — Nutrition Timing Wins Matches"
+                    data-body="It's not just what you eat, it's when. Carbs 2-3 hours pre-match, protein within 45 minutes post-match, and water every 20 minutes on hot matchdays — small habits that add up over a season."
+                    data-tags="Nutrition,Timing,Hydration">
+                    <span class="coach-desk__week-num">04</span>
+                    <span class="coach-desk__week-label">Nutrition timing wins</span>
+                </button>
+            </div>
+            <div class="coach-desk__panel" aria-live="polite">
+                <div class="coach-desk__coach">
+                    <img src="assets/coach female1-optimized.webp" alt="Coach Marcus Thorne">
+                    <div>
+                        <h5>Marcus Thorne</h5>
+                        <span>Head of Football</span>
+                    </div>
+                </div>
+                <span class="coach-desk__panel-meta">Coach's Desk Notes</span>
+                <h3 class="coach-desk__panel-title" id="deskTitle">Week 01 — Warm Up Like a Pro</h3>
+                <p class="coach-desk__panel-body" id="deskBody">A rushed warm-up is the #1 cause of avoidable soft-tissue injuries we see. We now run a mandatory 12-minute dynamic warm-up before every session — hips, ankles, and shoulders first, ball work last.</p>
+            </div>
+        </div>
+    </section>
+    <!-- NEW SECTION 1: Sports Nutrition & Hydration Blueprint Guide -->
+    <section class="content-section athletic-bg-grid" style="background: #080d1a;">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-apple-whole"></i> Fuel For Performance</span>
+                <h2>Sports Nutrition & <span class="highlight">Hydration Blueprint</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">Optimizing macronutrient timing and electrolyte replenishment directly impacts stamina, anaerobic buffering capacity, and muscle protein synthesis.</p>
+            </div>
+
+            <div class="grid grid-3 gap-3">
+                <div class="sports-glass-card anim-slide-left del-100">
+                    <span class="sports-badge sports-badge-volt" style="margin-bottom: 12px;">3 Hours Pre-Match</span>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Complex Glycogen Loading</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Slow-digesting low-glycemic carbohydrates (sweet potato, oats, brown rice) with lean protein (25g) to sustain steady blood glucose through 90 minutes.</p>
+                    <div style="color: var(--accent); font-size: 0.88rem; font-weight: 700;"><i class="fas fa-droplet"></i> +500ml Electrolyte Water</div>
+                </div>
+
+                <div class="sports-glass-card cyan-glow anim-fade-up del-200">
+                    <span class="sports-badge sports-badge-cyan" style="margin-bottom: 12px;">During Match / Drills</span>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Intra-Workout Electrolytes</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">6% carbohydrate-electrolyte fluid providing 30g fast-acting carbs per hour with 400mg sodium and potassium to prevent cramping in hot turf conditions.</p>
+                    <div style="color: var(--accent-secondary); font-size: 0.88rem; font-weight: 700;"><i class="fas fa-stopwatch"></i> 150ml Every 15 Mins</div>
+                </div>
+
+                <div class="sports-glass-card anim-slide-right del-300">
+                    <span class="sports-badge sports-badge-pulse" style="margin-bottom: 12px;">30 Mins Post-Match</span>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Anabolic Recovery Window</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">3:1 ratio of high-glycemic carbohydrates to rapid-absorbing whey protein isolate (30g) + 5g creatine monohydrate to jumpstart muscle repair.</p>
+                    <div style="color: var(--accent-crimson); font-size: 0.88rem; font-weight: 700;"><i class="fas fa-bolt"></i> +3g Leucine Trigger</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <!-- NEW SECTION 2: Tactical Analysis & Training Breakdown -->
+<section class="content-section"
+    style="background: linear-gradient(180deg, #080d1a 0%, #0c1424 100%);">
+
+    <div class="container">
+
+        <div class="grid grid-2 gap-4 align-center">
+
+            <!-- LEFT CONTENT -->
+            <div class="anim-slide-left">
+
+                <span class="section-eyebrow">
+                    <i class="fas fa-chess-board"></i>
+                    Tactical Masterclasses
+                </span>
+
+                <h2>
+                    Tactical Breakdown &
+                    <span class="highlight-cyan">Performance Analysis</span>
+                </h2>
+
+                <p>
+                    Our head coaches break down pro-level biomechanics,
+                    defensive rotational shifts, positioning, and decision
+                    making through detailed visual analysis and practical
+                    training examples.
+                </p>
+
+                <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+
+                    <!-- Masterclass 01 -->
+                    <div style="
+                        background: rgba(18,29,51,0.6);
+                        padding: 14px 20px;
+                        border-radius: 12px;
+                        border: 1px solid rgba(255,255,255,0.08);
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    ">
+
+                        <span style="color: #fff; font-weight: 600;">
+                            <i class="fas fa-circle-play"
+                               style="color: var(--accent); margin-right: 10px;">
+                            </i>
+                            Masterclass 01: Beating High-Press Defense
+                        </span>
+
+                        <span class="sports-badge sports-badge-volt">
+                            18 Mins
+                        </span>
+
+                    </div>
+
+
+                    <!-- Masterclass 02 -->
+                    <div style="
+                        background: rgba(18,29,51,0.6);
+                        padding: 14px 20px;
+                        border-radius: 12px;
+                        border: 1px solid rgba(255,255,255,0.08);
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    ">
+
+                        <span style="color: #fff; font-weight: 600;">
+                            <i class="fas fa-circle-play"
+                               style="color: var(--accent-secondary); margin-right: 10px;">
+                            </i>
+                            Masterclass 02: 3-Point Shot Arc & Release Point
+                        </span>
+
+                        <span class="sports-badge sports-badge-cyan">
+                            14 Mins
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT IMAGE -->
+            <div class="img-zoom hover-glow anim-slide-right"
+                style="
+                    height: 380px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    position: relative;
+                    border: 1px solid rgba(0,240,255,0.3);
+                ">
+
+                <img
+                    src="assets/chess.webp"
+                    alt="Sports Tactical Analysis"
+                    style="
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        display: block;
+                    ">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+   <!-- NEW SECTION 3: Downloadable Athletic Drill Vault & PDF Sheets -->
+<section class="content-section athletic-bg-grid">
+    <div class="container">
+
+        <div class="section-header section-header-center anim-fade-up">
+            <span class="section-eyebrow">
+                <i class="fas fa-file-pdf"></i> Free Athlete Resources
+            </span>
+
+            <h2>
+                Downloadable
+                <span class="highlight">Drill Vault & PDF Blueprints</span>
+            </h2>
+
+            <p style="max-width: 720px; margin: 0 auto;">
+                Grab official Stackly coaching drill sheets, agility ladder
+                blueprints, and plyometric conditioning charts to take to
+                your next solo training session.
+            </p>
+        </div>
+
+        <div class="grid grid-3 gap-3">
+
+            <!-- Speed Ladder -->
+            <div class="sports-glass-card anim-slide-left del-100">
+
+                <div style="font-size: 2rem; color: var(--accent); margin-bottom: 12px;">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+
+                <h3 style="color: #fff; font-size: 1.25rem;">
+                    Speed Ladder 20-Drill Blueprint
+                </h3>
+
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    High-resolution footwork patterns, foot-strike cues,
+                    and cadence progressions for lateral quickness.
+                </p>
+
+                <button
+                    type="button"
+                    class="btn btn-outline download-pdf-btn"
+                    style="padding: 8px 20px; font-size: 0.9rem; margin-top: 10px;">
+                    Download PDF
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+
+            </div>
+
+
+            <!-- Plyometric -->
+            <div class="sports-glass-card cyan-glow anim-fade-up del-200">
+
+                <div style="font-size: 2rem; color: var(--accent-secondary); margin-bottom: 12px;">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+
+                <h3 style="color: #fff; font-size: 1.25rem;">
+                    Plyometric Power & Jump Matrix
+                </h3>
+
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Depth jumps, box bounds, and reactive elastic energy
+                    training protocol for increased vertical leap.
+                </p>
+
+                <button
+                    type="button"
+                    class="btn btn-outline download-pdf-btn"
+                    style="padding: 8px 20px; font-size: 0.9rem; margin-top: 10px;">
+                    Download PDF
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+
+            </div>
+
+
+            <!-- Matchday Mental Routine -->
+            <div class="sports-glass-card anim-slide-right del-300">
+
+                <div style="font-size: 2rem; color: var(--accent-crimson); margin-bottom: 12px;">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+
+                <h3 style="color: #fff; font-size: 1.25rem;">
+                    Matchday Mental Routine Checklist
+                </h3>
+
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Pre-game visualization guide, box-breathing cues,
+                    and high-pressure composure trigger sheet.
+                </p>
+
+                <button
+                    type="button"
+                    class="btn btn-outline download-pdf-btn"
+                    style="padding: 8px 20px; font-size: 0.9rem; margin-top: 10px;">
+                    Download PDF
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<script>
+document.querySelectorAll('.download-pdf-btn').forEach(function(button) {
+
+    button.addEventListener('click', function() {
+        window.location.href = '404.html';
+    });
+
+});
+</script>
+
+    <footer>
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="grid grid-4 gap-4" style="padding-top: 60px; padding-bottom: 40px;">
+            <div class="anim-slide-right del-100" style="display: flex; flex-direction: column;">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly" style="height: 35px; width: auto; margin-bottom: 25px; align-self: flex-start; object-fit: contain;">
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #a0b8c7; margin-bottom: 30px; font-weight: 500;">Elite multi-sports academy providing world-class coaching, premium facilities, and a thriving community. Join 10,000+ athletes scaling their performance with us.</p>
+                <div class="footer-social">
+                    <a href="404.html" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="404.html" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="404.html" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+            <div class="anim-slide-right del-200">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Programs</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Football Training</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Basketball Coaching</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Tennis Academy</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Cricket Nets</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Athletics Track</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Memberships</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-300">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Quick Links</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="index.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Home</a></li>
+                    <li><a href="about.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">About</a></li>
+                    <li><a href="program.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Program</a></li>
+                    <li><a href="pricing.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Pricing</a></li>
+                    <li><a href="blog.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Blog</a></li>
+                    <li><a href="contact.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Contact</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-400">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Stackly Academy HQ</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+                    <li style="display: flex; gap: 15px; align-items: flex-start; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--accent); margin-top: 4px; font-size: 1.1rem;"></i>
+                        <span>MMR Complex, Chinna Thirupathi,<br>Salem, TN 636008</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-phone-alt" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>+91 (0) 427 492 849</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-envelope" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>support@stacklyacademy.com</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-clock" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding: 25px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative;">
+            <p style="color: #a0b8c7; font-size: 0.9rem; margin: 0; font-weight: 500;">&copy; 2026 Stackly Academy. All rights reserved.</p>
+            <div style="display: flex; gap: 25px;">
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Privacy Policy</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Terms of Service</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">SLA Commitment</a>
+            </div>
+            <a href="#" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: var(--accent); color: var(--bg-dark); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; transition: transform 0.3s;">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+    <div id="blogVideoModal" style="position: fixed; inset: 0; background: rgba(1, 8, 14, 0.86); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 20px;">
+        <div style="position: relative; width: min(900px, 100%); background: #000; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.45);">
+            <button type="button" id="closeBlogVideo" aria-label="Close video" style="position: absolute; top: 12px; right: 12px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: none; background: rgba(255,255,255,0.14); color: #fff; font-size: 1.2rem; cursor: pointer;">×</button>
+            <video id="blogVideoPlayer" controls style="display: block; width: 100%; max-height: 80vh; background: #000;"></video>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var videoTrigger = document.querySelector('[data-blog-video]');
+        var blogVideoModal = document.getElementById('blogVideoModal');
+        var blogVideoPlayer = document.getElementById('blogVideoPlayer');
+        var closeBlogVideo = document.getElementById('closeBlogVideo');
+        if (videoTrigger && blogVideoModal && blogVideoPlayer) {
+            videoTrigger.addEventListener('click', function () {
+                blogVideoPlayer.src = videoTrigger.getAttribute('data-blog-video');
+                blogVideoPlayer.load();
+                blogVideoModal.style.display = 'flex';
+                blogVideoPlayer.play().catch(function () {});
+            });
+            closeBlogVideo.addEventListener('click', function () {
+                blogVideoModal.style.display = 'none';
+                blogVideoPlayer.pause();
+                blogVideoPlayer.currentTime = 0;
+            });
+            blogVideoModal.addEventListener('click', function (e) {
+                if (e.target === blogVideoModal) {
+                    blogVideoModal.style.display = 'none';
+                    blogVideoPlayer.pause();
+                    blogVideoPlayer.currentTime = 0;
+                }
+            });
+        }
+        var filterBtns = document.querySelectorAll('.blog-filter-btn');
+        var cards = document.querySelectorAll('.blog-card[data-category]');
+        var emptyState = document.getElementById('blogEmptyState');
+        filterBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                filterBtns.forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var filter = btn.getAttribute('data-filter');
+                var visibleCount = 0;
+                cards.forEach(function (card) {
+                    var show = (filter === 'all' || card.getAttribute('data-category') === filter);
+                    card.classList.toggle('is-hidden', !show);
+                    if (show) visibleCount++;
+                });
+                if (emptyState) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+            });
+        });
+        var desk = document.getElementById('coachDesk');
+        if (desk) {
+            var weeks = desk.querySelectorAll('.coach-desk__week');
+            var panel = desk.querySelector('.coach-desk__panel');
+            var title = document.getElementById('deskTitle');
+            var body = document.getElementById('deskBody');
+            weeks.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    weeks.forEach(function (w) {
+                        w.classList.toggle('is-active', w === btn);
+                        w.setAttribute('aria-selected', w === btn ? 'true' : 'false');
+                    });
+                    if (title) title.textContent = btn.getAttribute('data-title') || '';
+                    if (body) body.textContent = btn.getAttribute('data-body') || '';
+                    if (panel) {
+                        panel.style.opacity = 0;
+                        setTimeout(function () { panel.style.opacity = 1; }, 120);
+                    }
+                });
+            });
+        }
+    });
+    </script>
+    </div>
+</body>
+</html>

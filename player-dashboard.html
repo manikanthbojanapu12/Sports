@@ -1,0 +1,810 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Dashboard | Stackly Sports Academy</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .dash-menu-toggle { display: none; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); color: #fff; width: 42px; height: 42px; border-radius: 12px; font-size: 1.1rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; position: relative; }
+        .dash-menu-toggle .menu-icon,
+        .dash-menu-toggle .close-icon { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); transition: .25s ease; line-height: 1; }
+        .dash-menu-toggle .close-icon { opacity: 0; transform: translate(-50%,-50%) rotate(-90deg); }
+        .dash-menu-toggle.open .menu-icon { opacity: 0; transform: translate(-50%,-50%) rotate(90deg); }
+        .dash-menu-toggle.open .close-icon { opacity: 1; transform: translate(-50%,-50%) rotate(0deg); }
+        .dash-sidebar-overlay { display: none; }
+        .sidebar-top-header { display: none; }
+        .dash-user { display: flex; align-items: center; gap: 12px; }
+        .dash-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: var(--bg-darker); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0; box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+        .dash-bell { position: relative; width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: .25s; font-size: 1.05rem; }
+        .dash-bell:hover { color: var(--accent); border-color: rgba(0, 240, 255, .4); transform: translateY(-3px); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+        .dash-bell .dot { position: absolute; top: 7px; right: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-crimson); border: 2px solid var(--bg-darker); }
+        .dash-ico { width: 46px; height: 46px; border-radius: 14px; background: rgba(0, 240, 255, .12); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 14px; }
+        .bar-track { height: 10px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: 10px; }
+        .bar-fill { display: block; height: 100%; width: 0%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent-secondary)); transition: width 1.3s cubic-bezier(.22,1,.36,1); }
+        .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .qa-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 10px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: #fff; cursor: pointer; font: inherit; font-weight: 600; font-size: .85rem; transition: .3s; width: 100%; }
+        .qa-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-5px); background: rgba(0, 240, 255, .08); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+        .qa-btn i { font-size: 1.35rem; color: var(--accent); }
+        .notif-item { display: flex; gap: 14px; padding: 14px 10px; border-bottom: 1px solid rgba(255,255,255,.06); border-radius: 12px; transition: .25s; }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item:hover { background: rgba(255,255,255,.03); }
+        .notif-ico { width: 38px; height: 38px; border-radius: 50%; background: rgba(0, 240, 255, .12); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .95rem; }
+        .notif-item.unread { background: rgba(0, 240, 255, .05); }
+        .stat-row { display: flex; justify-content: space-between; font-size: .85rem; color: var(--text-muted); margin-bottom: 4px; }
+        .welcome-hub { background: linear-gradient(120deg, rgba(0, 240, 255, .14), rgba(18,29,51,.7)); border: 1px solid rgba(0, 240, 255, .25); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; border-radius: 20px; }
+        .welcome-strip { display: flex; gap: 28px; flex-wrap: wrap; }
+        .welcome-strip div h4 { margin: 0; color: var(--accent); font-size: 1.4rem; }
+        .welcome-strip div p { margin: 0; font-size: .8rem; color: var(--text-muted); }
+        .badge-chip { text-align: center; padding: 20px 10px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); transition: .3s; }
+        .badge-chip.locked { opacity: .4; }
+        .badge-chip:not(.locked):hover { transform: translateY(-6px); border-color: var(--accent); background: rgba(0, 240, 255, .08); }
+        .badge-chip i { font-size: 1.8rem; color: var(--accent); margin-bottom: 8px; display: block; }
+        .badge-chip p { margin: 0; font-size: .82rem; }
+        .plan-card { position: relative; border: 1px solid rgba(255,255,255,.08); transition: .3s; border-radius: 16px; }
+        .plan-card.current { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset, 0 0 20px rgba(0, 240, 255, 0.2); }
+        .plan-card .pill { position: absolute; top: -12px; right: 20px; }
+        .plan-card ul { margin: 14px 0 18px; }
+        .plan-card ul li { font-size: .9rem; margin-bottom: 8px; display: flex; gap: 8px; align-items: flex-start; }
+        .plan-card ul li i { color: var(--accent); margin-top: 3px; }
+        .vid-card { cursor: pointer; overflow: hidden; }
+        .vid-thumb { position: relative; border-radius: 14px; overflow: hidden; height: 160px; margin-bottom: 14px; }
+        .vid-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+        .vid-card:hover .vid-thumb img { transform: scale(1.08); }
+        .vid-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(1,14,22,.35); }
+        .vid-play i { width: 54px; height: 54px; border-radius: 50%; background: var(--accent); color: var(--bg-darker); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; transition: .3s; }
+        .vid-card:hover .vid-play i { transform: scale(1.12); box-shadow: 0 0 20px var(--accent); }
+        .vid-card:hover .vid-play i { transform: scale(1.12); box-shadow: 0 0 20px var(--accent); }
+        .vid-duration { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,.65); padding: 3px 8px; border-radius: 6px; font-size: .75rem; }
+        .video-player-modal { position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .4s ease; padding: 20px; }
+        .video-player-modal.active { opacity: 1; pointer-events: all; }
+        .video-player-modal .video-modal-content { width: 100%; max-width: 900px; background: #000; border-radius: 14px; overflow: hidden; position: relative; transform: scale(.92); transition: transform .4s ease; }
+        .video-player-modal.active .video-modal-content { transform: scale(1); }
+        .video-player-modal video { width: 100%; display: block; max-height: 80vh; }
+        @media (max-width: 900px) {
+            .dash-menu-toggle { display: flex !important; }
+            .sidebar-top-header,
+            .close-sidebar-btn { display: none !important; }
+            .dash-sidebar {
+                position: fixed !important;
+                left: -105% !important;
+                top: 60px !important;
+                height: calc(100dvh - 60px) !important;
+                width: min(280px, 86vw) !important;
+                z-index: 1050 !important;
+                transform: none !important;
+                transition: left .35s ease !important;
+                box-shadow: 20px 0 50px rgba(0,0,0,.45);
+                flex-wrap: nowrap;
+                flex-direction: column;
+                background: #041c29 !important;
+                padding-top: 12px !important;
+            }
+            .dash-sidebar.open { left: 0 !important; transform: none !important; }
+            .dash-sidebar-overlay.show {
+                display: block !important;
+                position: fixed;
+                top: 60px; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,.55);
+                z-index: 1040;
+            }
+            .dash-main { padding: 20px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+<div class="dash-layout">
+    <aside class="dash-sidebar" id="dashSidebar">
+        <div class="sidebar-user-card" style="margin-top: 8px; margin-bottom: 12px;">
+            <div class="sidebar-user-avatar js-user-initials">P</div>
+            <div class="sidebar-user-details">
+                <div class="sidebar-user-name js-user-name">Player</div>
+                <div class="sidebar-user-email js-user-email">player@stackly.com</div>
+            </div>
+        </div>
+        <div class="sidebar-role-card">
+            <i class="fas fa-futbol"></i> <span>PLAYER DASHBOARD</span>
+        </div>
+        <div class="dash-sidebar-nav-container">
+            <div class="dash-nav-label">Overview</div>
+            <button class="dash-nav-btn active" data-target="dashboardHome"><i class="fas fa-house"></i> Dashboard</button>
+            <div class="dash-nav-label">Training</div>
+            <button class="dash-nav-btn" data-target="schedule"><i class="fas fa-calendar-days"></i> My Schedule</button>
+            <button class="dash-nav-btn" data-target="sessions"><i class="fas fa-clipboard-check"></i> Sessions</button>
+            <button class="dash-nav-btn" data-target="progress"><i class="fas fa-chart-line"></i> Progress</button>
+            <button class="dash-nav-btn" data-target="rewards"><i class="fas fa-trophy"></i> Rewards</button>
+            <button class="dash-nav-btn" data-target="videos"><i class="fas fa-video"></i> Training Videos</button>
+            <div class="dash-nav-label">Account</div>
+            <button class="dash-nav-btn" data-target="membership"><i class="fas fa-id-card"></i> Membership</button>
+            <button class="dash-nav-btn" data-target="notifications"><i class="fas fa-bell"></i> Notifications</button>
+            <button class="dash-nav-btn" data-target="settings"><i class="fas fa-gear"></i> Settings</button>
+        </div>
+        <button class="dash-nav-btn" data-logout style="color: #ff8a8a; margin-top: auto;"><i class="fas fa-right-from-bracket"></i> Logout</button>
+    </aside>
+    <div class="dash-sidebar-overlay" id="dashOverlay"></div>
+        <header class="dash-top">
+            <div class="dash-top-left">
+                <div class="dash-top-logo-zone">
+                    <button type="button" class="dash-menu-toggle" id="dashMenuToggle" aria-label="Open menu" aria-expanded="false">
+                        <span class="menu-icon" aria-hidden="true"><i class="fas fa-bars"></i></span>
+                        <span class="close-icon" aria-hidden="true"><i class="fas fa-xmark"></i></span>
+                    </button>
+                    <a href="index.html" class="dash-top-logo"><img src="assets/stacklylogo-transparent.webp" alt="Stackly"></a>
+                    <div class="dash-top-divider"></div>
+                </div>
+                <div class="dash-top-welcome">
+                    <h2>Welcome back, <span class="js-user-name">Player</span> 🔥</h2>
+                    <p>Keep the momentum going — here's your training snapshot.</p>
+                </div>
+            </div>
+            <div class="dash-top-right">
+                <button class="dash-bell" data-target="notifications" title="Notifications"><i class="fas fa-bell"></i><span class="dot"></span></button>
+                <div class="dash-user">
+                    <div class="dash-avatar js-user-initials">P</div>
+                    <div class="dash-user-details">
+                        <div style="font-weight: 700;" class="js-user-name">Player</div>
+                        <div style="font-size: .8rem; color: var(--accent);" class="js-user-plan">Standard Plan</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="dash-main">
+        <section class="dash-panel active" id="section-dashboardHome">
+            <div class="dash-announcement-bar">
+                <div class="pulse-dot"></div>
+                <div style="flex:1;">
+                    <strong style="color:#fff;">Academy Broadcast:</strong> Summer Championship Trials registration opens this Friday!
+                </div>
+                <span class="pill">Live</span>
+            </div>
+            <div class="dash-card welcome-hub" style="margin-bottom: 22px; background: linear-gradient(120deg, rgba(1,30,45,0.85), rgba(4,54,78,0.9)), url('assets/academycenter.webp') center/cover;">
+                <div>
+                    <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 6px; font-weight: 800;">Ready to level up today?</h3>
+                    <p style="margin: 0; font-size: 1.05rem;">You're on a 5-day training streak. One more session to hit a new personal best.</p>
+                </div>
+                <div class="welcome-strip">
+                    <div><h4>Lvl 7</h4><p>Player Level</p></div>
+                    <div><h4>1,240</h4><p>XP Points</p></div>
+                    <div><h4>5🔥</h4><p>Day Streak</p></div>
+                </div>
+            </div>
+            <div class="dash-grid dash-grid-4">
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-fire"></i></div><h3>34</h3><p>Classes Attended</p></div>
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-medal"></i></div><h3>Intermediate</h3><p>Skill Level</p></div>
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-clock"></i></div><h3>3</h3><p>Upcoming Sessions</p></div>
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-bolt"></i></div><h3>1,240</h3><p>XP Points</p></div>
+            </div>
+            <div class="dash-grid dash-grid-2" style="margin-top: 22px; grid-template-columns: 2fr 1fr;">
+                <div class="dash-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                        <h3 style="font-size: 1.15rem; color: #fff; margin: 0;">Upcoming Sessions</h3>
+                        <button class="btn btn-outline" style="padding: 8px 16px; font-size: .85rem;">View All</button>
+                    </div>
+                    <div class="notif-item"><div class="notif-ico"><i class="fas fa-table-tennis-paddle-ball"></i></div><div><strong>Advanced Footwork Clinic</strong><p style="margin: 2px 0 0; font-size: .85rem; color: var(--text-muted);">Tomorrow, 10:00 AM • Coach Elena</p></div><span class="pill" style="align-self: center;">Upcoming</span></div>
+                    <div class="notif-item"><div class="notif-ico"><i class="fas fa-futbol"></i></div><div><strong>Weekend Social Match</strong><p style="margin: 2px 0 0; font-size: .85rem; color: var(--text-muted);">Sunday, 4:00 PM • Coach Diaz</p></div><span class="pill" style="align-self: center;">Upcoming</span></div>
+                    <div class="notif-item"><div class="notif-ico"><i class="fas fa-person-swimming"></i></div><div><strong>Beginner Serving Techniques</strong><p style="margin: 2px 0 0; font-size: .85rem; color: var(--text-muted);">Aug 18, 2026 • Coach Marcus</p></div><span class="pill warn" style="align-self: center;">Pending</span></div>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;">Quick Actions</h3>
+                    <div class="qa-grid">
+                        <button class="qa-btn" data-target="schedule"><i class="fas fa-calendar-plus"></i> Book Session</button>
+                        <button class="qa-btn" data-target="progress"><i class="fas fa-chart-line"></i> View Progress</button>
+                        <button class="qa-btn" data-target="rewards"><i class="fas fa-trophy"></i> Rewards</button>
+                        <button class="qa-btn" data-target="membership"><i class="fas fa-id-card"></i> Upgrade Plan</button>
+                    </div>
+                </div>
+            </div>
+            <div class="dash-grid dash-grid-2" style="margin-top: 22px; grid-template-columns: 1fr 1fr;">
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-trophy highlight"></i> Weekly Academy Leaderboard</h3>
+                    <div class="leaderboard-rank-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="rank-badge gold">1</div>
+                            <div><strong style="color:#fff;">Alex Morgan</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Football • Lvl 12</p></div>
+                        </div>
+                        <strong style="color:var(--accent);">2,450 XP</strong>
+                    </div>
+                    <div class="leaderboard-rank-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="rank-badge silver">2</div>
+                            <div><strong style="color:#fff;" class="js-user-name">Player</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Tennis • Lvl 7</p></div>
+                        </div>
+                        <strong style="color:var(--accent);">1,240 XP</strong>
+                    </div>
+                    <div class="leaderboard-rank-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div class="rank-badge bronze">3</div>
+                            <div><strong style="color:#fff;">Carlos Ruiz</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Basketball • Lvl 6</p></div>
+                        </div>
+                        <strong style="color:var(--accent);">1,180 XP</strong>
+                    </div>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-list-check highlight"></i> Daily Recommended Micro-Drills</h3>
+                    <div class="goal-check-item done" onclick="this.classList.toggle('done')">
+                        <div class="goal-checkbox"><i class="fas fa-check" style="font-size:0.75rem;"></i></div>
+                        <div style="flex:1;"><strong style="color:#fff;">10-Min Dynamic Warmup</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Flexibility & Joint Mobility (+50 XP)</p></div>
+                        <span class="pill">+50 XP</span>
+                    </div>
+                    <div class="goal-check-item" onclick="this.classList.toggle('done')">
+                        <div class="goal-checkbox"><i class="fas fa-check" style="font-size:0.75rem;"></i></div>
+                        <div style="flex:1;"><strong style="color:#fff;">Ladder Footwork Drills</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Quick feet agility (+75 XP)</p></div>
+                        <span class="pill warn">+75 XP</span>
+                    </div>
+                    <div class="goal-check-item" onclick="this.classList.toggle('done')">
+                        <div class="goal-checkbox"><i class="fas fa-check" style="font-size:0.75rem;"></i></div>
+                        <div style="flex:1;"><strong style="color:#fff;">Core & Plank Hold (3 mins)</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Postural stability (+100 XP)</p></div>
+                        <span class="pill warn">+100 XP</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-schedule">
+            <div class="dash-grid dash-grid-3">
+                <div class="dash-card dash-card-tilt">
+                    <div class="dash-card-img"><img src="assets/Tennis.webp" alt="Tennis Footwork Clinic"></div>
+                    <div class="dash-ico"><i class="fas fa-table-tennis-paddle-ball"></i></div>
+                    <h3 style="font-size: 1.15rem; color: #fff;">Advanced Footwork Clinic</h3>
+                    <p>Coach Elena • Court 2 (Tennis)</p>
+                    <span class="pill" style="margin-top: 10px;">Tomorrow, 10:00 AM</span>
+                </div>
+                <div class="dash-card dash-card-tilt">
+                    <div class="dash-card-img"><img src="assets/football.webp" alt="Football Social Match"></div>
+                    <div class="dash-ico"><i class="fas fa-futbol"></i></div>
+                    <h3 style="font-size: 1.15rem; color: #fff;">Weekend Social Match</h3>
+                    <p>Coach Diaz • Field A (Football)</p>
+                    <span class="pill" style="margin-top: 10px;">Sunday, 4:00 PM</span>
+                </div>
+                <div class="dash-card dash-card-tilt">
+                    <div class="dash-card-img"><img src="assets/swim.webp" alt="Swimming Serving Techniques"></div>
+                    <div class="dash-ico"><i class="fas fa-person-swimming"></i></div>
+                    <h3 style="font-size: 1.15rem; color: #fff;">Beginner Swimming Techniques</h3>
+                    <p>Coach Marcus • Pool 1 (Swimming)</p>
+                    <span class="pill warn" style="margin-top: 10px;">Aug 18, 9:00 AM</span>
+                </div>
+                <div class="dash-card dash-card-tilt">
+                    <div class="dash-card-img"><img src="assets/running-track-.webp" alt="Gym Strength & Conditioning"></div>
+                    <div class="dash-ico"><i class="fas fa-dumbbell"></i></div>
+                    <h3 style="font-size: 1.15rem; color: #fff;">Strength & Conditioning</h3>
+                    <p>Coach Kwame • Gym (Fitness)</p>
+                    <span class="pill" style="margin-top: 10px;">Wed, 6:00 PM</span>
+                </div>
+                <div class="dash-card dash-card-tilt">
+                    <div class="dash-card-img"><img src="assets/running-track-.webp" alt="Track Speed & Agility"></div>
+                    <div class="dash-ico"><i class="fas fa-person-running"></i></div>
+                    <h3 style="font-size: 1.15rem; color: #fff;">Speed & Agility Drills</h3>
+                    <p>Coach Lily • Track (Athletics)</p>
+                    <span class="pill" style="margin-top: 10px;">Fri, 5:30 PM</span>
+                </div>
+                <div class="dash-card dash-card-tilt">
+                    <div class="dash-card-img"><img src="assets/cricket.webp" alt="Cricket Nets Practice"></div>
+                    <div class="dash-ico"><i class="fas fa-baseball-bat-ball"></i></div>
+                    <h3 style="font-size: 1.15rem; color: #fff;">Nets Practice</h3>
+                    <p>Coach Reyes • Nets 3 (Cricket)</p>
+                    <span class="pill" style="margin-top: 10px;">Sat, 4:00 PM</span>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-sessions">
+            <div class="dash-card">
+                <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;">Attended Sessions</h3>
+                <div style="overflow-x: auto;">
+                <table class="dash-table">
+                    <thead><tr><th>Date</th><th>Session</th><th>Coach</th><th>Duration</th><th>Performance</th></tr></thead>
+                    <tbody>
+                        <tr><td>Jul 20, 2026</td><td>Tactical Positioning</td><td>Coach Diaz</td><td>90 min</td><td><span class="pill">Excellent</span></td></tr>
+                        <tr><td>Jul 18, 2026</td><td>Sprint Intervals</td><td>Coach Lily</td><td>60 min</td><td><span class="pill">Great</span></td></tr>
+                        <tr><td>Jul 15, 2026</td><td>Gym Power Clean</td><td>Coach Kwame</td><td>75 min</td><td><span class="pill">Good</span></td></tr>
+                        <tr><td>Jul 12, 2026</td><td>Free Kick Precision</td><td>Coach Diaz</td><td>60 min</td><td><span class="pill">Excellent</span></td></tr>
+                        <tr><td>Jul 08, 2026</td><td>Endurance Swim</td><td>Coach Marcus</td><td>90 min</td><td><span class="pill">Great</span></td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-progress">
+            <div class="dash-card" style="margin-bottom: 18px;">
+                <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 4px;">Overall Skill Level: Intermediate</h3>
+                <p style="margin: 0;">You've improved 12% since last month. Keep training to reach Advanced.</p>
+            </div>
+            <div class="dash-grid dash-grid-2">
+                <div class="dash-card"><h3 style="font-size: 1.05rem; color: #fff;">Speed</h3><div class="stat-row"><span>Sprint & reaction drills</span><span>78%</span></div><div class="bar-track"><span class="bar-fill" data-value="78"></span></div></div>
+                <div class="dash-card"><h3 style="font-size: 1.05rem; color: #fff;">Strength</h3><div class="stat-row"><span>Conditioning sessions</span><span>65%</span></div><div class="bar-track"><span class="bar-fill" data-value="65"></span></div></div>
+                <div class="dash-card"><h3 style="font-size: 1.05rem; color: #fff;">Technique</h3><div class="stat-row"><span>Form & precision</span><span>82%</span></div><div class="bar-track"><span class="bar-fill" data-value="82"></span></div></div>
+                <div class="dash-card"><h3 style="font-size: 1.05rem; color: #fff;">Stamina</h3><div class="stat-row"><span>Endurance benchmarks</span><span>70%</span></div><div class="bar-track"><span class="bar-fill" data-value="70"></span></div></div>
+                <div class="dash-card"><h3 style="font-size: 1.05rem; color: #fff;">Agility</h3><div class="stat-row"><span>Footwork & change of direction</span><span>74%</span></div><div class="bar-track"><span class="bar-fill" data-value="74"></span></div></div>
+                <div class="dash-card"><h3 style="font-size: 1.05rem; color: #fff;">Game IQ</h3><div class="stat-row"><span>Decision making</span><span>68%</span></div><div class="bar-track"><span class="bar-fill" data-value="68"></span></div></div>
+            </div>
+            <div class="dash-card" style="margin-top: 22px;">
+                <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-gauge-high highlight"></i> Athletic Performance Benchmarks</h3>
+                <div class="dash-grid dash-grid-4">
+                    <div class="perk-store-card"><i class="fas fa-stopwatch highlight" style="font-size:1.8rem;margin-bottom:8px;"></i><h4 style="margin:0;color:#fff;">4.62s</h4><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">40-Yard Dash</p></div>
+                    <div class="perk-store-card"><i class="fas fa-arrows-up-to-line highlight" style="font-size:1.8rem;margin-bottom:8px;"></i><h4 style="margin:0;color:#fff;">28.5"</h4><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Vertical Jump</p></div>
+                    <div class="perk-store-card"><i class="fas fa-heart-pulse highlight" style="font-size:1.8rem;margin-bottom:8px;"></i><h4 style="margin:0;color:#fff;">54 ml/kg</h4><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">VO2 Max Score</p></div>
+                    <div class="perk-store-card"><i class="fas fa-dumbbell highlight" style="font-size:1.8rem;margin-bottom:8px;"></i><h4 style="margin:0;color:#fff;">185 lbs</h4><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Max Bench Press</p></div>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-rewards">
+            <div class="dash-card" style="margin-bottom: 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin: 0;">Level 7 • 1,240 / 2,000 XP</h3>
+                    <span class="pill">760 XP to Level 8</span>
+                </div>
+                <div class="bar-track"><span class="bar-fill" data-value="62"></span></div>
+            </div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 14px;">Your Badges</h3>
+            <div class="dash-grid dash-grid-4">
+                <div class="badge-chip"><i class="fas fa-medal"></i><p>Perfect Attendance</p></div>
+                <div class="badge-chip"><i class="fas fa-fire"></i><p>30-Day Streak</p></div>
+                <div class="badge-chip"><i class="fas fa-bolt"></i><p>Speed Demon</p></div>
+                <div class="badge-chip"><i class="fas fa-star"></i><p>MVP Weekly</p></div>
+                <div class="badge-chip locked"><i class="fas fa-trophy"></i><p>Top Scorer</p></div>
+                <div class="badge-chip locked"><i class="fas fa-crown"></i><p>Elite Status</p></div>
+                <div class="badge-chip locked"><i class="fas fa-shield-halved"></i><p>Defense Master</p></div>
+                <div class="badge-chip locked"><i class="fas fa-gem"></i><p>100-Day Streak</p></div>
+            </div>
+            <div class="dash-card" style="margin-top: 22px;">
+                <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-gift highlight"></i> Redeem Your Perks Store</h3>
+                <div class="dash-grid dash-grid-3">
+                    <div class="perk-store-card">
+                        <div class="dash-ico" style="margin:0 auto 10px;"><i class="fas fa-shirt"></i></div>
+                        <h4 style="color:#fff;margin:4px 0;">Official Academy Jersey</h4>
+                        <p style="font-size:0.85rem;color:var(--text-muted);">Custom printed name & number</p>
+                        <button class="btn btn-outline" style="width:100%;margin-top:12px;padding:8px;">Redeem 800 XP</button>
+                    </div>
+                    <div class="perk-store-card">
+                        <div class="dash-ico" style="margin:0 auto 10px;"><i class="fas fa-user-ninja"></i></div>
+                        <h4 style="color:#fff;margin:4px 0;">1-on-1 Pro Coaching Session</h4>
+                        <p style="font-size:0.85rem;color:var(--text-muted);">60 mins with Senior Coach</p>
+                        <button class="btn btn-outline" style="width:100%;margin-top:12px;padding:8px;">Redeem 1,200 XP</button>
+                    </div>
+                    <div class="perk-store-card">
+                        <div class="dash-ico" style="margin:0 auto 10px;"><i class="fas fa-key"></i></div>
+                        <h4 style="color:#fff;margin:4px 0;">VIP Locker Access</h4>
+                        <p style="font-size:0.85rem;color:var(--text-muted);">Dedicated private locker for 1 mo</p>
+                        <button class="btn btn-outline" style="width:100%;margin-top:12px;padding:8px;">Redeem 500 XP</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-membership">
+            <div class="dash-card" style="margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                <div>
+                    <p style="margin: 0 0 4px; color: var(--text-muted);">Current Plan</p>
+                    <h3 style="font-size: 1.3rem; color: var(--accent); margin: 0;" id="currentPlanLabel">Standard Plan</h3>
+                </div>
+                <div style="text-align: right;">
+                    <p style="margin: 0 0 4px; color: var(--text-muted);">Renews on</p>
+                    <h3 style="font-size: 1.1rem; color: #fff; margin: 0;">Aug 21, 2026</h3>
+                </div>
+            </div>
+            <div class="dash-grid dash-grid-3">
+                <div class="dash-card plan-card" id="planCardBasic">
+                    <h3 style="font-size: 1.2rem; color: #fff;">Basic</h3>
+                    <p style="color: var(--accent); font-weight: 700; font-size: 1.4rem; margin: 6px 0;">$29<span style="font-size: .9rem; color: var(--text-muted);"> /mo</span></p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 2 sessions / week</li>
+                        <li><i class="fas fa-check"></i> Group coaching</li>
+                        <li><i class="fas fa-check"></i> Progress tracking</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%;">Select Plan</button>
+                </div>
+                <div class="dash-card plan-card current" id="planCardStandard">
+                    <span class="pill">Current Plan</span>
+                    <h3 style="font-size: 1.2rem; color: #fff;">Standard</h3>
+                    <p style="color: var(--accent); font-weight: 700; font-size: 1.4rem; margin: 6px 0;">$39<span style="font-size: .9rem; color: var(--text-muted);"> /mo</span></p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 4 sessions / week</li>
+                        <li><i class="fas fa-check"></i> Personalized plans</li>
+                        <li><i class="fas fa-check"></i> Video analysis</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%;">Current Plan</button>
+                </div>
+                <div class="dash-card plan-card" id="planCardPremium">
+                    <h3 style="font-size: 1.2rem; color: #fff;">Premium</h3>
+                    <p style="color: var(--accent); font-weight: 700; font-size: 1.4rem; margin: 6px 0;">$49<span style="font-size: .9rem; color: var(--text-muted);"> /mo</span></p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Unlimited sessions</li>
+                        <li><i class="fas fa-check"></i> 1-on-1 coaching</li>
+                        <li><i class="fas fa-check"></i> Priority bookings</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;">Upgrade</button>
+                </div>
+            </div>
+            <div class="dash-card" style="margin-top: 22px;">
+                <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-qrcode highlight"></i> Digital Athlete Pass & QR Access</h3>
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; background:linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(1,30,45,0.8)); padding:20px; border-radius:16px; border:1px solid rgba(0, 240, 255, 0.3);">
+                    <div>
+                        <span class="pill" style="margin-bottom:8px;">Active Member ID: #SK-9082</span>
+                        <h3 style="color:#fff;margin:4px 0;" class="js-user-name">Player</h3>
+                        <p style="margin:0;color:var(--text-muted);" class="js-user-email">player@stackly.com</p>
+                    </div>
+                    <div style="text-align:center; background:rgba(15, 25, 45, 0.95); border: 1px solid rgba(0,240,255,0.3); padding:12px; border-radius:12px; color:#fff;">
+                        <i class="fas fa-qrcode" style="font-size:4rem;"></i>
+                        <p style="margin:4px 0 0;font-size:0.75rem;font-weight:700;">SCAN FOR TURF ACCESS</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-videos">
+            <div class="dash-grid dash-grid-3">
+                <div class="dash-card vid-card" data-video="assets/hero1.mp4" data-title="Explosive Footwork Drills">
+                    <div class="vid-thumb"><img src="assets/Tennis.webp" alt="Tennis Footwork Drills"><div class="vid-play"><i class="fas fa-play"></i></div><span class="vid-duration">6:12</span></div>
+                    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 4px;">Explosive Footwork Drills</h3>
+                    <p style="margin: 0; font-size: .85rem;">Coach Elena • Tennis</p>
+                </div>
+                <div class="dash-card vid-card" data-video="assets/hero2.mp4" data-title="Striker Finishing Masterclass">
+                    <div class="vid-thumb"><img src="assets/football.webp" alt="Football Finishing Masterclass"><div class="vid-play"><i class="fas fa-play"></i></div><span class="vid-duration">8:45</span></div>
+                    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 4px;">Striker Finishing Masterclass</h3>
+                    <p style="margin: 0; font-size: .85rem;">Coach Diaz • Football</p>
+                </div>
+                <div class="dash-card vid-card" data-video="assets/hero3.mp4" data-title="Freestyle Stroke Technique">
+                    <div class="vid-thumb"><img src="assets/academycenter.webp" alt="Swimming Stroke Technique"><div class="vid-play"><i class="fas fa-play"></i></div><span class="vid-duration">5:30</span></div>
+                    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 4px;">Freestyle Stroke Technique</h3>
+                    <p style="margin: 0; font-size: .85rem;">Coach Marcus • Swimming</p>
+                </div>
+                <div class="dash-card vid-card" data-video="assets/hero4.mp4" data-title="Court Vision & Passing">
+                    <div class="vid-thumb"><img src="assets/basketball.webp" alt="Basketball Court Vision"><div class="vid-play"><i class="fas fa-play"></i></div><span class="vid-duration">7:02</span></div>
+                    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 4px;">Court Vision & Passing</h3>
+                    <p style="margin: 0; font-size: .85rem;">Coach Kwame • Basketball</p>
+                </div>
+                <div class="dash-card vid-card" data-video="assets/hero5.mp4" data-title="Sprint Start Mechanics">
+                    <div class="vid-thumb"><img src="assets/running-track-.webp" alt="Track Sprint Mechanics"><div class="vid-play"><i class="fas fa-play"></i></div><span class="vid-duration">4:18</span></div>
+                    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 4px;">Sprint Start Mechanics</h3>
+                    <p style="margin: 0; font-size: .85rem;">Coach Lily • Athletics Track</p>
+                </div>
+                <div class="dash-card vid-card" data-video="assets/hero6.mp4" data-title="Spin Bowling Fundamentals">
+                    <div class="vid-thumb"><img src="assets/cricket.webp" alt="Cricket Spin Bowling"><div class="vid-play"><i class="fas fa-play"></i></div><span class="vid-duration">9:20</span></div>
+                    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 4px;">Spin Bowling Fundamentals</h3>
+                    <p style="margin: 0; font-size: .85rem;">Coach Reyes • Cricket</p>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-notifications">
+            <div class="dash-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+
+    <h3 style="font-size: 1.15rem; color: #fff; margin: 0;">
+        Notifications
+    </h3>
+
+    <button
+        type="button"
+        class="btn btn-outline"
+        id="markAllRead"
+        style="padding: 8px 18px; font-size: .85rem;">
+        Mark all as read
+    </button>
+
+</div>
+
+<script>
+document.getElementById('markAllRead').addEventListener('click', function () {
+    window.location.href = '404.html';
+});
+</script>
+                <div class="notif-item unread"><div class="notif-ico"><i class="fas fa-calendar-check"></i></div><div><strong>Session reminder</strong><p style="margin: 2px 0 0; font-size: .85rem;">Advanced Footwork Clinic starts tomorrow at 10:00 AM. <span style="color: var(--text-muted);">2 hrs ago</span></p></div></div>
+                <div class="notif-item unread"><div class="notif-ico"><i class="fas fa-medal"></i></div><div><strong>New badge earned!</strong><p style="margin: 2px 0 0; font-size: .85rem;">You unlocked "MVP Weekly" for outstanding performance. <span style="color: var(--text-muted);">5 hrs ago</span></p></div></div>
+                <div class="notif-item"><div class="notif-ico"><i class="fas fa-sack-dollar"></i></div><div><strong>Payment due soon</strong><p style="margin: 2px 0 0; font-size: .85rem;">Your Standard Plan renews on Aug 21, 2026. <span style="color: var(--text-muted);">Yesterday</span></p></div></div>
+                <div class="notif-item"><div class="notif-ico"><i class="fas fa-comment"></i></div><div><strong>Message from Coach Elena</strong><p style="margin: 2px 0 0; font-size: .85rem;">"Great progress on your backhand this week!" <span style="color: var(--text-muted);">2 days ago</span></p></div></div>
+                <div class="notif-item"><div class="notif-ico"><i class="fas fa-video"></i></div><div><strong>New training video added</strong><p style="margin: 2px 0 0; font-size: .85rem;">"Sprint Start Mechanics" is now available. <span style="color: var(--text-muted);">3 days ago</span></p></div></div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-settings">
+            <div class="dash-grid dash-grid-2" style="grid-template-columns: 1fr 1fr;">
+                <div style="display:flex; flex-direction:column; gap:22px;">
+                    <div class="dash-card">
+                        <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 18px;">Profile Settings</h3>
+                        <form id="settingsForm">
+                            <div class="form-group"><label>Full Name</label><input type="text" id="settingsName" placeholder="Your full name"></div>
+                            <div class="form-group"><label>Email Address</label><input type="email" id="settingsEmail" placeholder="you@example.com"></div>
+                            <div class="form-group"><label>Phone Number</label><input type="tel" id="settingsPhone" placeholder="+1 555 010 2024"></div>
+                            <div class="form-group"><label>Preferred Sport</label>
+                                <select id="settingsSport"><option>Football</option><option>Basketball</option><option>Tennis</option><option>Swimming</option><option>Cricket</option><option>Athletics</option></select>
+                            </div>
+                            <div class="form-group"><label>New Password</label><input type="password" placeholder="Leave blank to keep current password"></div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">Save Changes</button>
+                        </form>
+                    </div>
+                    <div class="dash-card">
+                        <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-shield-halved highlight"></i> Security Preferences</h3>
+                        <div style="display:flex; flex-direction:column; gap:14px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div><strong style="color:#fff;">SMS Training Reminders</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Receive SMS 2 hours before scheduled sessions</p></div>
+                                <label class="switch-toggle"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div><strong style="color:#fff;">Two-Factor Authentication (2FA)</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Secure account with email verification codes</p></div>
+                                <label class="switch-toggle"><input type="checkbox"><span class="switch-slider"></span></label>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div><strong style="color:#fff;">Weekly XP Leaderboard Updates</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Get email summaries of your weekly rankings</p></div>
+                                <label class="switch-toggle"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:22px;">
+                    <div class="dash-card">
+                        <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 16px;"><i class="fas fa-desktop highlight"></i> Active Sessions & Security Logs</h3>
+                        <div class="leaderboard-rank-item">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div class="dash-ico" style="width:34px;height:34px;font-size:0.9rem;"><i class="fas fa-mobile-screen"></i></div>
+                                <div><strong style="color:#fff;">iPhone 15 Pro (This Device)</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Current Session • Active Now</p></div>
+                            </div>
+                            <span class="pill">Active</span>
+                        </div>
+                        <div class="leaderboard-rank-item">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div class="dash-ico" style="width:34px;height:34px;font-size:0.9rem;"><i class="fas fa-laptop"></i></div>
+                                <div><strong style="color:#fff;">MacBook Pro 16"</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Chrome Browser • Yesterday</p></div>
+                            </div>
+                            <span class="pill warn">Logged Out</span>
+                        </div>
+                        <div style="margin-top:16px; background:rgba(255,255,255,0.03); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.06);">
+                            <div class="stat-row"><span>Cloud Video Storage (4.2 / 10 GB)</span><span>42%</span></div>
+                            <div class="bar-track" style="margin-top:6px;"><span class="bar-fill" data-value="42"></span></div>
+                        </div>
+                    </div>
+                    <div class="dash-card">
+                        <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 16px;"><i class="fas fa-link highlight"></i> Connected Fitness Apps</h3>
+                        <div style="display:flex; flex-direction:column; gap:14px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <i class="fab fa-apple highlight" style="font-size:1.4rem;"></i>
+                                    <div><strong style="color:#fff;">Apple Health / Fitness</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Sync heart rate & calories</p></div>
+                                </div>
+                                <label class="switch-toggle"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <i class="fas fa-person-running highlight" style="font-size:1.3rem;"></i>
+                                    <div><strong style="color:#fff;">Strava Activity Sync</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Auto-log outdoor sprints</p></div>
+                                </div>
+                                <label class="switch-toggle"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <i class="fab fa-google highlight" style="font-size:1.3rem;"></i>
+                                    <div><strong style="color:#fff;">Google Fit Track</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Sync daily steps & VO2 max</p></div>
+                                </div>
+                                <label class="switch-toggle"><input type="checkbox"><span class="switch-slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</div>
+<div class="video-player-modal" id="trainingVideoModal">
+    <div class="video-modal-content">
+        <div class="close-modal" id="closeTrainingVideo"><i class="fas fa-times"></i></div>
+        <video id="trainingVideoPlayer" controls></video>
+    </div>
+</div>
+<div class="modal-backdrop" id="planModal">
+    <div class="modal-card">
+        <div style="font-size: 2.6rem; color: var(--accent); margin-bottom: 14px;"><i class="fas fa-circle-check"></i></div>
+        <h3 id="planModalTitle">Confirm Plan</h3>
+        <p id="planModalText">Are you sure you want to switch your membership plan?</p>
+        <div class="modal-actions">
+            <button class="btn btn-outline" id="cancelPlanBtn" style="padding: 12px 26px;">Cancel</button>
+            <button class="btn btn-primary" id="confirmPlanBtn" style="padding: 12px 26px;">Yes, Confirm</button>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop" id="logoutModal">
+    <div class="modal-card">
+        <div style="font-size: 2.6rem; color: #ff5a5a; margin-bottom: 14px;"><i class="fas fa-right-from-bracket"></i></div>
+        <h3>Heading out?</h3>
+        <p>You're about to sign out of your Stackly Player account.</p>
+        <div class="modal-actions">
+            <button class="btn btn-outline" id="cancelLogout" style="padding: 12px 26px;">Stay Signed In</button>
+            <button class="btn btn-primary" id="confirmLogout" style="padding: 12px 26px;">Yes, Log Out</button>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+<script>
+(function () {
+    var user = window.StacklyAuth.requireAuth('player');
+    if (!user) return;
+    var displayName = user.name || user.fullName || ((user.firstName || '') + ' ' + (user.lastName || '')).trim() || 'Player';
+    var displayEmail = user.email || 'player@stackly.com';
+    var displayPlan = (user.tier || user.plan || 'Standard') + ' Plan';
+    document.querySelectorAll('.js-user-name').forEach(function (el) { el.textContent = displayName; });
+    document.querySelectorAll('.js-user-email').forEach(function (el) { el.textContent = displayEmail; });
+    document.querySelectorAll('.js-user-plan').forEach(function (el) { el.textContent = displayPlan; });
+    document.querySelectorAll('.js-user-initials').forEach(function (el) {
+        el.textContent = displayName.trim().split(/\s+/).map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase() || 'P';
+    });
+    var settingsName = document.getElementById('settingsName');
+    var settingsEmail = document.getElementById('settingsEmail');
+    var settingsPhone = document.getElementById('settingsPhone');
+    if (settingsName) settingsName.value = displayName;
+    if (settingsEmail) settingsEmail.value = user.email || '';
+    if (settingsPhone) settingsPhone.value = user.phone || '';
+    var currentPlanLabel = document.getElementById('currentPlanLabel');
+    if (currentPlanLabel) currentPlanLabel.textContent = displayPlan;
+    var panels = document.querySelectorAll('.dash-panel');
+    var sidebar = document.getElementById('dashSidebar');
+    var overlay = document.getElementById('dashOverlay');
+    function animateBars(scope) {
+        scope.querySelectorAll('.bar-fill').forEach(function (el) {
+            var target = el.getAttribute('data-value') || '0';
+            el.style.width = '0%';
+            setTimeout(function () { el.style.width = target + '%'; }, 80);
+        });
+    }
+    window.showSection = function (id) {
+        if (!document.getElementById('section-' + id)) return;
+        panels.forEach(function (p) { p.classList.toggle('active', p.id === 'section-' + id); });
+        document.querySelectorAll('.dash-nav-btn[data-target]').forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-target') === id);
+        });
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+        document.body.classList.remove('dash-sidebar-open');
+        document.documentElement.classList.remove('dash-sidebar-open');
+        if (typeof window.closeDashSidebar === 'function') window.closeDashSidebar();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        var activePanel = document.getElementById('section-' + id);
+        if (id === 'progress' || id === 'rewards') animateBars(activePanel);
+        history.replaceState(null, '', '#' + id);
+    };
+    document.querySelectorAll('.dash-nav-btn[data-target], .dash-bell[data-target], .qa-btn[data-target]').forEach(function (b) {
+        b.addEventListener('click', function () { window.showSection(b.getAttribute('data-target')); });
+    });
+    var initial = (location.hash || '#dashboardHome').replace('#', '');
+    window.showSection(document.getElementById('section-' + initial) ? initial : 'dashboardHome');
+
+    
+    if (typeof window.initMobileSidebar === 'function') {
+      window.initMobileSidebar();
+    }
+    var vidModal = document.getElementById('trainingVideoModal');
+    var vidPlayer = document.getElementById('trainingVideoPlayer');
+    document.querySelectorAll('.vid-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+            var videoSource = card.getAttribute('data-video');
+            if (!videoSource || !vidModal || !vidPlayer) return;
+            vidPlayer.src = videoSource;
+            vidPlayer.load();
+            vidModal.classList.add('active');
+            vidPlayer.play().catch(function () {});
+        });
+    });
+    function closeVideoModal() {
+        vidModal.classList.remove('active');
+        vidPlayer.pause();
+        vidPlayer.currentTime = 0;
+    }
+    document.getElementById('closeTrainingVideo').addEventListener('click', closeVideoModal);
+    vidModal.addEventListener('click', function (e) { if (e.target === vidModal) closeVideoModal(); });
+    var planModal = document.getElementById('planModal');
+    var planModalTitle = document.getElementById('planModalTitle');
+    var planModalText = document.getElementById('planModalText');
+    var confirmPlanBtn = document.getElementById('confirmPlanBtn');
+    var selectedPlan = '';
+    var selectedPrice = '';
+    document.querySelectorAll('[data-plan]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            selectedPlan = btn.getAttribute('data-plan');
+            selectedPrice = btn.getAttribute('data-price');
+            planModalTitle.textContent = 'Switch to ' + selectedPlan + ' Plan';
+            planModalText.textContent = 'Are you sure you want to switch to the ' + selectedPlan + ' membership plan for ' + selectedPrice + '?';
+            planModal.classList.add('show');
+        });
+    });
+    document.getElementById('cancelPlanBtn').addEventListener('click', function () { planModal.classList.remove('show'); });
+    confirmPlanBtn.addEventListener('click', function () {
+        var current = window.StacklyAuth.getUser() || user;
+        current.tier = selectedPlan;
+        current.plan = selectedPlan;
+        window.StacklyAuth.setUser(current);
+        document.querySelectorAll('.js-user-plan').forEach(function (el) { el.textContent = selectedPlan + ' Plan'; });
+        if (currentPlanLabel) currentPlanLabel.textContent = selectedPlan + ' Plan';
+        document.querySelectorAll('.plan-card').forEach(function (c) { c.classList.remove('current'); });
+        var newCard = document.getElementById('planCard' + selectedPlan);
+        if (newCard) newCard.classList.add('current');
+        planModal.classList.remove('show');
+        window.KickToast.show('You are now on the ' + selectedPlan + ' Plan (' + selectedPrice + ').', 'success', 'Plan Updated');
+    });
+    var settingsForm = document.getElementById('settingsForm');
+    if (settingsForm) {
+        var settingsName = document.getElementById('settingsName');
+        var settingsPhone = document.getElementById('settingsPhone');
+        if (settingsName) {
+            settingsName.addEventListener('input', function () {
+                this.value = String(this.value || '').replace(/[0-9]/g, '').replace(/\s{2,}/g, ' ').trimStart();
+            });
+        }
+        if (settingsPhone) {
+            settingsPhone.addEventListener('input', function () {
+                this.value = String(this.value || '').replace(/\D/g, '').slice(0, 10);
+            });
+        }
+        settingsForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var fullName = settingsName ? settingsName.value.trim() : '';
+            var phone = settingsPhone ? settingsPhone.value.replace(/\D/g, '') : '';
+            var nameOk = /^[A-Za-z\s.'-]{2,}$/.test(fullName);
+            var phoneOk = /^\d{10}$/.test(phone);
+            if (!nameOk) {
+                if (settingsName) {
+                    settingsName.focus();
+                    settingsName.setAttribute('aria-invalid', 'true');
+                }
+                window.KickToast.show('Full name must contain only letters and spaces.', 'error', 'Invalid Name');
+                return;
+            }
+            if (!phoneOk) {
+                if (settingsPhone) {
+                    settingsPhone.focus();
+                    settingsPhone.setAttribute('aria-invalid', 'true');
+                }
+                window.KickToast.show('Phone number must contain exactly 10 digits.', 'error', 'Invalid Phone');
+                return;
+            }
+            settingsName && settingsName.removeAttribute('aria-invalid');
+            settingsPhone && settingsPhone.removeAttribute('aria-invalid');
+            window.KickToast.show('Your settings have been saved successfully.', 'success', 'Settings Saved');
+        });
+    }
+    var markAllBtn = document.getElementById('markAllRead');
+    if (markAllBtn) {
+        markAllBtn.addEventListener('click', function () {
+            document.querySelectorAll('.notif-item.unread').forEach(function (n) { n.classList.remove('unread'); });
+            window.KickToast.show('All notifications marked as read.', 'info', 'Inbox Cleared');
+        });
+    }
+    document.querySelectorAll('.modal-backdrop').forEach(function (bd) {
+        bd.addEventListener('click', function (e) { if (e.target === bd) bd.classList.remove('show'); });
+    });
+    document.addEventListener('click', function (e) {
+        
+        if (e.target.closest('select, option, input:not([type="submit"]), textarea, label, details, summary, .form-group')) {
+            return;
+        }
+        if (e.target.closest('#dashMenuToggle, #closeSidebarBtn, #dashSidebar, #dashOverlay, .dash-top, .dash-sidebar, .dash-sidebar-overlay')) {
+            return;
+        }
+        var target = e.target.closest('button, .btn, a:not(.nav-logo):not(.dash-top-logo)');
+        if (!target) return;
+
+        
+        if (target.closest('form')) {
+            return;
+        }
+
+        if (
+            target.hasAttribute('data-target') ||
+            target.hasAttribute('data-logout') ||
+            target.closest('.vid-card') ||
+            target.closest('.dash-top-logo') ||
+            target.classList.contains('dash-top-logo') ||
+            target.id === 'confirmPlanBtn' ||
+            target.id === 'cancelPlanBtn' ||
+            target.id === 'confirmLogout' ||
+            target.id === 'cancelLogout' ||
+            target.id === 'closeTrainingVideo' ||
+            target.id === 'markAllRead' ||
+            target.classList.contains('close-modal') ||
+            target.closest('.modal-backdrop') ||
+            target.closest('.switch-toggle') ||
+            target.closest('.goal-check-item')
+        ) {
+            return;
+        }
+    }, false);
+})();
+</script>
+</body>
+</html>

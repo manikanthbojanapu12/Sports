@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Stackly Sports Academy</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .contact-tile {
+            text-align: center;
+            padding: 45px 32px;
+            border-radius: 22px;
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-tile i.tile-icon {
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            background: rgba(0, 240, 255, 0.14);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+        .contact-tile h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 1.45rem;
+            font-weight: 800;
+        }
+        .contact-tile p {
+            color: #5a6d7a;
+            margin-bottom: 0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        .contact-panel {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 48px 42px;
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 520px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .contact-panel h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        .contact-panel > div > p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group {
+            margin-bottom: 0;
+            position: relative;
+            padding-bottom: 24px; 
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #fff;
+            font-family: inherit;
+            font-size: 1.05rem;
+            transition: border-color 0.25s, background 0.25s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .form-group .form-error {
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            font-size: 0.82rem;
+            color: #ff6a6a;
+            display: none;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .form-group.has-error .form-error {
+            display: block;
+        }
+        .form-group.has-error input,
+        .form-group.has-error textarea {
+            border-color: #ff6a6a;
+        }
+        .join-crew {
+            background: linear-gradient(135deg, var(--bg-darker) 0%, #05405c 100%);
+            border: 1.5px solid rgba(0, 240, 255, 0.35);
+            border-radius: 24px;
+            padding: 55px 45px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .join-crew h2 { font-size: 2.3rem; margin-bottom: 12px; font-weight: 800; }
+        .join-crew p { max-width: 580px; margin: 0 auto 30px; font-size: 1.1rem; }
+        .join-crew-form { max-width: 680px; margin: 0 auto; }
+        .join-crew-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; justify-content: center; }
+        .join-crew-row .form-group {
+            flex: 1;
+            min-width: 210px;
+            margin-bottom: 0;
+            text-align: left;
+            position: relative;
+            padding-bottom: 24px;
+        }
+        .join-crew-row .form-group .form-error {
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            font-size: 0.8rem;
+            color: #ff6a6a;
+            display: none;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .join-crew-row .form-group.has-error .form-error {
+            display: block;
+        }
+        .join-crew-row .btn { flex-shrink: 0; padding: 14px 30px; font-size: 1.1rem; }
+        .map-panel {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            min-height: 520px;
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+        }
+        .map-panel iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 520px;
+            border: none;
+            border-radius: 24px;
+            filter: contrast(1.05) saturate(1.1);
+        }
+        @media (max-width: 768px) {
+            .form-row-2 { grid-template-columns: 1fr; }
+            .join-crew-row .form-group { min-width: 100%; }
+            .form-group .form-error,
+            .join-crew-row .form-group .form-error { white-space: normal; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <nav class="navbar scrolled">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+        </a>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        <div class="nav-links">
+            <div class="mobile-menu-header">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+                <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="program.html">Program</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html" class="active">Contact</a>
+            <div class="mobile-auth-wrapper" data-auth-nav>
+                <a href="signin.html" class="btn btn-outline">Sign In</a>
+                <a href="signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+        <div class="nav-auth-buttons" data-auth-nav style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+            <a href="signin.html" class="btn btn-outline" style="padding: 10px 25px; font-size: 1.05rem;">Sign In</a>
+            <a href="signup.html" class="btn btn-primary" style="padding: 10px 25px; font-size: 1.05rem;">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </nav>
+    <header class="page-hero">
+        <video class="page-hero__video" src="video/video1.mp4" autoplay loop muted playsinline></video>
+        <div class="page-hero__overlay"></div>
+        <div class="page-hero__inner anim-fade-up">
+            <p class="page-hero__eyebrow"><i class="fas fa-comments"></i> We're Here For You</p>
+            <h1>Talk To Our <span class="highlight">Coaching Team</span></h1>
+            <p>Questions about memberships, trials, or training schedules? Reach the Stackly desk and a coach will get back to you within one business day.</p>
+        </div>
+    </header>
+    <section class="container" style="padding-top: 60px; padding-bottom: 15px;">
+        <div class="grid grid-3 gap-3">
+            <div class="feature-tile hover-lift contact-tile anim-fade-up del-100">
+                <i class="fas fa-map-marker-alt tile-icon"></i>
+                <h3>Visit Our HQ</h3>
+                <p>MMR Complex, Chinna Thirupathi,<br>Near Chinna Muniyappan Kovil,<br>Salem, Tamil Nadu 636008</p>
+            </div>
+            <div class="feature-tile hover-lift contact-tile anim-fade-up del-200">
+                <i class="fas fa-phone-alt tile-icon"></i>
+                <h3>Call The Front Desk</h3>
+                <p>+91 (0) 427 492 849<br>Mon – Fri: 9:00 AM – 6:00 PM<br>Sat: 9:00 AM – 1:00 PM</p>
+            </div>
+            <div class="feature-tile hover-lift contact-tile anim-fade-up del-300">
+                <i class="fas fa-envelope tile-icon"></i>
+                <h3>Email The Academy</h3>
+                <p>support@stacklyacademy.com<br>admissions@stacklyacademy.com<br>Replies within 24 hours</p>
+            </div>
+        </div>
+    </section>
+    <section class="container" style="padding-top: 45px;">
+        <div class="grid grid-2 gap-4" style="align-items: stretch;">
+            <div class="contact-panel anim-slide-right">
+                <div>
+                    <h2>Send Us A Message</h2>
+                    <p>Tell us about your goals and we'll route you to the right coach or program.</p>
+                </div>
+               
+<form id="contactForm" novalidate>
+
+    <!-- Name -->
+    <div class="form-group">
+        <label for="contactName">Full Name</label>
+        <input
+            type="text"
+            id="contactName"
+            name="name"
+            placeholder="Enter your name"
+            required
+            pattern="[A-Za-z ]+"
+            title="Name should contain letters and spaces only"
+            oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '')">
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+        <label for="contactEmail">Email Address</label>
+        <input
+            type="email"
+            id="contactEmail"
+            name="email"
+            placeholder="Enter your email"
+            required>
+    </div>
+
+    <!-- Phone -->
+    <div class="form-group">
+        <label for="contactPhone">Phone Number</label>
+        <input
+            type="tel"
+            id="contactPhone"
+            name="phone"
+            placeholder="Enter phone number"
+            required
+            inputmode="numeric"
+            pattern="[0-9]{10}"
+            maxlength="10"
+            minlength="10"
+            title="Phone number must contain exactly 10 digits"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)">
+    </div>
+
+    <!-- Subject -->
+    <div class="form-group">
+        <label for="contactSubject">Subject</label>
+        <input
+            type="text"
+            id="contactSubject"
+            name="subject"
+            placeholder="Enter subject"
+            required>
+    </div>
+
+    <!-- Message -->
+    <div class="form-group">
+        <label for="contactMessage">Message</label>
+        <textarea
+            id="contactMessage"
+            name="message"
+            rows="5"
+            placeholder="Write your message..."
+            required
+            minlength="10"></textarea>
+    </div>
+
+    <!-- Terms -->
+    <div class="form-group" style="margin-bottom: 16px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input
+                type="checkbox"
+                id="contactTerms"
+                required
+                style="width: auto;">
+            <span>I agree to the Terms of Service and Privacy Policy</span>
+        </label>
+    </div>
+
+    <!-- Send Button -->
+    <button
+        type="submit"
+        class="btn btn-primary"
+        style="width: 100%; margin-top: 6px; padding: 14px 24px; font-size: 1.1rem;">
+        Send Message
+        <i class="fas fa-paper-plane"></i>
+    </button>
+
+</form>
+
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+
+    event.preventDefault();
+
+    const form = this;
+
+    const name = document.getElementById('contactName');
+    const email = document.getElementById('contactEmail');
+    const phone = document.getElementById('contactPhone');
+    const subject = document.getElementById('contactSubject');
+    const message = document.getElementById('contactMessage');
+    const terms = document.getElementById('contactTerms');
+
+    /* Name validation */
+    const namePattern = /^[A-Za-z ]+$/;
+
+    if (!name.value.trim()) {
+        name.focus();
+        alert('Please enter your name.');
+        return;
+    }
+
+    if (!namePattern.test(name.value.trim())) {
+        name.focus();
+        alert('Name should contain letters and spaces only.');
+        return;
+    }
+
+    /* Email validation */
+    if (!email.value.trim() || !email.checkValidity()) {
+        email.focus();
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    /* Phone validation */
+    const phonePattern = /^[0-9]{10}$/;
+
+    if (!phonePattern.test(phone.value.trim())) {
+        phone.focus();
+        alert('Please enter a valid 10-digit phone number.');
+        return;
+    }
+
+    /* Subject validation */
+    if (!subject.value.trim()) {
+        subject.focus();
+        alert('Please enter a subject.');
+        return;
+    }
+
+    /* Message validation */
+    if (!message.value.trim()) {
+        message.focus();
+        alert('Please enter your message.');
+        return;
+    }
+
+    if (message.value.trim().length < 10) {
+        message.focus();
+        alert('Message must contain at least 10 characters.');
+        return;
+    }
+
+    /* Terms validation */
+    if (!terms.checked) {
+        terms.focus();
+        alert('Please agree to the Terms of Service and Privacy Policy.');
+        return;
+    }
+
+    /* Final HTML5 validation */
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    /* All fields are valid */
+    window.location.href = '404.html';
+
+});
+</script>                </form>
+            </div>
+            <div class="map-panel anim-slide-left del-200">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3907.458296316041!2d78.16335137579177!3d11.698048241584067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babf06e2e505a41%3A0xb36f2e825a0728c7!2sChinna%20Tirupathi%2C%20Salem%2C%20Tamil%20Nadu%20636008!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0; min-height: 520px; width: 100%; border-radius: 24px;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Stackly Sports Academy Location Map">
+                </iframe>
+            </div>
+        </div>
+    </section>
+    <section class="container" style="padding-top: 55px;">
+        <div class="join-crew anim-zoom-in">
+            <h2>Join The <span class="highlight">Athlete Circle</span></h2>
+            <p>Get training drills, nutrition tips, and early access to trial-day slots delivered straight to your inbox every week.</p>
+            <form class="join-crew-form" id="joinForm" novalidate>
+                <div class="join-crew-row">
+                    <div class="form-group" id="jf-name-group">
+                        <input type="text" id="jf-name" name="name" placeholder="Your name" autocomplete="name">
+                        <span class="form-error">Name contains only alphabets</span>
+                    </div>
+                    <div class="form-group" id="jf-email-group">
+                        <input type="email" id="jf-email" name="email" placeholder="Your email" autocomplete="email">
+                        <span class="form-error">Please enter a valid email address.</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Join Now <i class="fas fa-paper-plane"></i></button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 1: Campus Directions, Parking & Gate Navigator -->
+    <section class="content-section athletic-bg-grid" style="background: #080d1a;">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-car-side"></i> Arrival & Campus Transit</span>
+                <h2>Campus Directions, <span class="highlight">Parking & Gate Access</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">Everything you need to navigate our 45-acre sports complex smoothly upon arrival, including parking gate assignments and transit connections.</p>
+            </div>
+
+            <div class="grid grid-3 gap-3">
+                <div class="sports-glass-card anim-slide-left del-100">
+                    <div style="font-size: 1.8rem; color: var(--accent); margin-bottom: 12px;"><i class="fas fa-square-parking"></i></div>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Athlete & Spectator Parking</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Lot A (North Gate) offers 400 complimentary spots for active members with EV fast-chargers. Lot B is designated for team tour buses.</p>
+                    <span class="sports-badge sports-badge-volt"><i class="fas fa-check"></i> Free Member Valet</span>
+                </div>
+
+                <div class="sports-glass-card cyan-glow anim-fade-up del-200">
+                    <div style="font-size: 1.8rem; color: var(--accent-secondary); margin-bottom: 12px;"><i class="fas fa-train-subway"></i></div>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Metro & Transit Shuttle</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Direct air-conditioned electric shuttle runs every 10 minutes from Salem Central Metro Station Gate 3 directly to Stackly Main Atrium.</p>
+                    <span class="sports-badge sports-badge-cyan"><i class="fas fa-clock"></i> 7-Min Shuttle Ride</span>
+                </div>
+
+                <div class="sports-glass-card anim-slide-right del-300">
+                    <div style="font-size: 1.8rem; color: var(--accent-crimson); margin-bottom: 12px;"><i class="fas fa-door-open"></i></div>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Security & Entry Gate Fast-Pass</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Show your digital athlete pass in the Stackly App for instantaneous RFID turnstile entry at West Arena and Track gates.</p>
+                    <span class="sports-badge sports-badge-pulse"><i class="fas fa-qrcode"></i> Contactless RFID</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 2: Direct Department Fast-Dial & Coach Appointment Selector -->
+    <section class="content-section" style="background: linear-gradient(180deg, #080d1a 0%, #0c1424 100%);">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-headset"></i> Direct Channels</span>
+                <h2>Department Fast-Dial & <span class="highlight-cyan">Coach Office Hours</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">Connect directly with specific athletic coordinators, the collegiate recruitment desk, or facility booking specialists.</p>
+            </div>
+
+            <div class="grid grid-3 gap-3">
+                <div class="sports-glass-card anim-slide-left del-100">
+                    <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 8px;"><i class="fas fa-graduation-cap" style="color: var(--accent); margin-right: 8px;"></i> Recruitment & Scholarships</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Collegiate scouts, agency representation, and grant application inquiries.</p>
+                    <div style="margin-top: 15px; font-weight: 700; color: var(--accent);"><i class="fas fa-phone"></i> Ext. 104 • scout@stackly.com</div>
+                </div>
+
+                <div class="sports-glass-card cyan-glow anim-fade-up del-200">
+                    <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 8px;"><i class="fas fa-calendar-plus" style="color: var(--accent-secondary); margin-right: 8px;"></i> Arena & Pitch Rentals</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Private corporate tournament bookings and weekend full-pitch rentals.</p>
+                    <div style="margin-top: 15px; font-weight: 700; color: var(--accent-secondary);"><i class="fas fa-phone"></i> Ext. 108 • events@stackly.com</div>
+                </div>
+
+                <div class="sports-glass-card anim-slide-right del-300">
+                    <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 8px;"><i class="fas fa-heart-pulse" style="color: var(--accent-crimson); margin-right: 8px;"></i> Sports Medicine Clinic</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Direct line to on-duty certified athletic trainers and physical therapists.</p>
+                    <div style="margin-top: 15px; font-weight: 700; color: var(--accent-crimson);"><i class="fas fa-phone"></i> Ext. 911 • med@stackly.com</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 3: Athlete Safety & Emergency Medical Protocols -->
+    <section class="content-section athletic-bg-grid">
+        <div class="container">
+            <div class="grid grid-2 gap-4 align-center">
+                <div class="anim-slide-left">
+                    <span class="section-eyebrow"><i class="fas fa-shield-heart"></i> Safety First Protocol</span>
+                    <h2>Athlete Medical Room & <span class="highlight">Certified On-Duty Care</span></h2>
+                    <p>Stackly maintains an accredited Sports Medicine & First Response suite staffed by licensed athletic trainers (ATC) and physical therapists during all operational hours.</p>
+                    <ul style="display: flex; flex-direction: column; gap: 12px; margin: 20px 0;">
+                        <li style="color: #cbd5e1;"><i class="fas fa-check" style="color: var(--accent); margin-right: 8px;"></i> Automated External Defibrillator (AED) units in every arena</li>
+                        <li style="color: #cbd5e1;"><i class="fas fa-check" style="color: var(--accent); margin-right: 8px;"></i> Full concussion protocol & baseline ImPACT cognitive testing</li>
+                        <li style="color: #cbd5e1;"><i class="fas fa-check" style="color: var(--accent); margin-right: 8px;"></i> Emergency trauma transport access gate</li>
+                    </ul>
+                </div>
+
+                <div class="sports-glass-card anim-slide-right" style="border-left: 4px solid var(--accent-crimson);">
+                    <div class="d-flex align-center gap-2" style="margin-bottom: 15px;">
+                        <span class="pulse-indicator"></span>
+                        <h3 style="color: #fff; margin: 0; font-size: 1.3rem;">Trainer On Duty: Active Status</h3>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Dr. Alan Vance, DPT, OCS & Lead Trainer Sarah Jenkins are stationed in Training Suite 2A until 10:00 PM today.</p>
+                    <div class="d-flex justify-between align-center" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08);">
+                        <span style="color: #fff; font-weight: 700;"><i class="fas fa-kit-medical" style="color: var(--accent-crimson); margin-right: 8px;"></i> Walk-In Taping & Ice</span>
+                        <span class="sports-badge sports-badge-volt">Immediate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" style="padding-top: 55px;">
+        <div class="section-header section-header-center anim-fade-up">
+            <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-circle-question"></i> BEFORE YOU REACH OUT</p>
+            <h2>Frequently Asked <span class="highlight">Questions</span></h2>
+        </div>
+        <div class="anim-fade-up del-100" style="max-width: 760px; margin: 0 auto;">
+            <div class="faq-item">
+                <button class="faq-q">Do you offer a free trial session?<i class="fas fa-plus"></i></button>
+                <div class="faq-a"><p>Yes — every new athlete gets one free trial session in the sport of their choice before committing to a membership plan.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">What age groups do you coach?<i class="fas fa-plus"></i></button>
+                <div class="faq-a"><p>We run programs for kids from age 6 through adult competitive athletes, split into age-appropriate skill groups for every sport we offer.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Do I need to bring my own equipment?<i class="fas fa-plus"></i></button>
+                <div class="faq-a"><p>Basic equipment is available for rent at the front desk. Standard and Premium members get free equipment rentals included in their plan.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">Can I pause or cancel my membership?<i class="fas fa-plus"></i></button>
+                <div class="faq-a"><p>Absolutely. Memberships can be paused for up to 60 days a year or cancelled anytime with 15 days' notice — just contact the front desk.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">How quickly will the coaching team respond?<i class="fas fa-plus"></i></button>
+                <div class="faq-a"><p>Our coach desk replies to every enquiry within one business day, and phone calls during working hours are answered live.</p></div>
+            </div>
+        </div>
+    </section>
+    <footer>
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="grid grid-4 gap-4" style="padding-top: 60px; padding-bottom: 40px;">
+            <div class="anim-slide-right del-100" style="display: flex; flex-direction: column;">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly" style="height: 35px; width: auto; margin-bottom: 25px; align-self: flex-start; object-fit: contain;">
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #a0b8c7; margin-bottom: 30px; font-weight: 500;">Elite multi-sports academy providing world-class coaching, premium facilities, and a thriving community. Join 10,000+ athletes scaling their performance with us.</p>
+                <div class="footer-social">
+                    <a href="404.html" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="404.html" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="404.html" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+            <div class="anim-slide-right del-200">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Programs</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Football Training</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Basketball Coaching</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Tennis Academy</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Cricket Nets</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Athletics Track</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Memberships</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-300">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Quick Links</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="index.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Home</a></li>
+                    <li><a href="about.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">About</a></li>
+                    <li><a href="program.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Program</a></li>
+                    <li><a href="pricing.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Pricing</a></li>
+                    <li><a href="blog.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Blog</a></li>
+                    <li><a href="contact.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Contact</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-400">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Stackly Academy HQ</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+                    <li style="display: flex; gap: 15px; align-items: flex-start; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--accent); margin-top: 4px; font-size: 1.1rem;"></i>
+                        <span>MMR Complex, Chinna Thirupathi,<br>Salem, TN 636008</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-phone-alt" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>+91 (0) 427 492 849</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-envelope" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>support@stacklyacademy.com</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-clock" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding: 25px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative;">
+            <p style="color: #a0b8c7; font-size: 0.9rem; margin: 0; font-weight: 500;">&copy; 2026 Stackly Academy. All rights reserved.</p>
+            <div style="display: flex; gap: 25px;">
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Privacy Policy</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Terms of Service</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">SLA Commitment</a>
+            </div>
+            <a href="#" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: var(--accent); color: var(--bg-dark); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; transition: transform 0.3s;">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+    <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var isName = window.StacklyForms ? window.StacklyForms.isName : function (v) { return /^[a-zA-Z\s]+$/.test((v || '').trim()) && (v || '').trim().length >= 2; };
+        var isEmail = window.StacklyForms ? window.StacklyForms.isEmail : function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim()); };
+        var isTextOnly = window.StacklyForms ? window.StacklyForms.isTextOnly : function (v) { var value = (v || '').trim(); return value.length > 0 && !/\d/.test(value) && /^[A-Za-z\s.,'()&/-]+$/.test(value); };
+        var setGroupError = window.StacklyForms ? window.StacklyForms.setGroupError : function (group, on) {
+            if (!group) return;
+            group.classList.toggle('has-error', !!on);
+        };
+        var sanitizeTextOnly = window.StacklyForms && window.StacklyForms.sanitizeTextOnly ? window.StacklyForms.sanitizeTextOnly : function (value) { return String(value || '').replace(/\d/g, '').replace(/\s{2,}/g, ' ').trim(); };
+        
+        var contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            var nameGroup = document.getElementById('cf-name-group');
+            var emailGroup = document.getElementById('cf-email-group');
+            var subjectGroup = document.getElementById('cf-subject-group');
+            var messageGroup = document.getElementById('cf-message-group');
+            var subjectInput = document.getElementById('cf-subject');
+            var messageInput = document.getElementById('cf-message');
+            if (subjectInput) {
+                subjectInput.addEventListener('input', function () {
+                    this.value = sanitizeTextOnly(this.value);
+                });
+            }
+            if (messageInput) {
+                messageInput.addEventListener('input', function () {
+                    this.value = sanitizeTextOnly(this.value);
+                });
+            }
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var name = document.getElementById('cf-name').value.trim();
+                var email = document.getElementById('cf-email').value.trim();
+                var subject = document.getElementById('cf-subject').value.trim();
+                var message = document.getElementById('cf-message').value.trim();
+                var valid = true;
+                setGroupError(nameGroup, false);
+                setGroupError(emailGroup, false);
+                setGroupError(subjectGroup, false);
+                setGroupError(messageGroup, false);
+                if (!isName(name)) { setGroupError(nameGroup, true); valid = false; }
+                if (!isEmail(email)) { setGroupError(emailGroup, true); valid = false; }
+                if (!isTextOnly(subject)) { setGroupError(subjectGroup, true); valid = false; }
+                if (!isTextOnly(message) || message.length < 10) { setGroupError(messageGroup, true); valid = false; }
+                if (!valid) {
+                    return;
+                }
+
+                window.KickToast && window.KickToast.show ? window.KickToast.show('Your message has been sent successfully.', 'success', 'Message Sent') : (window.location.href = 'index.html');
+            });
+        }
+        
+        var joinForm = document.getElementById('joinForm');
+        if (joinForm) {
+            var jfNameGroup = document.getElementById('jf-name-group');
+            var jfEmailGroup = document.getElementById('jf-email-group');
+            joinForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var name = document.getElementById('jf-name').value.trim();
+                var email = document.getElementById('jf-email').value.trim();
+                var valid = true;
+                setGroupError(jfNameGroup, false);
+                setGroupError(jfEmailGroup, false);
+                if (!isName(name)) { setGroupError(jfNameGroup, true); valid = false; }
+                if (!isEmail(email)) { setGroupError(jfEmailGroup, true); valid = false; }
+                if (!valid) {
+                    return;
+                }
+               
+                window.location.href = '404.html';
+            });
+        }
+    });
+    </script>
+</div>
+</body>
+</html>

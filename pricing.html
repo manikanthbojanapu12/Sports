@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Plans | Stackly Sports Academy</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .membership-section {
+            background: var(--bg-dark);
+            padding: 95px 20px;
+            position: relative;
+            overflow: visible !important;
+            color: var(--text-light);
+        }
+        .membership-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .membership-title {
+            color: #ffffff !important;
+            font-size: 3rem;
+            margin-top: 16px;
+            font-weight: 800;
+        }
+        .membership-subtext {
+            color: #cbd5e1;
+            max-width: 680px;
+            margin: 18px auto 35px;
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+        .billing-toggle-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background: rgba(15, 25, 45, 0.85);
+            border: 1.5px solid rgba(0, 240, 255, 0.25);
+            padding: 8px 22px;
+            border-radius: 50px;
+            margin-top: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            max-width: 100%;
+        }
+        .billing-label {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #94a3b8;
+            transition: color 0.3s;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+        }
+        .billing-label.active {
+            color: #ffffff;
+            font-weight: 800;
+        }
+        .discount-chip {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+            color: #050912;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-left: 6px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0, 240, 255, 0.4);
+        }
+        .billing-switch {
+            width: 50px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+            padding: 3px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+        .billing-switch.active {
+            background: var(--accent-blue);
+        }
+        .switch-ball {
+            display: block;
+            width: 22px;
+            height: 22px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+            pointer-events: none;
+        }
+        .billing-switch.active .switch-ball {
+            transform: translateX(22px);
+            background: var(--accent);
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+            align-items: stretch;
+        }
+        .membership-card {
+            background: linear-gradient(145deg, rgba(16, 28, 52, 0.95) 0%, rgba(8, 15, 28, 0.98) 100%);
+            border: 1.5px solid rgba(0, 240, 255, 0.2);
+            border-radius: 26px;
+            padding: 45px 32px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s, border-color 0.4s;
+            color: #ffffff;
+        }
+        .membership-card:hover {
+            transform: translateY(-10px);
+            border-color: #00f0ff;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.3);
+        }
+        .membership-card .plan-title {
+            color: var(--accent);
+        }
+        .membership-card .plan-tagline {
+            color: #94a3b8;
+        }
+        .membership-card .price-currency,
+        .membership-card .price-amount {
+            color: #ffffff;
+        }
+        .membership-card .price-period,
+        .membership-card .price-subtext,
+        .membership-card .features-label {
+            color: #cbd5e1;
+        }
+        .membership-card .card-divider {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .membership-card .features-list li {
+            color: #cbd5e1;
+        }
+        .popular-card {
+            background: linear-gradient(145deg, #032e42 0%, #011e2d 100%);
+            border: 2.5px solid var(--accent);
+            box-shadow: 0 20px 45px rgba(3, 46, 66, 0.35), 0 0 25px rgba(0, 240, 255, 0.2);
+            transform: scale(1.04);
+            padding-top: 55px;
+            color: #ffffff;
+        }
+        .popular-card:hover {
+            transform: scale(1.06) translateY(-10px);
+            box-shadow: 0 28px 55px rgba(3, 46, 66, 0.45), 0 0 40px rgba(0, 240, 255, 0.35);
+        }
+        .popular-card .plan-title {
+            color: var(--accent);
+        }
+        .popular-card .plan-tagline {
+            color: #a0b8c7;
+        }
+        .popular-card .price-currency,
+        .popular-card .price-amount {
+            color: #ffffff;
+        }
+        .popular-card .price-period,
+        .popular-card .price-subtext,
+        .popular-card .features-label {
+            color: #a0b8c7;
+        }
+        .popular-card .card-divider {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .popular-card .features-list li {
+            color: #f1f5f9;
+        }
+        .popular-ribbon {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent) 0%, #00d2ff 100%);
+            color: #ffffff;
+            padding: 9px 26px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.45);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .plan-icon-wrap {
+            width: 54px;
+            height: 54px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.55rem;
+            flex-shrink: 0;
+        }
+        .popular-icon {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+            color: #050912;
+        }
+        .plan-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin: 0 0 4px;
+        }
+        .plan-tagline {
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .price-display {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+        .price-currency {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .price-amount {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+            transition: opacity 0.2s ease;
+        }
+        .price-period {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+        .price-subtext {
+            font-size: 0.92rem;
+            margin-bottom: 22px;
+        }
+        .card-divider {
+            height: 1px;
+            margin-bottom: 24px;
+        }
+        .features-label {
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+        .features-list li.disabled {
+            opacity: 0.45;
+        }
+        .check-icon {
+            color: var(--accent);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .x-icon {
+            color: #ff6b6b;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .plan-btn {
+            width: 100%;
+            margin-top: auto;
+            padding: 14px 24px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            text-align: center;
+            justify-content: center;
+        }
+        .glow-btn {
+            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.35);
+        }
+        .glow-btn:hover {
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.55);
+        }
+        @media (max-width: 992px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 45px;
+            }
+            .popular-card {
+                transform: none;
+            }
+            .popular-card:hover {
+                transform: translateY(-8px);
+            }
+        }
+        @media (max-width: 576px) {
+            .billing-toggle-wrapper {
+                padding: 6px 14px;
+                gap: 8px;
+                max-width: 100%;
+                justify-content: center;
+            }
+            .billing-label {
+                font-size: 0.85rem;
+            }
+            .discount-chip {
+                font-size: 0.65rem;
+                padding: 2px 7px;
+                margin-left: 3px;
+            }
+            .billing-switch {
+                width: 44px;
+                height: 24px;
+                padding: 2px;
+            }
+            .switch-ball {
+                width: 20px;
+                height: 20px;
+            }
+            .billing-switch.active .switch-ball {
+                transform: translateX(20px);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+        </a>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        <div class="nav-links">
+            <div class="mobile-menu-header">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+                <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="program.html">Program</a>
+            <a href="pricing.html" class="active">Pricing</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <div class="mobile-auth-wrapper" data-auth-nav>
+                <a href="signin.html" class="btn btn-outline">Sign In</a>
+                <a href="signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+        <div class="nav-auth-buttons" data-auth-nav style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+            <a href="signin.html" class="btn btn-outline" style="padding: 10px 25px; font-size: 1.05rem;">Sign In</a>
+            <a href="signup.html" class="btn btn-primary" style="padding: 10px 25px; font-size: 1.05rem;">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </nav>
+    <header class="page-hero">
+        <video class="page-hero__video" src="video/cycle.mp4" autoplay loop muted playsinline></video>
+        <div class="page-hero__overlay"></div>
+        <div class="page-hero__inner">
+            <p class="page-hero__eyebrow anim-slide-left del-100"><i class="fas fa-id-card"></i> Membership Plans</p>
+            <h1 class="anim-zoom-in del-200">Simple Pricing for <span class="highlight">Serious Athletes</span></h1>
+            <p class="anim-fade-up del-300">No hidden fees, no long-term lock-in. Choose the plan that matches your training goals and upgrade anytime as you progress.</p>
+        </div>
+    </header>
+    <section class="content-section">
+        <div class="container">
+            <div class="grid grid-4 gap-3">
+                <div class="stat-chip anim-zoom-in del-100 hover-lift">
+                    <h3>3</h3>
+                    <p style="margin: 0;">Flexible Plans</p>
+                </div>
+                <div class="stat-chip anim-zoom-in del-200 hover-lift">
+                    <h3>0</h3>
+                    <p style="margin: 0;">Long-Term Contracts</p>
+                </div>
+                <div class="stat-chip anim-zoom-in del-300 hover-lift">
+                    <h3>24/7</h3>
+                    <p style="margin: 0;">Online Booking Access</p>
+                </div>
+                <div class="stat-chip anim-zoom-in del-400 hover-lift">
+                    <h3>500+</h3>
+                    <p style="margin: 0;">Members Upgraded This Year</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="membership-section" id="membership-plans">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="membership-badge">
+                    <i class="fas fa-id-card"></i> Stackly Membership Pass
+                </span>
+                <h2 class="membership-title" style="color: #032e42;">
+                    Flexible Plans Built for <span class="highlight">Champions</span>
+                </h2>
+                <p class="membership-subtext">
+                    From casual beginners to competitive professionals — select the tier that matches your athletic ambition. No contracts, cancel anytime.
+                </p>
+                <div class="billing-toggle-wrapper">
+                    <span class="billing-label active" id="label-monthly">Monthly Billing</span>
+                    <button class="billing-switch" id="billingSwitch" aria-label="Toggle Billing Cycle">
+                        <span class="switch-ball"></span>
+                    </button>
+                    <span class="billing-label" id="label-annual">
+                        Annual Billing <span class="discount-chip">SAVE 20%</span>
+                    </span>
+                </div>
+            </div>
+            <div class="pricing-grid">
+                <div class="membership-card anim-fade-up del-100">
+                    <div class="card-header">
+                        <div class="plan-icon-wrap">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="plan-info">
+                            <h3 class="plan-title">BASIC PLAN</h3>
+                            <p class="plan-tagline">Ideal for casual practice & beginners</p>
+                        </div>
+                    </div>
+                    <div class="price-display">
+                        <span class="price-currency">$</span>
+                        <span class="price-amount" data-monthly="29" data-annual="23">29</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-subtext" id="basic-subtext">Billed monthly • Cancel anytime</div>
+                    <div class="card-divider"></div>
+                    <h4 class="features-label">INCLUDED ATHLETIC PRIVILEGES:</h4>
+                    <ul class="features-list">
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Access to All Standard Fields</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Free Basic Equipment Rentals</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Member-Only Social Matches</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Weekend Open Practice Sessions</span></li>
+                        <li class="disabled"><i class="fas fa-circle-xmark x-icon"></i> <span>1-on-1 Personal Coaching</span></li>
+                        <li class="disabled"><i class="fas fa-circle-xmark x-icon"></i> <span>Priority Event & Tournament Entry</span></li>
+                    </ul>
+                    <a href="404.html" class="btn btn-outline plan-btn" style="border-color: var(--bg-dark); color: var(--bg-dark);">
+                        Get Started Basic <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="membership-card popular-card anim-zoom-in del-200">
+                    <div class="popular-ribbon">
+                        <i class="fas fa-fire"></i> MOST POPULAR — BEST VALUE
+                    </div>
+                    <div class="card-header">
+                        <div class="plan-icon-wrap popular-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="plan-info">
+                            <h3 class="plan-title">STANDARD PLAN</h3>
+                            <p class="plan-tagline">Designed for active & regular athletes</p>
+                        </div>
+                    </div>
+                    <div class="price-display">
+                        <span class="price-currency highlight">$</span>
+                        <span class="price-amount highlight" data-monthly="39" data-annual="31">39</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-subtext" id="standard-subtext">Billed monthly • Cancel anytime</div>
+                    <div class="card-divider"></div>
+                    <h4 class="features-label">INCLUDED ATHLETIC PRIVILEGES:</h4>
+                    <ul class="features-list">
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Access to All Elite Courts & Arenas</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Free Pro Equipment Rentals</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Member-Only Tournaments & Leagues</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Weekly Strategy & Tactical Sessions</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Switch Sports Programs Anytime</span></li>
+                        <li class="disabled"><i class="fas fa-circle-xmark x-icon"></i> <span>Daily 1-on-1 Intensive Coaching</span></li>
+                    </ul>
+                    <a href="404.html" class="btn btn-primary plan-btn glow-btn">
+                        Claim Standard Plan <i class="fas fa-bolt"></i>
+                    </a>
+                </div>
+                <div class="membership-card anim-fade-up del-300">
+                    <div class="card-header">
+                        <div class="plan-icon-wrap">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div class="plan-info">
+                            <h3 class="plan-title">PREMIUM PLAN</h3>
+                            <p class="plan-tagline">For dedicated high-performance athletes</p>
+                        </div>
+                    </div>
+                    <div class="price-display">
+                        <span class="price-currency">$</span>
+                        <span class="price-amount" data-monthly="49" data-annual="39">49</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <div class="price-subtext" id="premium-subtext">Billed monthly • Cancel anytime</div>
+                    <div class="card-divider"></div>
+                    <h4 class="features-label">INCLUDED ATHLETIC PRIVILEGES:</h4>
+                    <ul class="features-list">
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Unlimited 24/7 Access to All Facilities</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>1-on-1 Dedicated Personal Coaching</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Priority Championship Registration</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Daily Intensive Practice Sessions</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Switch Sports Programs Anytime</span></li>
+                        <li><i class="fas fa-circle-check check-icon"></i> <span>Full Performance Analytics & Tracking</span></li>
+                    </ul>
+                    <a href="404.html" class="btn btn-outline plan-btn" style="border-color: var(--bg-dark); color: var(--bg-dark);">
+                        Get Premium VIP <i class="fas fa-crown"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-square-check highlight"></i> Every Plan Includes</p>
+                <h2>What's Included <span class="highlight">No Matter Which Plan You Pick</span></h2>
+                <p style="max-width: 700px; margin: 0 auto;">These essentials come standard on every Stackly membership — because great training shouldn't be a luxury.</p>
+            </div>
+            <div class="grid grid-4 gap-3">
+                <div class="feature-tile anim-fade-up del-100 hover-lift hover-shine">
+                    <i class="fas fa-door-open"></i>
+                    <h3>Facility Access</h3>
+                    <p>Entry to fields, courts, and tracks across all six sports programs.</p>
+                </div>
+                <div class="feature-tile anim-fade-up del-200 hover-lift hover-shine">
+                    <i class="fas fa-chalkboard-user"></i>
+                    <h3>Certified Coaching</h3>
+                    <p>Every session is guided by a qualified, background-checked coach.</p>
+                </div>
+                <div class="feature-tile anim-fade-up del-300 hover-lift hover-shine">
+                    <i class="fas fa-heart-pulse"></i>
+                    <h3>Fitness Assessments</h3>
+                    <p>Baseline evaluations to track strength, speed, and endurance over time.</p>
+                </div>
+                <div class="feature-tile anim-fade-up del-400 hover-lift hover-shine">
+                    <i class="fas fa-calendar-days"></i>
+                    <h3>Community Events</h3>
+                    <p>Invitations to member socials, watch parties, and skills clinics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- NEW SECTION 1: Comprehensive Tier Comparison Matrix -->
+    <section class="content-section athletic-bg-grid" style="background: #080d1a;">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-table-columns"></i> Side-by-Side Comparison</span>
+                <h2>Detailed <span class="highlight">Membership Feature Matrix</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">Compare privileges, court booking windows, telemetry access, and coach allocation across all membership tiers.</p>
+            </div>
+
+            <div class="matrix-table-wrapper anim-fade-up del-100">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Privilege / Feature</th>
+                            <th style="width: 20%; text-align: center;">Basic ($29)</th>
+                            <th style="width: 20%; text-align: center; color: var(--accent);">Standard ($39)</th>
+                            <th style="width: 20%; text-align: center; color: var(--accent-secondary);">Premium ($49)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: #fff; font-weight: 600;">Access to Standard Fields & Track</td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i></td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i></td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #fff; font-weight: 600;">Indoor Hardwood & Turf Arena Booking</td>
+                            <td style="text-align: center; color: var(--text-muted);">Off-Peak Only</td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i> Full Access</td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i> 24/7 Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #fff; font-weight: 600;">Advance Booking Window</td>
+                            <td style="text-align: center; color: #cbd5e1;">48 Hours</td>
+                            <td style="text-align: center; color: var(--accent); font-weight: 700;">7 Days</td>
+                            <td style="text-align: center; color: var(--accent-secondary); font-weight: 700;">14 Days Priority</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #fff; font-weight: 600;">Biometric Sensor & Speed Laser Timing</td>
+                            <td style="text-align: center;"><i class="fas fa-times-circle matrix-cross"></i></td>
+                            <td style="text-align: center; color: #cbd5e1;">Monthly Check</td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i> Weekly Video Lab</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #fff; font-weight: 600;">Hydrotherapy Plunge & Cryo Access</td>
+                            <td style="text-align: center;"><i class="fas fa-times-circle matrix-cross"></i></td>
+                            <td style="text-align: center; color: #cbd5e1;">2 Passes / Mo</td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i> Unlimited Recovery</td>
+                        </tr>
+                        <tr>
+                            <td style="color: #fff; font-weight: 600;">1-on-1 Dedicated Head Coach Session</td>
+                            <td style="text-align: center;"><i class="fas fa-times-circle matrix-cross"></i></td>
+                            <td style="text-align: center;"><i class="fas fa-times-circle matrix-cross"></i></td>
+                            <td style="text-align: center;"><i class="fas fa-check-circle matrix-check"></i> 2 Sessions / Mo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 2: Custom Team & Enterprise Academy Package Builder -->
+    <section class="content-section" style="background: linear-gradient(180deg, #080d1a 0%, #0c1424 100%);">
+        <div class="container">
+            <div class="grid grid-2 gap-4 align-center">
+                <div class="anim-slide-left">
+                    <span class="section-eyebrow"><i class="fas fa-users-rectangle"></i> School, Club & Squads</span>
+                    <h2>Enterprise & Team <span class="highlight-cyan">Academy Package Builder</span></h2>
+                    <p>Training an entire high school roster, travel club, or corporate league? Customize your athlete headcount below for volume discounts and reserved facility blocks.</p>
+                    <div style="margin-top: 20px;" id="team-perks-list">
+                        <span class="sports-badge sports-badge-volt"><i class="fas fa-check"></i> Assistant Coach Assigned</span>
+                        <span class="sports-badge sports-badge-cyan"><i class="fas fa-check"></i> 10 Combine Video Tests</span>
+                    </div>
+                </div>
+
+                <div class="calc-card-container anim-slide-right">
+                    <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.4rem;"><i class="fas fa-sliders" style="color: var(--accent-secondary); margin-right: 8px;"></i> Squad Size & Rate Estimator</h3>
+                    
+                    <div class="calc-field-group">
+                        <label for="team-athletes-slider">Team Athlete Headcount: <span id="team-athletes-count" style="color: var(--accent); font-weight: 700;">20 Athletes</span></label>
+                        <input type="range" min="5" max="60" step="5" value="20" class="calc-range-slider" id="team-athletes-slider">
+                    </div>
+
+                    <div class="calc-result-box">
+                        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 4px;">Estimated Monthly Team Package</div>
+                        <div id="team-price-est" style="font-family: var(--font-display); font-size: 3.2rem; font-weight: 700; color: var(--accent); line-height: 1;">$1,500 / mo</div>
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: #cbd5e1;">Includes dedicated practice pitch & coaching staff</div>
+                        <a href="404.html" class="btn btn-cyan" style="width: 100%; margin-top: 15px;">Inquire For Custom Contract <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 3: Rising Star Athlete Scholarship & Grant Hub -->
+    <section class="content-section athletic-bg-grid">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-hand-holding-heart"></i> Empowering Potential</span>
+                <h2>Rising Star <span class="highlight">Scholarship & Grant Hub</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">Financial barriers should never stop exceptional athletic talent. We allocate over $120,000 annually in performance sponsorships and youth development grants.</p>
+            </div>
+
+            <div class="grid grid-3 gap-3">
+                <div class="sports-glass-card anim-slide-left del-100">
+                    <span class="sports-badge sports-badge-volt" style="margin-bottom: 12px;">Full Ride Merit</span>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Elite Prospect Grant</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">100% tuition coverage including equipment stipend, combine testing, travel tournament fees, and NCAA recruitment guidance.</p>
+                    <div style="color: var(--accent); font-size: 0.88rem; font-weight: 700;"><i class="fas fa-circle-check"></i> Minimum Top 10% Combine Rank</div>
+                </div>
+
+                <div class="sports-glass-card cyan-glow anim-fade-up del-200">
+                    <span class="sports-badge sports-badge-cyan" style="margin-bottom: 12px;">Youth Initiative</span>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Community Grassroots Access</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Subsidized 75% fee relief for promising youth athletes aged 8-16 with passion for sport and strong academic attendance.</p>
+                    <div style="color: var(--accent-secondary); font-size: 0.88rem; font-weight: 700;"><i class="fas fa-circle-check"></i> School Verification Required</div>
+                </div>
+
+                <div class="sports-glass-card anim-slide-right del-300">
+                    <span class="sports-badge sports-badge-pulse" style="margin-bottom: 12px;">Injury Recovery</span>
+                    <h3 style="color: #fff; font-size: 1.3rem;">Comeback Athlete Sponsorship</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem;">Specialized physical therapy, cryotherapy, and return-to-play training grants for injured competitive athletes.</p>
+                    <div style="color: var(--accent-crimson); font-size: 0.88rem; font-weight: 700;"><i class="fas fa-circle-check"></i> Sports Physician Referral</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section alt bg-light-section">
+        <div class="container">
+            <div class="event-banner anim-zoom-in">
+                <p style="text-transform: uppercase; letter-spacing: 2px; font-weight: bold; color: var(--accent); margin-bottom: 10px;"><i class="fas fa-clock"></i> Limited Enrollment Slots</p>
+                <h2 style="font-size: 2.6rem; margin-bottom: 15px; color: #ffffff;">Not Sure Which Plan Fits? <span class="highlight" style="color: var(--accent);">We'll Help You Choose.</span></h2>
+                <p style="max-width: 600px; margin: 0 auto 25px; color: rgba(255,255,255,0.75);">Talk to our team for a free consultation, or jump straight in and start training this week.</p>
+                <div class="d-flex justify-center gap-2" style="flex-wrap: wrap;">
+                    <a href="404.html" class="btn btn-primary">Get Started Today <i class="fas fa-arrow-right"></i></a>
+                    <a href="404.html" class="btn btn-outline">Talk to Our Team <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="grid grid-4 gap-4" style="padding-top: 60px; padding-bottom: 40px;">
+            <div class="anim-slide-right del-100" style="display: flex; flex-direction: column;">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly" style="height: 35px; width: auto; margin-bottom: 25px; align-self: flex-start; object-fit: contain;">
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #a0b8c7; margin-bottom: 30px; font-weight: 500;">Elite multi-sports academy providing world-class coaching, premium facilities, and a thriving community. Join 10,000+ athletes scaling their performance with us.</p>
+                <div class="footer-social">
+                    <a href="404.html" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="404.html" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="404.html" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+            <div class="anim-slide-right del-200">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Programs</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Football Training</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Basketball Coaching</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Tennis Academy</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Cricket Nets</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Athletics Track</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Memberships</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-300">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Quick Links</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="index.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Home</a></li>
+                    <li><a href="about.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">About</a></li>
+                    <li><a href="program.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Program</a></li>
+                    <li><a href="pricing.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Pricing</a></li>
+                    <li><a href="blog.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Blog</a></li>
+                    <li><a href="contact.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Contact</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-400">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Stackly Academy HQ</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+                    <li style="display: flex; gap: 15px; align-items: flex-start; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--accent); margin-top: 4px; font-size: 1.1rem;"></i>
+                        <span>MMR Complex, Chinna Thirupathi,<br>Salem, TN 636008</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-phone-alt" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>+91 (0) 427 492 849</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-envelope" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>support@stacklyacademy.com</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-clock" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding: 25px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative;">
+            <p style="color: #a0b8c7; font-size: 0.9rem; margin: 0; font-weight: 500;">&copy; 2026 Stackly Academy. All rights reserved.</p>
+            <div style="display: flex; gap: 25px;">
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Privacy Policy</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Terms of Service</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">SLA Commitment</a>
+            </div>
+            <a href="#" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: var(--accent); color: var(--bg-dark); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; transition: transform 0.3s;">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+    <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const switchBtn = document.getElementById('billingSwitch');
+        const labelMonthly = document.getElementById('label-monthly');
+        const labelAnnual = document.getElementById('label-annual');
+        const priceAmounts = document.querySelectorAll('.price-amount');
+        const subtexts = [
+            document.getElementById('basic-subtext'),
+            document.getElementById('standard-subtext'),
+            document.getElementById('premium-subtext')
+        ];
+        function toggleBilling() {
+            const isAnnual = switchBtn.classList.toggle('active');
+            if (isAnnual) {
+                labelMonthly.classList.remove('active');
+                labelAnnual.classList.add('active');
+            } else {
+                labelAnnual.classList.remove('active');
+                labelMonthly.classList.add('active');
+            }
+            priceAmounts.forEach(el => {
+                const newVal = isAnnual ? el.getAttribute('data-annual') : el.getAttribute('data-monthly');
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.textContent = newVal;
+                    el.style.opacity = '1';
+                }, 150);
+            });
+            subtexts.forEach(sub => {
+                if (sub) {
+                    sub.textContent = isAnnual ? 'Billed annually (Save 20%) • Cancel anytime' : 'Billed monthly • Cancel anytime';
+                }
+            });
+        }
+        if (switchBtn) {
+            switchBtn.addEventListener('click', toggleBilling);
+        }
+        if (labelMonthly) {
+            labelMonthly.addEventListener('click', function() {
+                if (switchBtn.classList.contains('active')) toggleBilling();
+            });
+        }
+        if (labelAnnual) {
+            labelAnnual.addEventListener('click', function() {
+                if (!switchBtn.classList.contains('active')) toggleBilling();
+            });
+        }
+    });
+    </script>
+</div>
+</body>
+</html>

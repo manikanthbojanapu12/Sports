@@ -1,0 +1,1351 @@
+
+<!DOCTYPE html>
+<html lang="en" class="preloader-active">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackly Sports Academy | Premium Experience</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .hero video {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(3,46,66,0.6), rgba(3,46,66,0.9));
+            z-index: -1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+        .hero-content h1 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+        .about-redesign { 
+            background: linear-gradient(145deg, rgba(16, 28, 52, 0.95) 0%, rgba(8, 15, 28, 0.98) 100%);
+            border: 1.5px solid rgba(0, 240, 255, 0.2);
+            border-radius: 24px; position: relative; 
+            transform: scale(0.8);
+            transform-origin: top center;
+            margin-bottom: -120px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+        }
+        @media (max-width: 768px) {
+            .about-redesign {
+                transform: none;
+                margin-bottom: 0;
+            }
+        }
+        .about-stats {
+            background: rgba(10, 18, 34, 0.9);
+            padding: 30px;
+            display: flex;
+            justify-content: space-around;
+            color: #ffffff;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            border-top: 1px solid rgba(0, 240, 255, 0.15);
+        }
+        .stat-item h3 { font-size: 3rem; margin-bottom: 5px; color: #ffffff !important; }
+        .stat-item p { font-size: 1rem; margin-bottom: 0; color: #cbd5e1; }
+        .floating-badge {
+            position: absolute;
+            bottom: 15%; right: 25%;
+            width: 140px; height: 140px;
+            z-index: 10;
+        }
+        .floating-badge-inner {
+            width: 100%; height: 100%;
+            position: relative;
+        }
+        .floating-badge-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px; height: 70px;
+            background: var(--bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            border: 1.5px solid var(--accent);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+        }
+        .floating-badge-core i { font-size: 2rem; color: var(--accent); }
+        .floating-badge .rotating-badge {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+            border-radius: 50%;
+        }
+        .floating-badge img { width: 100%; height: 100%; }
+        .video-feature-section {
+            position: relative;
+            background: url('assets/academycenter.webp') center / cover no-repeat;
+            padding: 50px 20px;
+            overflow: hidden;
+            margin-top: 0;
+        }
+        .video-feature-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(5,9,18,0.95) 30%, rgba(5,9,18,0.75));
+            z-index: 1;
+        }
+        .video-feature-content { position: relative; z-index: 2; max-width: 800px; }
+        .elite-coach-card {
+            background: linear-gradient(145deg, rgba(16, 28, 52, 0.9) 0%, rgba(8, 15, 28, 0.95) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.18);
+            border-radius: 18px;
+            padding: 18px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 14px 35px rgba(0,0,0,0.45);
+        }
+        .elite-coach-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 45px rgba(0,0,0,0.6), 0 0 25px rgba(0, 240, 255, 0.35); }
+        .elite-coach-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; transition: transform 0.6s ease; }
+        .elite-coach-card:hover img { transform: scale(1.05); }
+        .elite-coach-card h4 { margin-bottom: 5px; font-size: 1.25rem; color: #ffffff !important; }
+        .elite-coach-card p { font-size: 0.9rem; margin-bottom: 15px; color: #cbd5e1; }
+        .coach-social { display: flex; justify-content: center; gap: 10px; }
+        .coach-social a {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); font-size: 0.85rem;
+        }
+        .coach-social a:hover { transform: translateY(-3px); background: var(--accent); color: #050912; box-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+        .pricing-card { text-align: left; border: 2px solid transparent; display: flex; flex-direction: column; height: 100%; overflow: visible !important; border-radius: 20px; }
+        .pricing-card .btn { margin-top: auto; }
+        .pricing-card.premium {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+        .pricing-card.premium h3, .pricing-card.premium .text-dark { color: var(--text-light); }
+        .pricing-card.premium p { color: #cbd5e1; }
+        .pricing-features li { display: flex; gap: 10px; margin-bottom: 12px; font-size: 0.95rem; color: #cbd5e1; }
+        .pricing-features i { color: var(--accent); margin-top: 4px; }
+        .price-tag { font-size: 2.5rem; font-weight: bold; margin: 20px 0; color: #ffffff; }
+        .price-tag span { font-size: 1rem; font-weight: normal; color: inherit; opacity: 0.7; }
+        .proven-banner {
+            background: linear-gradient(145deg, rgba(16, 28, 52, 0.95) 0%, rgba(8, 15, 28, 0.98) 100%);
+            border: 1.5px solid rgba(0, 240, 255, 0.2);
+            border-radius: 24px; overflow: hidden;
+            display: flex; align-items: center; color: #ffffff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+        }
+        .proven-content { padding: 40px; flex: 1; color: #ffffff; }
+        .proven-content h2, .proven-content h3 { color: #ffffff !important; }
+        .proven-content p { color: #cbd5e1 !important; }
+        .proven-img { flex: 1; height: 100%; min-height: 400px; background: url('assets/coach female1-optimized.webp') center/cover; transition: transform 0.6s ease; }
+        .proven-banner:hover .proven-img { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+<div id="sa-preloader" class="sa-preloader" role="status" aria-live="polite" aria-label="Loading Stackly Sports Academy">
+    <div class="sa-preloader__field" aria-hidden="true"></div>
+    <div class="sa-preloader__core">
+        <div class="sa-preloader__lane"></div>
+        <div class="sa-preloader__lane sa-preloader__lane--mid"></div>
+        <div class="sa-preloader__lane sa-preloader__lane--inner"></div>
+        <div class="sa-preloader__runner" aria-hidden="true"><span></span></div>
+        <div class="sa-preloader__ball" aria-hidden="true"></div>
+        <div class="sa-preloader__mark">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly">
+        </div>
+    </div>
+    <div class="sa-preloader__brand" aria-hidden="true">
+        <span>S</span><span>T</span><span>A</span><span>C</span><span>K</span><span>L</span><span>Y</span>
+    </div>
+    <p class="sa-preloader__tag">Igniting champions</p>
+    <div class="sa-preloader__bar" aria-hidden="true"><span></span></div>
+</div>
+<script>
+(function () {
+  window.__saPreloaderStarted = true;
+  document.documentElement.classList.add("preloader-active");
+  setTimeout(function () {
+    var el = document.getElementById("sa-preloader");
+    document.documentElement.classList.remove("preloader-active");
+    if (!el || el.classList.contains("is-done")) return;
+    el.classList.add("is-done");
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 600);
+  }, 2000);
+})();
+</script>
+<div class="page-wrapper">
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+        </a>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        <div class="nav-links">
+        <div class="mobile-menu-header">
+            <img src="assets/stacklylogo-transparent.webp" alt="Stackly Logo">
+            <button class="mobile-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="program.html">Program</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        <div class="mobile-auth-wrapper" data-auth-nav>
+            <a href="signin.html" class="btn btn-outline">Sign In</a>
+            <a href="signup.html" class="btn btn-primary">Get Started</a>
+        </div>
+        </div>
+        <div class="nav-auth-buttons" data-auth-nav style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+                <a href="signin.html" class="btn btn-outline" style="padding: 10px 25px; font-size: 1.05rem;">Sign In</a>
+                <a href="signup.html" class="btn btn-primary" style="padding: 10px 25px; font-size: 1.05rem;">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+    </nav>
+    <header class="hero">
+        <video id="heroVideo" src="video/basketball.mp4" autoplay loop muted playsinline preload="auto"></video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content anim-fade-up" style="display: flex; flex-direction: column; gap: 30px; padding-top: 80px;">
+            <p class="anim-slide-left del-100" style="color: var(--accent); font-weight: bold; letter-spacing: 2px; text-transform: uppercase; margin: 0;">Unleash Your Potential</p>
+            <h1 class="anim-zoom-in del-200" style="margin: 0;">Elite Multi-Sports Academy for <span class="highlight">Champions</span></h1>
+            <p class="anim-fade-up del-300" style="color: #e0e0e0; font-size: 1.2rem; margin: 0;">We provide expert coaching across Football, Basketball, Cricket, Tennis, Volleyball, and Athletics. Develop your skills with our performance-focused training designed for beginners and competitive athletes alike.</p>
+            <div class="d-flex justify-center gap-2 anim-fade-up del-400">
+                <a href="404.html" class="btn btn-primary">Start Your Own Journey <i class="fas fa-arrow-right"></i></a>
+                <a href="404.html" class="btn btn-outline">Contact Us <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </header>
+    <section class="bg-light-section anim-fade-up about-section" style="padding-top: 60px;">
+        <div class="container about-redesign">
+            <div class="floating-badge anim-zoom-in del-300">
+                <div class="floating-badge-inner">
+                    <div class="floating-badge-core">
+                        <i class="fas fa-trophy text-light"></i>
+                    </div>
+                    <svg class="rotating-badge" viewBox="0 0 100 100" aria-hidden="true">
+                        <path id="badgePath" d="M 50, 50 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" fill="transparent" />
+                        <text fill="#00f0ff" font-weight="800" font-size="13" letter-spacing="1.2">
+                            <textPath href="#badgePath">Play Better · Win Smarter · </textPath>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+            <div class="about-redesign-layout" style="display: flex; gap: 30px; align-items: stretch; flex-wrap: wrap;">
+                <div style="flex: 2; display: flex; flex-direction: column; gap: 30px; min-width: 60%;">
+                    <div style="display: flex; gap: 20px; align-items: stretch; flex-wrap: wrap;">
+                        <div class="anim-slide-right" style="flex: 1; min-width: 250px; display: flex; align-items: flex-end;">
+                            <img src="assets/coach female1-optimized.webp" alt="Coach" style="width: 100%; height: 480px; object-fit: cover; object-position: top center; border-radius: 10px; margin-bottom: -15px;">
+                        </div>
+                        <div class="anim-fade-up del-100" style="flex: 1.5; padding-top: 10px; min-width: 300px; position: relative; padding-bottom: 30px;">
+                            <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px; opacity: 0.5;"><i class="fas fa-info-circle text-light"></i> ABOUT US</p>
+                            <h2 class="text-light" style="margin-bottom: 15px;"><span class="highlight">Elevate Your Game</span> at Our<br>Sports Academy</h2>
+                            <p style="color: #ffffff;">Experience world-class athletic facilities, professional coaching, and a thriving community built for athletes in Football, Basketball, Tennis, Cricket, and more.</p>
+                            <p style="color: #ffffff;">Where passion meets performance, and every match feels unforgettable.</p>
+                            <ul class="gap-2 flex-column" style="margin: 20px 0;">
+                                <li class="anim-slide-left del-200" style="display: flex; gap: 15px; align-items: center;"><i class="far fa-check-square highlight" style="font-size: 1.2rem;"></i> <span class="text-light" style="font-weight: 600;">Community-Driven Culture</span></li>
+                                <li class="anim-slide-left del-300" style="display: flex; gap: 15px; align-items: center;"><i class="far fa-check-square highlight" style="font-size: 1.2rem;"></i> <span class="text-light" style="font-weight: 600;">Programs for All Levels</span></li>
+                                <li class="anim-slide-left del-400" style="display: flex; gap: 15px; align-items: center;"><i class="far fa-check-square highlight" style="font-size: 1.2rem;"></i> <span class="text-light" style="font-weight: 600;">Modern Training Approach</span></li>
+                            </ul>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <a href="404.html" class="btn btn-primary" style="margin-top: 10px;">Learn More About Us <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-stats about-redesign-stats anim-fade-up del-200" style="background-color: #f2f7ec; border-radius: 10px; padding: 25px 40px; display: flex; justify-content: space-around; box-shadow: none; margin-top: -20px; align-items: center; border: 1px solid rgba(139, 195, 74, 0.2);">
+                        <div class="stat-item text-center">
+                            <h3 style="color: blue; margin-bottom: 5px; font-size: 2.2rem;">10+</h3>
+                            <p style="margin: 0; color: #555; font-size: 0.95rem;">Years of coaching excellence</p>
+                        </div>
+                        <div class="stat-item text-center">
+                            <h3 style="color: blue; margin-bottom: 5px; font-size: 2.2rem;">8K</h3>
+                            <p style="margin: 0; color: #555; font-size: 0.95rem;">Active & satisfied members</p>
+                        </div>
+                        <div class="stat-item text-center">
+                            <h3 style="color: blue; margin-bottom: 5px; font-size: 2.2rem;">97%</h3>
+                            <p style="margin: 0; color: #555; font-size: 0.95rem;">Positive improvement rate</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="anim-slide-left rounded-img" style="flex: 1; border-radius: 10px; overflow: hidden; min-width: 30%;">
+                    <img src="assets/academy.webp" alt="Player" class="img-fit" style="height: 100%; border-radius: 10px;">
+                </div>
+            </div>
+        </div>
+    </section>
+   <section class="bg-light-section arsenal-section" style="padding-top: 20px; padding-bottom: 40px;">
+    <div class="container">
+        <div class="section-header section-header-center anim-fade-up">
+            <h2 style="font-size: 2.8rem; margin-bottom: 15px; color: #ffffff;">
+                The Stackly <span class="highlight">Sports Arena</span>
+            </h2>
+            <p style="color: #666; max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
+                Experience world-class sports facilities designed to improve fitness, skills, teamwork, and performance.
+            </p>
+        </div>
+
+        <div class="facility-grid">
+
+            <div class="facility-card anim-zoom-in del-100 hover-shine hover-glow">
+                <img src="./assets/cricket.webp" alt="Cricket Ground" class="facility-img">
+                <div class="facility-overlay"></div>
+                <div class="facility-content">
+                    <h3 class="text-light" style="margin: 0; font-size: 1.3rem;">
+                        Professional Cricket Ground
+                    </h3>
+                    <p style="font-size: 0.95rem;">
+                        Full-size pitch for professional cricket training.
+                    </p>
+                </div>
+            </div>
+
+            <div class="facility-card anim-zoom-in del-200 hover-shine hover-glow">
+                <img src="./assets/volleyball.webp" alt="Volleyball Court" class="facility-img">
+                <div class="facility-overlay"></div>
+                <div class="facility-content">
+                    <h3 class="text-light" style="margin: 0; font-size: 1.3rem;">
+                        Pro Volleyball Court
+                    </h3>
+                    <p style="font-size: 0.95rem;">
+                        Competition-ready court for team training.
+                    </p>
+                </div>
+            </div>
+
+            <div class="facility-card anim-zoom-in del-300 hover-shine hover-glow">
+                <img src="./assets/badminton.webp" alt="Badminton Court" class="facility-img">
+                <div class="facility-overlay"></div>
+                <div class="facility-content">
+                    <h3 class="text-light" style="margin: 0; font-size: 1.3rem;">
+                        Badminton Arena
+                    </h3>
+                    <p style="font-size: 0.95rem;">
+                        Indoor courts for speed and agility training.
+                    </p>
+                </div>
+            </div>
+
+            <div class="facility-card anim-zoom-in del-400 hover-shine hover-glow">
+                <img src="./assets/running-track-.webp" alt="Athletics Track" class="facility-img">
+                <div class="facility-overlay"></div>
+                <div class="facility-content">
+                    <h3 class="text-light" style="margin: 0; font-size: 1.3rem;">
+                        Athletics Track
+                    </h3>
+                    <p style="font-size: 0.95rem;">
+                        Professional track for sprint and endurance training.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="container" style="padding-top: 40px;">
+    <div class="proven-banner anim-zoom-in hover-glow">
+
+        <div class="proven-content anim-slide-right del-200">
+
+            <h2 class="text-light">
+                Expert Sports Coaching That Builds
+                <span class="highlight">Confident Athletes</span>
+            </h2>
+
+            <p class="text-light" style="margin-bottom: 30px;">
+                Professional coaching, structured training, and personalized guidance
+                help athletes improve technique, fitness, confidence, and competitive performance.
+            </p>
+
+            <div class="d-flex align-center gap-2">
+
+                <div style="display: flex; margin-right: 10px;">
+
+                    <img src="assets/coach female1-optimized.webp"
+                         style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; margin-left: -10px;">
+
+                    <img src="assets/coach male1-optimized.webp"
+                         style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; margin-left: -10px;">
+
+                    <img src="assets/m1.webp"
+                         style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; margin-left: -10px;">
+
+                    <div style="width: 40px; height: 40px; border-radius: 50%;
+                                border: 2px solid #fff; margin-left: -10px;
+                                background: var(--accent); display: flex;
+                                align-items: center; justify-content: center;
+                                font-weight: bold; font-size: 0.8rem;"
+                         class="text-light">
+                        8K+
+                    </div>
+
+                </div>
+
+                <div>
+                    <p style="margin: 0; font-size: 0.85rem;" class="text-muted">
+                        Trusted by
+                    </p>
+
+                    <p style="margin: 0; font-weight: bold; font-size: 0.95rem;" class="text-light">
+                        8000+ happy athletes
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="proven-img anim-slide-left del-300"></div>
+
+    </div>
+</section>
+
+
+<section class="bg-light-section" style="margin-top: 60px;">
+
+    <div class="container grid grid-2 gap-4 align-center">
+
+        <div class="anim-slide-right rounded-img"
+             style="box-shadow: -20px 20px 0px rgba(0, 240, 255, 0.2); overflow: visible;">
+
+            <img src="assets/trainingcenter.webp"
+                 alt="Sports Training"
+                 class="img-fit"
+                 style="max-height: 600px; border-radius: 15px;">
+
+        </div>
+
+        <div class="anim-slide-left del-200">
+
+            <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">
+                <i class="fas fa-cogs text-light"></i>
+                HOW IT WORKS
+            </p>
+
+            <p class="text-light" style="margin-bottom: 40px;">
+                Our sports training program is designed to be simple, flexible,
+                and performance-focused. Choose your sport, complete your assessment,
+                and train with experienced coaches.
+            </p>
+
+            <div class="timeline">
+
+                <div class="timeline-item anim-fade-up del-100">
+
+                    <div class="timeline-icon">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+
+                    <h4 class="text-light">
+                        Choose Your Sport & Training Plan
+                    </h4>
+
+                    <p>
+                        Select from Cricket, Volleyball, Badminton, Athletics,
+                        Football, Basketball, Tennis, and other sports programs
+                        based on your goals and experience level.
+                    </p>
+
+                </div>
+
+
+                <div class="timeline-item anim-fade-up del-200">
+
+                    <div class="timeline-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+
+                    <h4 class="text-light">
+                        Complete Your Skill Assessment
+                    </h4>
+
+                    <p>
+                        Our coaches evaluate your current fitness, technical skills,
+                        strengths, and areas that need improvement.
+                    </p>
+
+                </div>
+
+
+                <div class="timeline-item anim-fade-up del-300">
+
+                    <div class="timeline-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+
+                    <h4 class="text-light">
+                        Train With Professional Coaches
+                    </h4>
+
+                    <p>
+                        Participate in structured training sessions with experienced
+                        coaches who provide feedback, technique correction, and
+                        personalized performance guidance.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="video-feature-section">
+
+    <div class="video-feature-overlay"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
+
+        <div class="d-flex justify-between align-center" style="margin-bottom: 30px;">
+
+            <div class="video-feature-content anim-slide-right">
+
+                <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">
+                    <i class="fas fa-cogs highlight"></i>
+                    OUR TRAINING PROGRAMS
+                </p>
+
+                <h2 style="font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px;">
+
+                    Professional
+                    <span class="highlight">Sports Training Programs</span>
+
+                    to Build
+                    <span class="highlight">
+                        Skill, Fitness, and Confidence
+                    </span>
+
+                </h2>
+
+                <p style="font-size: 1.1rem; color: #fff; max-width: 700px;">
+                    Our training programs are designed for beginners,
+                    developing athletes, and competitive players. Train across
+                    cricket, volleyball, badminton, athletics, football,
+                    basketball, tennis, and fitness with structured coaching
+                    and performance-focused sessions.
+                </p>
+
+            </div>
+
+
+            <div class="anim-zoom-in del-200">
+
+                <div class="play-btn-wrapper">
+
+                    <svg class="play-btn-text" viewBox="0 0 100 100">
+
+                        <path id="circlePath"
+                              d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"
+                              fill="transparent" />
+
+                        <text fill="var(--accent)"
+                              font-weight="bold"
+                              font-size="12"
+                              letter-spacing="2">
+
+                            <textPath href="#circlePath">
+                                Watch our video · Watch our video ·
+                            </textPath>
+
+                        </text>
+
+                    </svg>
+
+                    <div class="play-btn-icon">
+                        <i class="fas fa-play" style="margin-left: 5px;"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="grid grid-4 gap-2">
+
+            <div class="glass-card d-flex gap-1 align-center anim-fade-up del-100">
+
+                <i class="fas fa-medal fa-2x highlight"></i>
+
+                <h4 style="margin: 0; font-size: 1.1rem;">
+                    Professional Sports Coaching
+                </h4>
+
+            </div>
+
+
+            <div class="glass-card d-flex gap-1 align-center anim-fade-up del-200">
+
+                <i class="fas fa-running fa-2x highlight"></i>
+
+                <h4 style="margin: 0; font-size: 1.1rem;">
+                    Fitness & Performance Training
+                </h4>
+
+            </div>
+
+
+            <div class="glass-card d-flex gap-1 align-center anim-fade-up del-300">
+
+                <i class="fas fa-trophy fa-2x highlight"></i>
+
+                <h4 style="margin: 0; font-size: 1.1rem;">
+                    Competition Preparation
+                </h4>
+
+            </div>
+
+
+            <div class="glass-card d-flex gap-1 align-center anim-fade-up del-400">
+
+                <i class="fas fa-brain fa-2x highlight"></i>
+
+                <h4 style="margin: 0; font-size: 1.1rem;">
+                    Strategy & Game Intelligence
+                </h4>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="video-modal" id="videoModal">
+
+    <div class="video-modal-content">
+
+        <i class="fas fa-times close-modal"></i>
+
+        <video src="video/hero2.mp4"
+               controls
+               style="width: 100%; display: block;">
+        </video>
+
+    </div>
+
+</div>
+
+
+<section class="bg-light-section"
+         style="padding-top: 50px; padding-bottom: 50px;">
+
+    <div class="container">
+
+        <div class="section-header section-header-center anim-fade-up"
+             style="margin-bottom: 2rem;">
+
+            <p style="text-transform: uppercase;
+                      letter-spacing: 1px;
+                      font-weight: bold;
+                      color: #00f0ff;
+                      margin-bottom: 5px;">
+                OUR COACHING TEAM
+            </p>
+
+            <h2 style="font-size: 2.8rem;
+                       margin-bottom: 15px;
+                       color: #ffffff;">
+
+                Meet Our
+                <span class="highlight">Expert Coaches</span>
+
+            </h2>
+
+        </div>
+
+
+        <div class="coach-grid">
+
+            <div class="coach-card anim-slide-left del-100 hover-lift hover-shine">
+
+                <img src="./assets/coach male5-optimized.webp"
+                     alt="Cricket Coach"
+                     class="coach-img">
+
+                <h3 style="color: #ffffff; margin-bottom: 5px;">
+                    Arjun Mehta
+                </h3>
+
+                <p style="color: #00f0ff;
+                          font-size: 0.9rem;
+                          font-weight: bold;">
+                    Head Cricket Coach
+                </p>
+
+                <p style="color: #666;
+                          font-size: 0.9rem;
+                          margin-top: 15px;
+                          line-height: 1.4;">
+                    Specializes in batting technique, bowling skills,
+                    match preparation, and youth development.
+                </p>
+
+                <div class="coach-socials">
+                    <a href="404.html"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+
+            </div>
+
+
+            <div class="coach-card anim-zoom-in del-200 hover-lift hover-shine">
+
+                <img src="./assets/coach female1-optimized.webp"
+                     alt="Volleyball Coach"
+                     class="coach-img">
+
+                <h3 style="color: #ffffff; margin-bottom: 5px;">
+                    Ananya Rao
+                </h3>
+
+                <p style="color: #00f0ff;
+                          font-size: 0.9rem;
+                          font-weight: bold;">
+                    Volleyball Director
+                </p>
+
+                <p style="color: #666;
+                          font-size: 0.9rem;
+                          margin-top: 15px;
+                          line-height: 1.4;">
+                    Focuses on team coordination, serving techniques,
+                    defensive skills, and competitive preparation.
+                </p>
+
+                <div class="coach-socials">
+                    <a href="404.html"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+
+            </div>
+
+
+            <div class="coach-card anim-slide-right del-300 hover-lift hover-shine">
+
+                <img src="./assets/coach male1-optimized.webp"
+                     alt="Badminton Coach"
+                     class="coach-img">
+
+                <h3 style="color: #ffffff; margin-bottom: 5px;">
+                    Rahul Verma
+                </h3>
+
+                <p style="color: #00f0ff;
+                          font-size: 0.9rem;
+                          font-weight: bold;">
+                    Badminton Coach
+                </p>
+
+                <p style="color: #666;
+                          font-size: 0.9rem;
+                          margin-top: 15px;
+                          line-height: 1.4;">
+                    Specializes in footwork, racket control, agility,
+                    attacking play, and match strategy.
+                </p>
+
+                <div class="coach-socials">
+                    <a href="404.html"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+
+            </div>
+
+
+            <div class="coach-card anim-zoom-in del-400 hover-lift hover-shine">
+
+                <img src="./assets/w5.webp"
+                     alt="Athletics Coach"
+                     class="coach-img">
+
+                <h3 style="color: #ffffff; margin-bottom: 5px;">
+                    Priya Sharma
+                </h3>
+
+                <p style="color: #00f0ff;
+                          font-size: 0.9rem;
+                          font-weight: bold;">
+                    Head Athletics Coach
+                </p>
+
+                <p style="color: #666;
+                          font-size: 0.9rem;
+                          margin-top: 15px;
+                          line-height: 1.4;">
+                    Specializes in sprint mechanics, endurance,
+                    strength conditioning, and athletic performance.
+                </p>
+
+                <div class="coach-socials">
+                    <a href="404.html"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+    <section class="facts-section">
+        <div class="container">
+            <div class="facts-grid">
+                <div class="facts-image-col anim-slide-left" style="height: 100%;">
+                    <img src="assets/academycenter.webp" alt="Coach" style="width: 100%; height: 100%; min-height: 350px; object-fit: cover; border-radius: 20px;">
+                </div>
+                <div class="facts-content-col anim-fade-up del-200">
+                    <div class="facts-header">
+                        <p style="color: #ffffff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px;"><i class="fas fa-info-circle" style="color: var(--accent);"></i> OUR FACTS</p>
+                        <h2 class="facts-title">Impressive facts <span style="font-weight: normal;">about our<br>sports academy</span></h2>
+                        <p class="facts-desc">Discover what makes our academy one of the most trusted and fastest-growing communities. From expert coaching to top-class facilities and thriving member engagement — we elevate every player's experience.</p>
+                    </div>
+                    <div class="facts-stats">
+                        <div class="stat-box">
+                            <h3>10+</h3>
+                            <p>Years of coaching<br>excellence</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>8K</h3>
+                            <p>Active & satisfied<br>members</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3>97%</h3>
+                            <p>Positive improvement<br>rate</p>
+                        </div>
+                    </div>
+                    <div class="facts-checklist">
+                        <p><i class="fas fa-check-square"></i> Eco-Friendly Court Design</p>
+                        <p><i class="fas fa-check-square"></i> Energetic Sports Community</p>
+                        <p><i class="fas fa-check-square"></i> Host of Local Tournaments</p>
+                        <p><i class="fas fa-check-square"></i> Professional Facility Maintenance</p>
+                    </div>
+                    <a href="404.html" class="btn btn-primary" style="padding: 15px 35px; font-weight: bold; margin-top: 10px; border-radius: 30px;">Learn More About Us <i class="fas fa-arrow-right" style="margin-left: 5px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 1: Live Arena & Turf Training Schedule Matrix -->
+    <section class="content-section athletic-bg-grid" id="arena-schedule">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-calendar-check"></i> Real-Time Arena Schedule</span>
+                <h2>Live Turf & Court <span class="highlight">Daily Training Slots</span></h2>
+                <p style="max-width: 720px; margin: 0 auto;">Check open arena slots, competitive scrimmage schedules, and masterclass times updated live across all 6 sport departments.</p>
+            </div>
+            
+            <div class="schedule-filter-bar anim-fade-up del-100">
+                <button class="schedule-filter-btn active" data-filter="all"><i class="fas fa-th-large"></i> All Arenas</button>
+                <button class="schedule-filter-btn" data-filter="football"><i class="fas fa-futbol"></i> Football Turf</button>
+                <button class="schedule-filter-btn" data-filter="basketball"><i class="fas fa-basketball"></i> Hardwood Court</button>
+                <button class="schedule-filter-btn" data-filter="tennis"><i class="fas fa-table-tennis-paddle-ball"></i> Tennis Center</button>
+                <button class="schedule-filter-btn" data-filter="track"><i class="fas fa-person-running"></i> Sprint Track</button>
+            </div>
+
+            <div class="schedule-grid-table anim-fade-up del-200">
+                <div class="schedule-card" data-sport="football">
+                    <div class="d-flex justify-between align-center" style="margin-bottom: 12px;">
+                        <span class="schedule-time-badge">06:00 - 08:00 AM</span>
+                        <span class="sports-badge sports-badge-volt"><i class="fas fa-circle-dot"></i> Live Slot Open</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; color: #fff; margin-bottom: 6px;">Pro Tactical Pitch Drills & Possession</h3>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 15px;">Turf Arena A • Head Coach Marcus Rivera • Max 18 Athletes</p>
+                    <div class="d-flex justify-between align-center">
+                        <span style="color: var(--accent-secondary); font-weight: 700; font-size: 0.9rem;"><i class="fas fa-bolt"></i> Elite Varsity & Pro</span>
+                        <a href="404.html" class="btn btn-outline" style="padding: 6px 18px; font-size: 0.9rem;">Reserve Slot</a>
+                    </div>
+                </div>
+
+                <div class="schedule-card" data-sport="basketball">
+                    <div class="d-flex justify-between align-center" style="margin-bottom: 12px;">
+                        <span class="schedule-time-badge">09:30 - 11:30 AM</span>
+                        <span class="sports-badge sports-badge-cyan"><i class="fas fa-circle-dot"></i> 4 Slots Left</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; color: #fff; margin-bottom: 6px;">Pick-and-Roll Mechanics & Shot Arc Lab</h3>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 15px;">NBA Reg Court 2 • Coach David Chen • Max 12 Athletes</p>
+                    <div class="d-flex justify-between align-center">
+                        <span style="color: var(--accent); font-weight: 700; font-size: 0.9rem;"><i class="fas fa-chart-line"></i> Shooting Biometrics</span>
+                        <a href="404.html" class="btn btn-outline" style="padding: 6px 18px; font-size: 0.9rem;">Reserve Slot</a>
+                    </div>
+                </div>
+
+                <div class="schedule-card" data-sport="track">
+                    <div class="d-flex justify-between align-center" style="margin-bottom: 12px;">
+                        <span class="schedule-time-badge">04:00 - 05:30 PM</span>
+                        <span class="sports-badge sports-badge-volt"><i class="fas fa-circle-dot"></i> Instant Check-in</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; color: #fff; margin-bottom: 6px;">Sprint Acceleration & Laser Gate Timing</h3>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 15px;">Olympic 8-Lane Oval • Coach Emma Thompson • All Levels</p>
+                    <div class="d-flex justify-between align-center">
+                        <span style="color: var(--accent-secondary); font-weight: 700; font-size: 0.9rem;"><i class="fas fa-stopwatch"></i> Laser Timing</span>
+                        <a href="404.html" class="btn btn-outline" style="padding: 6px 18px; font-size: 0.9rem;">Reserve Slot</a>
+                    </div>
+                </div>
+
+                <div class="schedule-card" data-sport="tennis">
+                    <div class="d-flex justify-between align-center" style="margin-bottom: 12px;">
+                        <span class="schedule-time-badge">06:00 - 07:30 PM</span>
+                        <span class="sports-badge sports-badge-pulse"><i class="fas fa-fire"></i> High Demand</span>
+                    </div>
+                    <h3 style="font-size: 1.25rem; color: #fff; margin-bottom: 6px;">Power Serve & Cross-Court Topspin Combine</h3>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 15px;">Championship Clay Court 1 • Coach Elena Rostova</p>
+                    <div class="d-flex justify-between align-center">
+                        <span style="color: var(--accent); font-weight: 700; font-size: 0.9rem;"><i class="fas fa-trophy"></i> Tournament Prep</span>
+                        <a href="404.html" class="btn btn-outline" style="padding: 6px 18px; font-size: 0.9rem;">Reserve Slot</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 2: High-Performance Tech & Biometrics Lab -->
+    <section class="content-section" style="background: linear-gradient(180deg, #070c18 0%, #0c1527 100%);">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <span class="section-eyebrow"><i class="fas fa-microchip"></i> Next-Gen Sports Science</span>
+                <h2>Integrated Biometrics & <span class="highlight-cyan">AI Performance Telemetry</span></h2>
+                <p style="max-width: 760px; margin: 0 auto;">Every repetition counts. Stackly integrates real-time athlete telemetry, smart wearable syncing, and video force vector breakdown.</p>
+            </div>
+
+            <div class="grid grid-3 gap-3">
+                <div class="telemetry-card anim-slide-left del-100">
+                    <div class="metric-ring-container">
+                        <svg class="metric-ring-svg" viewBox="0 0 100 100">
+                            <circle class="metric-ring-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="metric-ring-fill volt" cx="50" cy="50" r="45" style="stroke-dashoffset: 45;"></circle>
+                        </svg>
+                        <div class="metric-value-center rollup-metric" data-target="94" data-suffix="%">94%</div>
+                    </div>
+                    <h3 style="text-align: center; color: #fff; font-size: 1.3rem; margin-bottom: 8px;">VO2 Max & Heart Rate Zone 5</h3>
+                    <p style="text-align: center; font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px;">Live wearable telemetry tracks cardiovascular endurance and anaerobic threshold during high-tempo drills.</p>
+                    <div class="d-flex justify-between align-center" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+                        <span style="font-size: 0.85rem; color: var(--accent);"><i class="fas fa-heart-pulse"></i> Real-Time Sync</span>
+                        <span style="font-size: 0.85rem; color: #fff; font-weight: 700;">182 BPM Peak</span>
+                    </div>
+                </div>
+
+                <div class="telemetry-card anim-zoom-in del-200">
+                    <div class="metric-ring-container">
+                        <svg class="metric-ring-svg" viewBox="0 0 100 100">
+                            <circle class="metric-ring-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="metric-ring-fill" cx="50" cy="50" r="45" style="stroke-dashoffset: 65;"></circle>
+                        </svg>
+                        <div class="metric-value-center rollup-metric" data-target="34" data-suffix=" km/h">34 km/h</div>
+                    </div>
+                    <h3 style="text-align: center; color: #fff; font-size: 1.3rem; margin-bottom: 8px;">Radar Sprint Velocity & Acceleration</h3>
+                    <p style="text-align: center; font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px;">Dual laser timing gates capture 10m sprint splits, initial burst velocity, and deceleration stability metrics.</p>
+                    <div class="d-flex justify-between align-center" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+                        <span style="font-size: 0.85rem; color: var(--accent-secondary);"><i class="fas fa-gauge-high"></i> Laser Timing</span>
+                        <span style="font-size: 0.85rem; color: #fff; font-weight: 700;">0.92s 10m Split</span>
+                    </div>
+                </div>
+
+                <div class="telemetry-card anim-slide-right del-300">
+                    <div class="metric-ring-container">
+                        <svg class="metric-ring-svg" viewBox="0 0 100 100">
+                            <circle class="metric-ring-bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="metric-ring-fill crimson" cx="50" cy="50" r="45" style="stroke-dashoffset: 80;"></circle>
+                        </svg>
+                        <div class="metric-value-center rollup-metric" data-target="760" data-suffix=" W">760 W</div>
+                    </div>
+                    <h3 style="text-align: center; color: #fff; font-size: 1.3rem; margin-bottom: 8px;">Force Plate Kinetic Output</h3>
+                    <p style="text-align: center; font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px;">Dual Bertec force plates assess bilateral jump symmetry, ground contact time, and neuromuscular readiness.</p>
+                    <div class="d-flex justify-between align-center" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px;">
+                        <span style="font-size: 0.85rem; color: var(--accent-crimson);"><i class="fas fa-chart-column"></i> Symmetry Index</span>
+                        <span style="font-size: 0.85rem; color: #fff; font-weight: 700;">98.4% Balance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 3: Interactive Athlete Target & Strength Readiness Calculator -->
+    <section class="content-section athletic-bg-grid">
+        <div class="container">
+            <div class="grid grid-2 gap-4 align-center">
+                <div class="anim-slide-left">
+                    <span class="section-eyebrow"><i class="fas fa-calculator"></i> Performance Target Engine</span>
+                    <h2>Calculate Your <span class="highlight">Athlete Readiness</span> & Training Load</h2>
+                    <p>Use our proprietary sports training index calculator to estimate your weekly target energy expenditure, optimal training intensity, and required physiological recovery window.</p>
+                    <ul style="display: flex; flex-direction: column; gap: 14px; margin: 24px 0;">
+                        <li style="display: flex; align-items: center; gap: 12px; color: #cbd5e1;"><i class="fas fa-check-circle" style="color: var(--accent);"></i> Calibrated for varsity, collegiate, and professional workloads</li>
+                        <li style="display: flex; align-items: center; gap: 12px; color: #cbd5e1;"><i class="fas fa-check-circle" style="color: var(--accent);"></i> Real-time recovery timeline estimation</li>
+                        <li style="display: flex; align-items: center; gap: 12px; color: #cbd5e1;"><i class="fas fa-check-circle" style="color: var(--accent);"></i> Personalized coaching regimen recommendation</li>
+                    </ul>
+                </div>
+
+                <div class="calc-card-container anim-slide-right">
+                    <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.4rem;"><i class="fas fa-sliders" style="color: var(--accent); margin-right: 8px;"></i> Readiness & Load Estimator</h3>
+                    
+                    <div class="calc-field-group">
+                        <label for="calc-hours">Weekly Training Hours: <span id="calc-hours-val" style="color: var(--accent); font-weight: 700;">8 hrs</span></label>
+                        <input type="range" min="2" max="25" value="8" class="calc-range-slider" id="calc-hours" oninput="document.getElementById('calc-hours-val').textContent = this.value + ' hrs'">
+                    </div>
+
+                    <div class="calc-field-group">
+                        <label for="calc-intensity">Target Training Intensity (RPE 1-10): <span id="calc-intensity-val" style="color: var(--accent-secondary); font-weight: 700;">7 RPE</span></label>
+                        <input type="range" min="1" max="10" value="7" class="calc-range-slider" id="calc-intensity" oninput="document.getElementById('calc-intensity-val').textContent = this.value + ' RPE'">
+                    </div>
+
+                    <div class="calc-field-group">
+                        <label for="calc-level">Athlete Experience Tier:</label>
+                        <select id="calc-level" class="neu-input" style="cursor: pointer;">
+                            <option value="varsity" selected>Varsity / High School Competitive</option>
+                            <option value="elite">Elite Club / Pre-College Academy</option>
+                            <option value="pro">Semi-Pro / Professional Prospect</option>
+                        </select>
+                    </div>
+
+                    <div class="calc-result-box">
+                        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 4px;">Computed Performance Index</div>
+                        <div id="calc-readiness-score" style="font-family: var(--font-display); font-size: 3.2rem; font-weight: 700; color: var(--accent); line-height: 1;">88/100</div>
+                        <div class="d-flex justify-between" style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 12px; font-size: 0.9rem;">
+                            <span>Est. Caloric Burn: <strong id="calc-volume-output" style="color: #fff;">3,040 kcal / session</strong></span>
+                            <span>Target Recovery: <strong id="calc-recovery-output" style="color: var(--accent-secondary);">41.5 hrs</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-light-section">
+        <div class="container">
+            <div class="section-header section-header-center anim-fade-up">
+                <p style="text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px; color: var(--accent);"><i class="fas fa-id-card"></i> OUR MEMBERSHIP</p>
+                <h2><span class="highlight">Flexible membership plans</span> for every<br>athlete</h2>
+                <p style="max-width: 800px; margin: 0 auto; color: #cbd5e1;">Our sports membership plans are crafted to fit every athlete's needs — from casual beginners to active players and competitive professionals.</p>
+            </div>
+            <div class="grid grid-3 gap-3">
+                <div class="card-light pricing-card rounded-img anim-fade-up del-100" style="padding: 30px; border: 2px solid rgba(0, 240, 255, 0.3);">
+                    <div class="d-flex align-center gap-2" style="margin-bottom: 20px;">
+                        <i class="fas fa-bullseye fa-2x highlight"></i>
+                        <div>
+                            <h4 class="text-light" style="margin: 0; font-size: 1.1rem; color: #ffffff;">BASIC PLAN</h4>
+                            <p style="font-size: 0.85rem; margin: 0; line-height: 1.2; color: #94a3b8;">An accessible plan ideal for beginners.</p>
+                        </div>
+                    </div>
+                    <div class="price-tag text-light">$29<span>/Month</span></div>
+                    <p class="text-light" style="font-weight: bold; font-size: 0.9rem; margin-bottom: 15px; color: #ffffff;">Features:</p>
+                    <ul class="pricing-features text-light">
+                        <li><i class="fas fa-check-square"></i> Access to All Standard Fields</li>
+                        <li><i class="fas fa-check-square"></i> Free Basic Equipment Rentals</li>
+                        <li><i class="fas fa-check-square"></i> Member-Only Social Matches</li>
+                        <li><i class="fas fa-check-square"></i> Weekend Practice Sessions</li>
+                    </ul>
+                    <a href="404.html" class="btn btn-primary" style="width: 100%; margin-top: auto;">Choose Plan <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="card-light pricing-card premium rounded-img anim-zoom-in del-200" style="padding: 30px; position: relative; background: linear-gradient(145deg, rgba(14,24,46,0.98) 0%, rgba(6,12,24,0.98) 100%); border: 2.5px solid var(--accent); box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);">
+                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%); color: #050912; padding: 6px 22px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.5px;">MOST POPULAR</div>
+                    <div class="d-flex align-center gap-2" style="margin-bottom: 20px; margin-top: 10px;">
+                        <i class="fas fa-award fa-2x highlight"></i>
+                        <div>
+                            <h4 class="text-light" style="margin: 0; font-size: 1.1rem; color: #ffffff;">STANDARD PLAN</h4>
+                            <p style="font-size: 0.85rem; margin: 0; line-height: 1.2; color: #94a3b8;">Designed for active athletes.</p>
+                        </div>
+                    </div>
+                    <div class="price-tag text-light">$39<span>/Month</span></div>
+                    <p class="text-light" style="font-weight: bold; font-size: 0.9rem; margin-bottom: 15px; color: #ffffff;">Features:</p>
+                    <ul class="pricing-features text-light">
+                        <li><i class="fas fa-check-square"></i> Access to All Elite Courts</li>
+                        <li><i class="fas fa-check-square"></i> Free Pro Equipment Rentals</li>
+                        <li><i class="fas fa-check-square"></i> Member-Only Tournaments</li>
+                        <li><i class="fas fa-check-square"></i> Weekly Strategy Sessions</li>
+                    </ul>
+                    <a href="404.html" class="btn btn-primary" style="width: 100%; margin-top: auto;">Choose Plan <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="card-light pricing-card rounded-img anim-fade-up del-300" style="padding: 30px; border: 2px solid rgba(0, 240, 255, 0.3);">
+                    <div class="d-flex align-center gap-2" style="margin-bottom: 20px;">
+                        <i class="fas fa-gem fa-2x highlight"></i>
+                        <div>
+                            <h4 class="text-light" style="margin: 0; font-size: 1.1rem; color: #ffffff;">PREMIUM PLAN</h4>
+                            <p style="font-size: 0.85rem; margin: 0; line-height: 1.2; color: #94a3b8;">Perfect for advanced competitors.</p>
+                        </div>
+                    </div>
+                    <div class="price-tag text-light">$49<span>/Month</span></div>
+                    <p class="text-light" style="font-weight: bold; font-size: 0.9rem; margin-bottom: 15px; color: #ffffff;">Features:</p>
+                    <ul class="pricing-features text-light">
+                        <li><i class="fas fa-check-square"></i> Unlimited Access to All Facilities</li>
+                        <li><i class="fas fa-check-square"></i> 1-on-1 Personal Coaching</li>
+                        <li><i class="fas fa-check-square"></i> Priority Event Registration</li>
+                        <li><i class="fas fa-check-square"></i> Daily Intensive Practice Sessions</li>
+                    </ul>
+                    <a href="404.html" class="btn btn-primary" style="width: 100%; margin-top: auto;">Choose Plan <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-light-section" style="padding-top: 60px; padding-bottom: 60px;">
+        <div class="container text-center anim-fade-up">
+            <p style="text-transform: uppercase; letter-spacing: 2px; font-weight: bold; color: #999; font-size: 0.9rem; margin: 0;">Trusted By Global Sports Brands & Federations</p>
+        </div>
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <div class="marquee-item"><i class="fas fa-bolt"></i> APEX PRO</div>
+                <div class="marquee-item"><i class="fas fa-shield-alt"></i> TITAN GEAR</div>
+                <div class="marquee-item"><i class="fas fa-fire"></i> VELOCITY</div>
+                <div class="marquee-item"><i class="fas fa-dumbbell"></i> IRON ATHLETICS</div>
+                <div class="marquee-item"><i class="fas fa-trophy"></i> CHAMPION CO.</div>
+                <div class="marquee-item"><i class="fas fa-wind"></i> AERO DYNAMICS</div>
+                <div class="marquee-item"><i class="fas fa-bolt"></i> APEX PRO</div>
+                <div class="marquee-item"><i class="fas fa-shield-alt"></i> TITAN GEAR</div>
+                <div class="marquee-item"><i class="fas fa-fire"></i> VELOCITY</div>
+                <div class="marquee-item"><i class="fas fa-dumbbell"></i> IRON ATHLETICS</div>
+                <div class="marquee-item"><i class="fas fa-trophy"></i> CHAMPION CO.</div>
+                <div class="marquee-item"><i class="fas fa-wind"></i> AERO DYNAMICS</div>
+            </div>
+        </div>
+    </section>
+    <section class="anim-fade-up">
+        <div class="container">
+            <div class="section-header section-header-center">
+                <h2>What Our <span class="highlight">Athletes Say</span></h2>
+            </div>
+            <div class="grid grid-3 gap-3 testimonial-mobile-slider">
+                <div class="testimonial-wrapper">
+                    <div class="testimonial-track">
+                        <div class="testimonial-card">
+                            <p>"The best athletic facility I've ever trained at. The football and tennis coaches are phenomenal."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/coach female1-optimized.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Sarah Jenkins</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Football Trainee</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"I went from a complete beginner to winning local basketball tournaments in just 6 months."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/w5.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Mike Rossi</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Basketball Player</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"The best athletic facility I've ever trained at. The football and tennis coaches are phenomenal."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/coach female1-optimized.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Sarah Jenkins</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Football Trainee</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"I went from a complete beginner to winning local basketball tournaments in just 6 months."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/w5.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Mike Rossi</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Basketball Player</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-wrapper">
+                    <div class="testimonial-track" style="animation-delay: -5s; animation-duration: 25s;">
+                        <div class="testimonial-card">
+                            <p>"Highly recommend the group tennis classes for anyone looking to have fun and get fit."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/coach male1-optimized.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Tom Hardy</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Tennis Player</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"The customized volleyball coaching approach really changed my game."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/w7.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Jessica Alba</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Volleyball Player</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"Highly recommend the group tennis classes for anyone looking to have fun and get fit."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/coach male1-optimized.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Tom Hardy</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Tennis Player</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"The customized volleyball coaching approach really changed my game."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/w7.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Jessica Alba</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Volleyball Player</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-wrapper">
+                    <div class="testimonial-track" style="animation-delay: -10s; animation-duration: 22s;">
+                        <div class="testimonial-card">
+                            <p>"Friendly staff, immaculate cricket pitches, and a vibrant community atmosphere."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/coach male5-optimized.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Chris Evans</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Cricket Player</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"My kids love the junior athletics programs. It's safe, fun, and highly educational."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/m7.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Liam Nees</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Parent (Athletics)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"Friendly staff, immaculate cricket pitches, and a vibrant community atmosphere."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/coach male5-optimized.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Chris Evans</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Cricket Player</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"My kids love the junior athletics programs. It's safe, fun, and highly educational."</p>
+                            <div class="d-flex align-center gap-1" style="margin-top: 15px;">
+                                <img src="assets/m7.webp" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+                                <div>
+                                    <h5 style="margin: 0;">Liam Nees</h5>
+                                    <p style="margin: 0; font-size: 0.8rem; color: var(--accent);">Parent (Athletics)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="grid grid-4 gap-4" style="padding-top: 60px; padding-bottom: 40px;">
+            <div class="anim-slide-right del-100" style="display: flex; flex-direction: column;">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly" style="height: 35px; width: auto; margin-bottom: 25px; align-self: flex-start; object-fit: contain;">
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #a0b8c7; margin-bottom: 30px; font-weight: 500;">Elite multi-sports academy providing world-class coaching, premium facilities, and a thriving community. Join 10,000+ athletes scaling their performance with us.</p>
+                <div class="footer-social">
+                    <a href="404.html" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="404.html" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="404.html" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="404.html" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+            <div class="anim-slide-right del-200">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Programs</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Football Training</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Basketball Coaching</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Tennis Academy</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Cricket Nets</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Athletics Track</a></li>
+                    <li><a href="404.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Memberships</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-300">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Quick Links</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 15px;">
+                    <li><a href="index.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Home</a></li>
+                    <li><a href="about.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">About</a></li>
+                    <li><a href="program.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Program</a></li>
+                    <li><a href="pricing.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Pricing</a></li>
+                    <li><a href="blog.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Blog</a></li>
+                    <li><a href="contact.html" style="color: #a0b8c7; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: color 0.3s;">Contact</a></li>
+                </ul>
+            </div>
+            <div class="anim-slide-right del-400">
+                <h4 style="color: #fff; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600;">Stackly Academy HQ</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+                    <li style="display: flex; gap: 15px; align-items: flex-start; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--accent); margin-top: 4px; font-size: 1.1rem;"></i>
+                        <span>MMR Complex, Chinna Thirupathi,<br>Salem, TN 636008</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-phone-alt" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>+91 (0) 427 492 849</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-envelope" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>support@stacklyacademy.com</span>
+                    </li>
+                    <li style="display: flex; gap: 15px; align-items: center; color: #a0b8c7; font-size: 0.95rem; font-weight: 500;">
+                        <i class="fas fa-clock" style="color: var(--accent); font-size: 1.1rem;"></i>
+                        <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding: 25px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative;">
+            <p style="color: #a0b8c7; font-size: 0.9rem; margin: 0; font-weight: 500;">&copy; 2026 Stackly Academy. All rights reserved.</p>
+            <div style="display: flex; gap: 25px;">
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Privacy Policy</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">Terms of Service</a>
+                <a href="404.html" style="color: #a0b8c7; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;">SLA Commitment</a>
+            </div>
+            <a href="#" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: var(--accent); color: var(--bg-dark); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; transition: transform 0.3s;">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+    <script src="script.js"></script>
+    </div>
+</body>
+</html>

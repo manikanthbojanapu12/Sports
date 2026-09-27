@@ -1,0 +1,1016 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Stackly Sports Academy</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .dash-menu-toggle { display: none; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); color: #fff; width: 42px; height: 42px; border-radius: 12px; font-size: 1.1rem; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; position: relative; }
+        .dash-menu-toggle .menu-icon,
+        .dash-menu-toggle .close-icon { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); transition: .25s ease; line-height: 1; }
+        .dash-menu-toggle .close-icon { opacity: 0; transform: translate(-50%,-50%) rotate(-90deg); }
+        .dash-menu-toggle.open .menu-icon { opacity: 0; transform: translate(-50%,-50%) rotate(90deg); }
+        .dash-menu-toggle.open .close-icon { opacity: 1; transform: translate(-50%,-50%) rotate(0deg); }
+        .dash-sidebar-overlay { display: none; }
+        .sidebar-top-header { display: none; }
+        .dash-user { display: flex; align-items: center; gap: 12px; }
+        .dash-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: var(--bg-darker); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0; box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+        .dash-bell { position: relative; width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: var(--text-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: .25s; font-size: 1.05rem; }
+        .dash-bell:hover { color: var(--accent); border-color: rgba(0, 240, 255, .4); transform: translateY(-3px); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+        .dash-bell .dot { position: absolute; top: 7px; right: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-crimson); border: 2px solid var(--bg-darker); }
+        .dash-ico { width: 46px; height: 46px; border-radius: 14px; background: rgba(0, 240, 255, .12); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 14px; }
+        .bar-track { height: 10px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: 10px; }
+        .bar-fill { display: block; height: 100%; width: 0%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent-secondary)); transition: width 1.3s cubic-bezier(.22,1,.36,1); }
+        .qa-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .qa-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 16px 10px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: #fff; cursor: pointer; font: inherit; font-weight: 600; font-size: .85rem; transition: .3s; width: 100%; box-sizing: border-box; }
+        .qa-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-5px); background: rgba(0, 240, 255, .08); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+        .qa-btn i { font-size: 1.35rem; color: var(--accent); }
+        .notif-item { display: flex; gap: 14px; padding: 14px 10px; border-bottom: 1px solid rgba(255,255,255,.06); border-radius: 12px; transition: .25s; }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item:hover { background: rgba(255,255,255,.03); }
+        .notif-ico { width: 38px; height: 38px; border-radius: 50%; background: rgba(0, 240, 255, .12); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .95rem; }
+        .notif-item.unread { background: rgba(0, 240, 255, .05); }
+        .coach-photo { width: 100%; height: 190px; object-fit: cover; border-radius: 14px; margin-bottom: 14px; transition: transform .5s ease; }
+        .dash-card:hover .coach-photo { transform: scale(1.04); }
+        .stat-row { display: flex; justify-content: space-between; font-size: .85rem; color: var(--text-muted); margin-bottom: 4px; }
+        .welcome-hub { background: linear-gradient(120deg, rgba(0, 240, 255, .14), rgba(18,29,51,.7)); border: 1px solid rgba(0, 240, 255, .25); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; border-radius: 20px; }
+        .welcome-strip { display: flex; gap: 28px; flex-wrap: wrap; }
+        .welcome-strip div h4 { margin: 0; color: var(--accent); font-size: 1.4rem; }
+        .welcome-strip div p { margin: 0; font-size: .8rem; color: var(--text-muted); }
+        @media (max-width: 900px) {
+            .dash-menu-toggle { display: flex !important; }
+            .sidebar-top-header,
+            .close-sidebar-btn { display: none !important; }
+            .dash-sidebar {
+                position: fixed !important;
+                left: -105% !important;
+                top: 60px !important;
+                height: calc(100dvh - 60px) !important;
+                width: min(280px, 86vw) !important;
+                z-index: 1050 !important;
+                transform: none !important;
+                transition: left .35s ease !important;
+                box-shadow: 20px 0 50px rgba(0,0,0,.45);
+                flex-wrap: nowrap;
+                flex-direction: column;
+                background: #041c29 !important;
+                padding-top: 12px !important;
+            }
+            .dash-sidebar.open { left: 0 !important; transform: none !important; }
+            .dash-sidebar-overlay.show {
+                display: block !important;
+                position: fixed;
+                top: 60px; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,.55);
+                z-index: 1040;
+            }
+            .dash-main { padding: 20px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+<div class="dash-layout">
+    <aside class="dash-sidebar" id="dashSidebar">
+        <div class="sidebar-user-card" style="margin-top: 8px; margin-bottom: 12px;">
+            <div class="sidebar-user-avatar js-user-initials">A</div>
+            <div class="sidebar-user-details">
+                <div class="sidebar-user-name js-user-name">Admin User</div>
+                <div class="sidebar-user-email js-user-email">admin@stackly.com</div>
+            </div>
+        </div>
+        <div class="sidebar-role-card admin">
+            <i class="fas fa-user-shield"></i> <span>ADMIN DASHBOARD</span>
+        </div>
+        <div class="dash-sidebar-nav-container">
+            <div class="dash-nav-label">Overview</div>
+            <button class="dash-nav-btn active" data-target="overview"><i class="fas fa-house"></i> Dashboard</button>
+            <div class="dash-nav-label">Academy</div>
+            <button class="dash-nav-btn" data-target="athletes"><i class="fas fa-person-running"></i> Athletes</button>
+            <button class="dash-nav-btn" data-target="batches"><i class="fas fa-people-group"></i> Batches</button>
+            <button class="dash-nav-btn" data-target="programs"><i class="fas fa-clipboard-list"></i> Programs</button>
+            <button class="dash-nav-btn" data-target="bookings"><i class="fas fa-calendar-check"></i> Bookings</button>
+            <button class="dash-nav-btn" data-target="revenue"><i class="fas fa-sack-dollar"></i> Revenue</button>
+            <button class="dash-nav-btn" data-target="coaches"><i class="fas fa-user-tie"></i> Coaches</button>
+            <button class="dash-nav-btn" data-target="reports"><i class="fas fa-chart-line"></i> Reports</button>
+            <div class="dash-nav-label">Account</div>
+            <button class="dash-nav-btn" data-target="notifications"><i class="fas fa-bell"></i> Notifications</button>
+            <button class="dash-nav-btn" data-target="settings"><i class="fas fa-gear"></i> Settings</button>
+            <button class="dash-nav-btn" data-target="support"><i class="fas fa-circle-question"></i> Support</button>
+        </div>
+        <button class="dash-nav-btn" data-logout style="color: #ff8a8a; margin-top: auto;"><i class="fas fa-right-from-bracket"></i> Logout</button>
+    </aside>
+    <div class="dash-sidebar-overlay" id="dashOverlay"></div>
+        <header class="dash-top">
+            <div class="dash-top-left">
+                <div class="dash-top-logo-zone">
+                    <button type="button" class="dash-menu-toggle" id="dashMenuToggle" aria-label="Open menu" aria-expanded="false">
+                        <span class="menu-icon" aria-hidden="true"><i class="fas fa-bars"></i></span>
+                        <span class="close-icon" aria-hidden="true"><i class="fas fa-xmark"></i></span>
+                    </button>
+                    <a href="index.html" class="dash-top-logo"><img src="assets/stacklylogo-transparent.webp" alt="Stackly"></a>
+                    <div class="dash-top-divider"></div>
+                </div>
+                <div class="dash-top-welcome">
+                    <h2>Welcome back, <span class="js-user-name">Admin</span> 👋</h2>
+                    <p>Here's what's happening across Stackly Academy today.</p>
+                </div>
+            </div>
+            <div class="dash-top-right">
+                <button class="dash-bell" data-target="notifications" title="Notifications"><i class="fas fa-bell"></i><span class="dot"></span></button>
+                <div class="dash-user">
+                    <div class="dash-avatar js-user-initials">A</div>
+                    <div class="dash-user-details">
+                        <div style="font-weight: 700;" class="js-user-name">Admin User</div>
+                        <div style="font-size: .8rem; color: var(--accent);" class="js-user-email">admin@stackly.com</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="dash-main">
+        <section class="dash-panel active" id="section-overview">
+            <div class="dash-card welcome-hub" style="margin-bottom: 22px; background: linear-gradient(120deg, rgba(1,30,45,0.85), rgba(4,54,78,0.9)), url('assets/academycenter.webp') center/cover;">
+                <div>
+                    <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 6px; font-weight: 800;">Academy Command Center</h3>
+                    <p style="margin: 0; font-size: 1.05rem;">Manage athletes, batches, coaches and revenue from one control hub.</p>
+                </div>
+                <div class="welcome-strip">
+                    <div><h4>6</h4><p>Sports Offered</p></div>
+                    <div><h4>14</h4><p>Coaches on Roster</p></div>
+                    <div><h4>5</h4><p>Facilities Live</p></div>
+                </div>
+            </div>
+            <div class="dash-grid dash-grid-4">
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-person-running"></i></div><h3>1,248</h3><p>Total Athletes</p></div>
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-people-group"></i></div><h3>42</h3><p>Active Batches</p></div>
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-sack-dollar"></i></div><h3>$18.4k</h3><p>Monthly Revenue</p></div>
+                <div class="dash-card dash-card-bounce-icon"><div class="dash-ico"><i class="fas fa-user-plus"></i></div><h3>56</h3><p>New Signups (30d)</p></div>
+            </div>
+            <div class="dash-grid dash-grid-2" style="margin-top: 22px; grid-template-columns: 2fr 1fr; align-items: stretch;">
+                <div class="dash-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;">Recent Registrations</h3>
+                    <div style="overflow-x: auto; flex: 1;">
+                    <table class="dash-table">
+                        <thead><tr><th>Name</th><th>Sport</th><th>Plan</th><th>Date</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr><td>Sarah Jenkins</td><td>Tennis</td><td>Standard</td><td>Jul 21, 2026</td><td><span class="pill">Active</span></td></tr>
+                            <tr><td>Mike Rossi</td><td>Football</td><td>Premium</td><td>Jul 20, 2026</td><td><span class="pill">Active</span></td></tr>
+                            <tr><td>Elena Gilbert</td><td>Swimming</td><td>Basic</td><td>Jul 19, 2026</td><td><span class="pill warn">Pending</span></td></tr>
+                            <tr><td>Tom Hardy</td><td>Basketball</td><td>Premium</td><td>Jul 18, 2026</td><td><span class="pill">Active</span></td></tr>
+                            <tr><td>Priya Nair</td><td>Cricket</td><td>Standard</td><td>Jul 17, 2026</td><td><span class="pill">Active</span></td></tr>
+                            <tr><td>Noah Kim</td><td>Athletics</td><td>Basic</td><td>Jul 16, 2026</td><td><span class="pill">Active</span></td></tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+               <div class="dash-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+    <div>
+        <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;">Quick Actions</h3>
+
+        <div class="qa-grid">
+            <button class="qa-btn" type="button">
+                <i class="fas fa-user-plus"></i> Add Athlete
+            </button>
+
+            <button class="qa-btn" type="button">
+                <i class="fas fa-calendar-plus"></i> New Batch
+            </button>
+
+            <button class="qa-btn" type="button">
+                <i class="fas fa-list-check"></i> Review Bookings
+            </button>
+
+            <button class="qa-btn" type="button">
+                <i class="fas fa-bullhorn"></i> Announcement
+            </button>
+
+            <button class="qa-btn" type="button">
+                <i class="fas fa-user-tie"></i> Assign Coach
+            </button>
+
+            <button class="qa-btn" type="button">
+                <i class="fas fa-chart-line"></i> View Reports
+            </button>
+
+            <button class="qa-btn" type="button">
+                <i class="fas fa-clipboard-list"></i> Edit Programs
+            </button>
+
+            <button class="qa-btn" type="button">
+                <i class="fas fa-gear"></i> System Settings
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.qa-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+        window.location.href = '404.html';
+    });
+});
+</script>
+            </div>
+            <div class="dash-grid dash-grid-2" style="margin-top: 22px; grid-template-columns: 1fr 1fr;">
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-chart-pie highlight"></i> Live Facility Occupancy</h3>
+                    <div style="margin-bottom:12px;">
+                        <div class="stat-row"><span>FIFA Synthetic Turf A</span><span>85% Full</span></div>
+                        <div class="bar-track"><span class="bar-fill bar-fill-emerald" data-value="85"></span></div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <div class="stat-row"><span>Indoor Basketball Court 1</span><span>92% Full</span></div>
+                        <div class="bar-track"><span class="bar-fill bar-fill-warning" data-value="92"></span></div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <div class="stat-row"><span>Olympic Heated Pool</span><span>60% Full</span></div>
+                        <div class="bar-track"><span class="bar-fill bar-fill-cyan" data-value="60"></span></div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <div class="stat-row"><span>Cricket Nets Intensive</span><span>75% Full</span></div>
+                        <div class="bar-track"><span class="bar-fill bar-fill-purple" data-value="75"></span></div>
+                    </div>
+                    <div>
+                        <div class="stat-row"><span>High-Performance Gym</span><span>48% Full</span></div>
+                        <div class="bar-track"><span class="bar-fill bar-fill-coral" data-value="48"></span></div>
+                    </div>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-user-tie highlight"></i> Active Duty Coaches Today</h3>
+                    <div class="leaderboard-rank-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <img src="assets/coach male1-optimized.webp" style="width:34px;height:34px;border-radius:50%;object-fit:cover;">
+                            <div><strong style="color:#fff;">Coach Marcus Diaz</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Football • Field A</p></div>
+                        </div>
+                        <span class="pill">On Turf</span>
+                    </div>
+                    <div class="leaderboard-rank-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <img src="assets/coach female1-optimized.webp" style="width:34px;height:34px;border-radius:50%;object-fit:cover;">
+                            <div><strong style="color:#fff;">Coach Elena Rostova</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Tennis • Court 2</p></div>
+                        </div>
+                        <span class="pill">On Turf</span>
+                    </div>
+                    <div class="leaderboard-rank-item">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <img src="assets/coach male5-optimized.webp" style="width:34px;height:34px;border-radius:50%;object-fit:cover;">
+                            <div><strong style="color:#fff;">Coach Kwame Vance</strong><p style="margin:0;font-size:0.8rem;color:var(--text-muted);">Gym • Iron Forge</p></div>
+                        </div>
+                        <span class="pill warn">On Break</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-athletes">
+            <div class="dash-grid dash-grid-4" style="margin-bottom: 22px;">
+                <div class="athlete-compact-card theme-football">
+                    <div class="athlete-compact-bg"><img src="assets/academycenter.webp" alt="Football Athletes"></div>
+                    <div class="athlete-compact-overlay"></div>
+                    <div class="athlete-compact-body">
+                        <div class="athlete-card-header">
+                            <div class="athlete-ico-wrap"><i class="fas fa-futbol"></i></div>
+                            <div class="athlete-info">
+                                <span class="athlete-title">Football Athletes</span>
+                                <span class="athlete-sub">Active Roster</span>
+                            </div>
+                        </div>
+                        <div class="athlete-card-footer">
+                            <h3 class="athlete-num">320</h3>
+                            <span class="athlete-trend"><i class="fas fa-arrow-trend-up"></i> +12%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="athlete-compact-card theme-basketball">
+                    <div class="athlete-compact-bg"><img src="assets/cricket.webp" alt="Basketball Athletes"></div>
+                    <div class="athlete-compact-overlay"></div>
+                    <div class="athlete-compact-body">
+                        <div class="athlete-card-header">
+                            <div class="athlete-ico-wrap"><i class="fas fa-basketball"></i></div>
+                            <div class="athlete-info">
+                                <span class="athlete-title">Basketball Athletes</span>
+                                <span class="athlete-sub">Varsity & Skills</span>
+                            </div>
+                        </div>
+                        <div class="athlete-card-footer">
+                            <h3 class="athlete-num">210</h3>
+                            <span class="athlete-trend"><i class="fas fa-arrow-trend-up"></i> +8%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="athlete-compact-card theme-tennis">
+                    <div class="athlete-compact-bg"><img src="assets/Tennis.webp" alt="Tennis Athletes"></div>
+                    <div class="athlete-compact-overlay"></div>
+                    <div class="athlete-compact-body">
+                        <div class="athlete-card-header">
+                            <div class="athlete-ico-wrap"><i class="fas fa-table-tennis-paddle-ball"></i></div>
+                            <div class="athlete-info">
+                                <span class="athlete-title">Tennis Athletes</span>
+                                <span class="athlete-sub">Pro Track</span>
+                            </div>
+                        </div>
+                        <div class="athlete-card-footer">
+                            <h3 class="athlete-num">180</h3>
+                            <span class="athlete-trend"><i class="fas fa-arrow-trend-up"></i> +15%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="athlete-compact-card theme-swimming">
+                    <div class="athlete-compact-bg"><img src="assets/trainingcenter.webp" alt="Swimming Athletes"></div>
+                    <div class="athlete-compact-overlay"></div>
+                    <div class="athlete-compact-body">
+                        <div class="athlete-card-header">
+                            <div class="athlete-ico-wrap"><i class="fas fa-person-swimming"></i></div>
+                            <div class="athlete-info">
+                                <span class="athlete-title">Swimming Athletes</span>
+                                <span class="athlete-sub">Squad A & B</span>
+                            </div>
+                        </div>
+                        <div class="athlete-card-footer">
+                            <h3 class="athlete-num">260</h3>
+                            <span class="athlete-trend"><i class="fas fa-arrow-trend-up"></i> +10%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dash-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin: 0;">Athlete Directory</h3>
+                    <input type="text" placeholder="Search athletes..." style="padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.25); color: #fff;">
+                </div>
+                <div style="overflow-x: auto;">
+                <table class="dash-table">
+                    <thead><tr><th>Name</th><th>Age</th><th>Sport</th><th>Batch</th><th>Coach</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>Aarav Mehta</td><td>14</td><td>Football</td><td>U-16 Strikers</td><td>Coach Diaz</td><td><span class="pill">Active</span></td></tr>
+                        <tr><td>Sarah Jenkins</td><td>21</td><td>Tennis</td><td>Pro Track</td><td>Coach Elena</td><td><span class="pill">Active</span></td></tr>
+                        <tr><td>Mike Rossi</td><td>19</td><td>Football</td><td>Elite Academy</td><td>Coach Diaz</td><td><span class="pill">Active</span></td></tr>
+                        <tr><td>Elena Gilbert</td><td>16</td><td>Swimming</td><td>Squad A</td><td>Coach Marcus</td><td><span class="pill warn">Trial</span></td></tr>
+                        <tr><td>Tom Hardy</td><td>23</td><td>Basketball</td><td>Varsity</td><td>Coach Kwame</td><td><span class="pill">Active</span></td></tr>
+                        <tr><td>Priya Nair</td><td>18</td><td>Cricket</td><td>Nets Intensive</td><td>Coach Reyes</td><td><span class="pill">Active</span></td></tr>
+                        <tr><td>Noah Kim</td><td>12</td><td>Athletics</td><td>Speed Camp</td><td>Coach Lily</td><td><span class="pill bad">Inactive</span></td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-batches">
+            <div class="dash-grid dash-grid-3">
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-futbol"></i></div><h3 style="font-size: 1.2rem; color: #fff;">U-16 Strikers</h3><p>Football • Coach Diaz</p><div class="stat-row"><span>Mon/Wed/Fri, 5:00 PM</span><span>24/28</span></div><div class="bar-track"><span class="bar-fill" data-value="86" style="width: 86%;"></span></div></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-basketball"></i></div><h3 style="font-size: 1.2rem; color: #fff;">Varsity Hoops</h3><p>Basketball • Coach Kwame</p><div class="stat-row"><span>Tue/Thu, 6:00 PM</span><span>18/20</span></div><div class="bar-track"><span class="bar-fill" data-value="90" style="width: 90%;"></span></div></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-table-tennis-paddle-ball"></i></div><h3 style="font-size: 1.2rem; color: #fff;">Pro Track Tennis</h3><p>Tennis • Coach Elena</p><div class="stat-row"><span>Daily, 7:00 AM</span><span>12/15</span></div><div class="bar-track"><span class="bar-fill" data-value="80" style="width: 80%;"></span></div></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-person-swimming"></i></div><h3 style="font-size: 1.2rem; color: #fff;">Squad A Swim</h3><p>Swimming • Coach Marcus</p><div class="stat-row"><span>Mon-Sat, 6:00 AM</span><span>30/30</span></div><div class="bar-track"><span class="bar-fill" data-value="100" style="width: 100%;"></span></div></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-baseball-bat-ball"></i></div><h3 style="font-size: 1.2rem; color: #fff;">Nets Intensive</h3><p>Cricket • Coach Reyes</p><div class="stat-row"><span>Wed/Sat, 4:00 PM</span><span>16/24</span></div><div class="bar-track"><span class="bar-fill" data-value="66" style="width: 66%;"></span></div></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-person-running"></i></div><h3 style="font-size: 1.2rem; color: #fff;">Speed Camp</h3><p>Athletics • Coach Lily</p><div class="stat-row"><span>Tue/Fri, 5:30 PM</span><span>9/20</span></div><div class="bar-track"><span class="bar-fill" data-value="45" style="width: 45%;"></span></div></div>
+            </div>
+        </section>
+       <section class="dash-panel" id="section-programs">
+    <div class="dash-grid dash-grid-3">
+
+        <div class="dash-card">
+            <span class="pill">Elite</span>
+            <h3 style="font-size: 1.2rem; color: #fff; margin: 10px 0 4px;">
+                Football Elite Academy
+            </h3>
+            <p>12-week high-performance program with match analytics.</p>
+            <p style="color: var(--accent); font-weight: 700;">$149 / mo</p>
+            <button type="button" class="btn btn-outline edit-program">
+                Edit Program
+            </button>
+        </div>
+
+        <div class="dash-card">
+            <span class="pill warn">Intermediate</span>
+            <h3 style="font-size: 1.2rem; color: #fff; margin: 10px 0 4px;">
+                Basketball Skills Lab
+            </h3>
+            <p>Ball-handling, shooting form, and defensive footwork.</p>
+            <p style="color: var(--accent); font-weight: 700;">$119 / mo</p>
+            <button type="button" class="btn btn-outline edit-program">
+                Edit Program
+            </button>
+        </div>
+
+        <div class="dash-card">
+            <span class="pill">Elite</span>
+            <h3 style="font-size: 1.2rem; color: #fff; margin: 10px 0 4px;">
+                Tennis Pro Track
+            </h3>
+            <p>One-on-one coaching for tournament-ready players.</p>
+            <p style="color: var(--accent); font-weight: 700;">$179 / mo</p>
+            <button type="button" class="btn btn-outline edit-program">
+                Edit Program
+            </button>
+        </div>
+
+        <div class="dash-card">
+            <span class="pill warn">Beginner</span>
+            <h3 style="font-size: 1.2rem; color: #fff; margin: 10px 0 4px;">
+                Swimming Squad
+            </h3>
+            <p>Stroke technique, endurance and race starts.</p>
+            <p style="color: var(--accent); font-weight: 700;">$99 / mo</p>
+            <button type="button" class="btn btn-outline edit-program">
+                Edit Program
+            </button>
+        </div>
+
+        <div class="dash-card">
+            <span class="pill">Intermediate</span>
+            <h3 style="font-size: 1.2rem; color: #fff; margin: 10px 0 4px;">
+                Cricket Nets Intensive
+            </h3>
+            <p>Net sessions focused on batting and spin bowling.</p>
+            <p style="color: var(--accent); font-weight: 700;">$129 / mo</p>
+            <button type="button" class="btn btn-outline edit-program">
+                Edit Program
+            </button>
+        </div>
+
+        <div class="dash-card">
+            <span class="pill warn">Beginner</span>
+            <h3 style="font-size: 1.2rem; color: #fff; margin: 10px 0 4px;">
+                Athletics Speed Camp
+            </h3>
+            <p>Sprint mechanics, agility drills and conditioning.</p>
+            <p style="color: var(--accent); font-weight: 700;">$89 / mo</p>
+            <button type="button" class="btn btn-outline edit-program">
+                Edit Program
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<script>
+document.querySelectorAll('.edit-program').forEach(function(button) {
+    button.addEventListener('click', function() {
+        window.location.href = '404.html';
+    });
+});
+</script>
+       <section class="dash-panel" id="section-bookings">
+    <div class="dash-card">
+
+        <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;">
+            Booking Requests
+        </h3>
+
+        <div style="overflow-x: auto;">
+            <table class="dash-table">
+
+                <thead>
+                    <tr>
+                        <th>Athlete</th>
+                        <th>Program</th>
+                        <th>Requested</th>
+                        <th>Slot</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <!-- Liam Foster -->
+                    <tr>
+                        <td>Liam Foster</td>
+                        <td>Football Elite Academy</td>
+                        <td>Jul 22, 2026</td>
+                        <td>5:00 PM</td>
+                        <td>
+                            <span class="pill warn">Pending</span>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-primary booking-redirect"
+                                style="padding: 6px 14px; font-size: .8rem;">
+                                Approve
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn btn-outline booking-redirect"
+                                style="padding: 6px 14px; font-size: .8rem;">
+                                Decline
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Zoe Bennett -->
+                    <tr>
+                        <td>Zoe Bennett</td>
+                        <td>Swimming Squad</td>
+                        <td>Jul 23, 2026</td>
+                        <td>6:00 AM</td>
+                        <td>
+                            <span class="pill warn">Pending</span>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-primary booking-redirect"
+                                style="padding: 6px 14px; font-size: .8rem;">
+                                Approve
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn btn-outline booking-redirect"
+                                style="padding: 6px 14px; font-size: .8rem;">
+                                Decline
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Ravi Shah -->
+                    <tr>
+                        <td>Ravi Shah</td>
+                        <td>Cricket Nets Intensive</td>
+                        <td>Jul 21, 2026</td>
+                        <td>4:00 PM</td>
+                        <td>
+                            <span class="pill">Confirmed</span>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-outline"
+                                style="padding: 6px 14px; font-size: .8rem;"
+                                disabled>
+                                Confirmed
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Aisha Khan -->
+                    <tr>
+                        <td>Aisha Khan</td>
+                        <td>Tennis Pro Track</td>
+                        <td>Jul 24, 2026</td>
+                        <td>7:00 AM</td>
+                        <td>
+                            <span class="pill warn">Pending</span>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-primary booking-redirect"
+                                style="padding: 6px 14px; font-size: .8rem;">
+                                Approve
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn btn-outline booking-redirect"
+                                style="padding: 6px 14px; font-size: .8rem;">
+                                Decline
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Dev Patel -->
+                    <tr>
+                        <td>Dev Patel</td>
+                        <td>Basketball Skills Lab</td>
+                        <td>Jul 20, 2026</td>
+                        <td>6:00 PM</td>
+                        <td>
+                            <span class="pill bad">Declined</span>
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-outline"
+                                style="padding: 6px 14px; font-size: .8rem;"
+                                disabled>
+                                Declined
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<script>
+document.querySelectorAll('.booking-redirect').forEach(function(button) {
+    button.addEventListener('click', function() {
+        window.location.href = '404.html';
+    });
+});
+</script>
+        <section class="dash-panel" id="section-revenue">
+            <div class="dash-grid dash-grid-4" style="margin-bottom: 18px;">
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-sack-dollar"></i></div><h3>$184.2k</h3><p>Total Revenue</p></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-arrow-trend-up"></i></div><h3>$18.4k</h3><p>This Month</p></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-clock"></i></div><h3>$3.2k</h3><p>Outstanding Dues</p></div>
+                <div class="dash-card"><div class="dash-ico"><i class="fas fa-rotate-left"></i></div><h3>$640</h3><p>Refunds Issued</p></div>
+            </div>
+            <div class="dash-card">
+                <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;">Recent Transactions</h3>
+                <div style="overflow-x: auto;">
+                <table class="dash-table">
+                    <thead><tr><th>Athlete</th><th>Program</th><th>Amount</th><th>Date</th><th>Method</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>Sarah Jenkins</td><td>Tennis Pro Track</td><td>$179</td><td>Jul 21, 2026</td><td>Card</td><td><span class="pill">Paid</span></td></tr>
+                        <tr><td>Mike Rossi</td><td>Football Elite Academy</td><td>$149</td><td>Jul 20, 2026</td><td>UPI</td><td><span class="pill">Paid</span></td></tr>
+                        <tr><td>Elena Gilbert</td><td>Swimming Squad</td><td>$99</td><td>Jul 19, 2026</td><td>Card</td><td><span class="pill warn">Due</span></td></tr>
+                        <tr><td>Tom Hardy</td><td>Basketball Skills Lab</td><td>$119</td><td>Jul 18, 2026</td><td>Card</td><td><span class="pill">Paid</span></td></tr>
+                        <tr><td>Priya Nair</td><td>Cricket Nets Intensive</td><td>$129</td><td>Jul 17, 2026</td><td>Bank Transfer</td><td><span class="pill">Paid</span></td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-coaches">
+            <div class="dash-grid dash-grid-3">
+                <div class="dash-card"><img src="assets/coach male1-optimized.webp" alt="Coach Diaz" class="coach-photo"><h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 2px;">Coach Diaz</h3><p style="margin-bottom: 6px;">Football Specialist • 9 yrs experience</p><span class="pill"><i class="fas fa-star"></i> 4.9 Rating</span></div>
+                <div class="dash-card"><img src="assets/img2.webp" alt="Coach Elena" class="coach-photo"><h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 2px;">Coach Elena</h3><p style="margin-bottom: 6px;">Tennis Specialist • 7 yrs experience</p><span class="pill"><i class="fas fa-star"></i> 4.8 Rating</span></div>
+                <div class="dash-card"><img src="assets/m7.webp" alt="Coach Marcus" class="coach-photo"><h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 2px;">Coach Marcus</h3><p style="margin-bottom: 6px;">Swimming Specialist • 11 yrs experience</p><span class="pill"><i class="fas fa-star"></i> 4.9 Rating</span></div>
+                <div class="dash-card"><img src="assets/w7.webp" alt="Coach Lily" class="coach-photo"><h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 2px;">Coach Lily</h3><p style="margin-bottom: 6px;">Athletics Specialist • 6 yrs experience</p><span class="pill"><i class="fas fa-star"></i> 4.7 Rating</span></div>
+                <div class="dash-card"><img src="assets/coach male5-optimized.webp" alt="Coach Kwame" class="coach-photo"><h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 2px;">Coach Kwame</h3><p style="margin-bottom: 6px;">Basketball Specialist • 8 yrs experience</p><span class="pill"><i class="fas fa-star"></i> 4.9 Rating</span></div>
+                <div class="dash-card"><img src="assets/w5.webp" alt="Coach Reyes" class="coach-photo"><h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 2px;">Coach Reyes</h3><p style="margin-bottom: 6px;">Cricket Specialist • 10 yrs experience</p><span class="pill"><i class="fas fa-star"></i> 4.8 Rating</span></div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-reports">
+            <div class="dash-grid dash-grid-2">
+                <div class="dash-card">
+                    <h3 style="font-size: 1.1rem; color: #fff;">Attendance Rate</h3>
+                    <div class="stat-row"><span>Across all batches</span><span>92%</span></div>
+                    <div class="bar-track"><span class="bar-fill" data-value="92"></span></div>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.1rem; color: #fff;">Member Retention</h3>
+                    <div class="stat-row"><span>90-day rolling</span><span>88%</span></div>
+                    <div class="bar-track"><span class="bar-fill" data-value="88"></span></div>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.1rem; color: #fff;">Avg. Satisfaction Score</h3>
+                    <div class="stat-row"><span>Post-session surveys</span><span>95%</span></div>
+                    <div class="bar-track"><span class="bar-fill" data-value="95"></span></div>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.1rem; color: #fff;">Coach Utilization</h3>
+                    <div class="stat-row"><span>Slots booked vs available</span><span>81%</span></div>
+                    <div class="bar-track"><span class="bar-fill" data-value="81"></span></div>
+                </div>
+            </div>
+            <div class="dash-card" style="margin-top: 18px;">
+                <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;">Top Performing Batches</h3>
+                <div style="overflow-x: auto;">
+                <table class="dash-table">
+                    <thead><tr><th>Batch</th><th>Sport</th><th>Attendance</th><th>Retention</th></tr></thead>
+                    <tbody>
+                        <tr><td>Squad A Swim</td><td>Swimming</td><td>98%</td><td>96%</td></tr>
+                        <tr><td>Varsity Hoops</td><td>Basketball</td><td>94%</td><td>90%</td></tr>
+                        <tr><td>U-16 Strikers</td><td>Football</td><td>91%</td><td>88%</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-notifications">
+            <div class="dash-card">
+               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+
+    <h3 style="font-size: 1.15rem; color: #fff; margin: 0;">
+        Notifications
+    </h3>
+
+    <button
+        class="btn btn-outline"
+        id="markAllRead"
+        type="button"
+        style="padding: 8px 18px; font-size: .85rem;">
+        Mark all as read
+    </button>
+
+</div>
+
+<script>
+document.getElementById('markAllRead').addEventListener('click', function() {
+    window.location.href = '404.html';
+});
+</script>
+                <div class="notif-item unread"><div class="notif-ico"><i class="fas fa-user-plus"></i></div><div><strong>New athlete registered</strong><p style="margin: 2px 0 0; font-size: .85rem;">Liam Foster signed up for Football Elite Academy. <span style="color: var(--text-muted);">2 hrs ago</span></p></div></div>
+                <div class="notif-item unread"><div class="notif-ico"><i class="fas fa-calendar-check"></i></div><div><strong>Booking request pending</strong><p style="margin: 2px 0 0; font-size: .85rem;">Zoe Bennett requested a Swimming Squad slot. <span style="color: var(--text-muted);">4 hrs ago</span></p></div></div>
+                <div class="notif-item"><div class="notif-ico"><i class="fas fa-sack-dollar"></i></div><div><strong>Payment received</strong><p style="margin: 2px 0 0; font-size: .85rem;">Priya Nair paid $129 for Cricket Nets Intensive. <span style="color: var(--text-muted);">Yesterday</span></p></div></div>
+                <div class="notif-item"><div class="notif-ico"><i class="fas fa-triangle-exclamation"></i></div><div><strong>Batch nearing capacity</strong><p style="margin: 2px 0 0; font-size: .85rem;">Squad A Swim is at 100% capacity. <span style="color: var(--text-muted);">2 days ago</span></p></div></div>
+                <div class="notif-item"><div class="notif-ico"><i class="fas fa-star"></i></div><div><strong>Coach review received</strong><p style="margin: 2px 0 0; font-size: .85rem;">Coach Diaz received a 5-star review. <span style="color: var(--text-muted);">3 days ago</span></p></div></div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-settings">
+            <div class="dash-grid dash-grid-2">
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 16px;"><i class="fas fa-sliders highlight"></i> Academy Settings</h3>
+                    <form id="settingsForm">
+                        <div class="form-group"><label>Academy Name</label><input type="text" value="Stackly Sports Academy"></div>
+                        <div class="form-group"><label>Support Email</label><input type="email" value="admin@stackly.com"></div>
+                        <div class="form-group"><label>Contact Phone</label><input type="tel" value="+1 555 010 2024"></div>
+                        <div class="form-group"><label>Timezone</label>
+                            <select>
+                                <option>India (GMT+5:30)</option>
+                                <option>UTC (GMT+0)</option>
+                                <option>Eastern (GMT-5)</option>
+                            </select>
+                        </div>
+                        <div class="dash-info-list" style="margin-bottom: 14px;">
+                            <label class="dash-info-row" for="emailAlerts" style="cursor: pointer;">
+                                <span><i class="fas fa-envelope"></i> Email alerts for bookings</span>
+                                <input type="checkbox" id="emailAlerts" style="width: auto; accent-color: var(--accent);" checked>
+                            </label>
+                            <label class="dash-info-row" for="smsAlerts" style="cursor: pointer;">
+                                <span><i class="fas fa-comment-sms"></i> SMS alerts for dues</span>
+                                <input type="checkbox" id="smsAlerts" style="width: auto; accent-color: var(--accent);">
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Settings</button>
+                    </form>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-shield-halved highlight"></i> System Health</h3>
+                    <div class="dash-mini-card dash-mini-card--ok" style="margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="status-dot status-dot--live"></span>
+                            <strong style="color: #fff; font-size: 0.9rem;">All Systems Operational</strong>
+                        </div>
+                        <span class="pill" style="font-size: 0.75rem;">99.9%</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <div class="stat-row"><span>Cloud Storage</span><span>42.8 / 100 GB</span></div>
+                        <div class="bar-track"><span class="bar-fill bar-fill-emerald" data-value="42" style="width: 42%;"></span></div>
+                    </div>
+                    <div class="dash-info-list" style="margin-bottom: 12px;">
+                        <div class="dash-info-row"><span><i class="fas fa-lock"></i> SSL Encryption</span><strong>TLS v1.3</strong></div>
+                        <div class="dash-info-row"><span><i class="fas fa-user-shield"></i> 2FA</span><span class="pill">Enabled</span></div>
+                        <div class="dash-info-row"><span><i class="fas fa-database"></i> Last Backup</span><strong>Today 04:00</strong></div>
+                    </div>
+                    <div class="dash-activity-list" style="margin-bottom: 12px;">
+                        <div class="dash-activity-row"><i class="fas fa-key" style="color: var(--accent);"></i><span>Security policy updated • <small>1 hr ago</small></span></div>
+                        <div class="dash-activity-row"><i class="fas fa-database" style="color: #06b6d4;"></i><span>Database backup done • <small>3 hrs ago</small></span></div>
+                        <div class="dash-activity-row"><i class="fas fa-bell" style="color: #f59e0b;"></i><span>Email alerts updated • <small>Yesterday</small></span></div>
+                    </div>
+                    <div class="dash-mini-grid dash-mini-grid--actions">
+                        <button type="button" class="dash-mini-card dash-mini-action" data-sys-action="backup"><i class="fas fa-hard-drive"></i><span>Run Backup</span></button>
+                        <button type="button" class="dash-mini-card dash-mini-action" data-sys-action="cache"><i class="fas fa-broom"></i><span>Clear Cache</span></button>
+                        <button type="button" class="dash-mini-card dash-mini-action" data-sys-action="audit"><i class="fas fa-file-shield"></i><span>Export Audit</span></button>
+                        <button type="button" class="dash-mini-card dash-mini-action" data-sys-action="health"><i class="fas fa-heart-pulse"></i><span>Health Check</span></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="dash-panel" id="section-support">
+            <div class="dash-grid dash-grid-2">
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 16px;"><i class="fas fa-headset highlight"></i> Raise a Support Ticket</h3>
+                    <form id="supportForm">
+                        <div class="form-group"><label>Subject</label><input type="text" placeholder="Briefly describe the issue" required></div>
+                        <div class="form-group"><label>Category</label>
+                            <select required><option value="" disabled selected>Select a category</option><option>Billing</option><option>Technical</option><option>Coaching</option><option>Other</option></select>
+                        </div>
+                        <div class="form-group"><label>Message</label><textarea rows="4" placeholder="Tell us more..." required></textarea></div>
+                        <div class="dash-activity-list" style="margin-bottom: 14px;">
+                            <div class="dash-activity-row"><i class="fas fa-circle-check" style="color: #34d399;"></i><span>#4821 Billing receipt • <small>Resolved</small></span></div>
+                            <div class="dash-activity-row"><i class="fas fa-spinner" style="color: #f59e0b;"></i><span>#4830 Calendar sync • <small>In progress</small></span></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Ticket</button>
+                    </form>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 14px;"><i class="fas fa-star highlight"></i> Priority VIP Hotline</h3>
+                    <div class="dash-mini-card dash-mini-card--agent" style="margin-bottom: 12px;">
+                        <img src="assets/w5.webp" alt="Support Specialist" class="dash-agent-avatar">
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                                <strong style="color: #fff; font-size: 0.95rem;">Sarah Connor</strong>
+                                <span class="pill" style="font-size: 0.72rem;">Online</span>
+                            </div>
+                            <p style="margin: 2px 0 0; font-size: 0.8rem; color: var(--text-muted);">Lead Technical Support</p>
+                        </div>
+                    </div>
+                    <div class="dash-mini-grid" style="margin-bottom: 14px;">
+                        <div class="dash-mini-card dash-mini-card--accent">
+                            <span class="dash-mini-label">Hotline</span>
+                            <strong>+1 (800) STACKLY</strong>
+                        </div>
+                        <div class="dash-mini-card dash-mini-card--cyan">
+                            <span class="dash-mini-label">Avg. Response</span>
+                            <strong>&lt; 15 mins</strong>
+                        </div>
+                    </div>
+                    <div class="dash-faq-list" style="margin-bottom: 14px;">
+                        <details class="dash-faq-item">
+                            <summary>How do I assign a new coach?</summary>
+                            <p>Open Batches, select the batch, then use Edit Coach.</p>
+                        </details>
+                        <details class="dash-faq-item">
+                            <summary>How are booking approvals handled?</summary>
+                            <p>Go to Bookings and Approve or Decline the request.</p>
+                        </details>
+                        <details class="dash-faq-item">
+                            <summary>Where can I export reports?</summary>
+                            <p>Open Reports and use Export Financial Summary.</p>
+                        </details>
+                    </div>
+                    <div class="dash-mini-grid dash-mini-grid--actions">
+                        <button type="button" class="dash-mini-card dash-mini-action" data-support-resource="chat"><i class="fas fa-comments"></i><span>Live Chat</span></button>
+                        <button type="button" class="dash-mini-card dash-mini-action" data-support-resource="docs"><i class="fas fa-book"></i><span>Admin Docs</span></button>
+                        <button type="button" class="dash-mini-card dash-mini-action" data-support-resource="status"><i class="fas fa-signal"></i><span>Status</span></button>
+                        <button type="button" class="dash-mini-card dash-mini-action" data-support-resource="video"><i class="fas fa-circle-play"></i><span>Guides</span></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</div>
+<div class="modal-backdrop" id="logoutModal">
+    <div class="modal-card">
+        <div style="font-size: 2.6rem; color: #ff5a5a; margin-bottom: 14px;"><i class="fas fa-right-from-bracket"></i></div>
+        <h3>Leaving the pitch?</h3>
+        <p>You're about to sign out of your Stackly Admin account.</p>
+        <div class="modal-actions">
+            <button class="btn btn-outline" id="cancelLogout" style="padding: 12px 26px;">Stay Signed In</button>
+            <button class="btn btn-primary" id="confirmLogout" style="padding: 12px 26px;">Yes, Log Out</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+(function () {
+    var user = window.StacklyAuth.requireAuth('admin');
+    if (!user) return;
+    var displayName = user.name || user.fullName || ((user.firstName || '') + ' ' + (user.lastName || '')).trim() || 'Admin User';
+    var displayEmail = user.email || 'admin@stackly.com';
+    document.querySelectorAll('.js-user-name').forEach(function (el) { el.textContent = displayName; });
+    document.querySelectorAll('.js-user-email').forEach(function (el) { el.textContent = displayEmail; });
+    document.querySelectorAll('.js-user-initials').forEach(function (el) {
+        el.textContent = displayName.trim().split(/\s+/).map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase() || 'A';
+    });
+    var panels = document.querySelectorAll('.dash-panel');
+    var navBtns = document.querySelectorAll('.dash-nav-btn[data-target], .dash-bell[data-target], .qa-btn[data-target]');
+    var sidebar = document.getElementById('dashSidebar');
+    var overlay = document.getElementById('dashOverlay');
+    function animateBars(scope) {
+        scope.querySelectorAll('.bar-fill').forEach(function (el) {
+            var target = el.getAttribute('data-value') || '0';
+            el.style.width = '0%';
+            setTimeout(function () { el.style.width = target + '%'; }, 80);
+        });
+    }
+    window.showSection = function (id) {
+        if (!document.getElementById('section-' + id)) return;
+        panels.forEach(function (p) { p.classList.toggle('active', p.id === 'section-' + id); });
+        document.querySelectorAll('.dash-nav-btn[data-target]').forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-target') === id);
+        });
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+        document.body.classList.remove('dash-sidebar-open');
+        document.documentElement.classList.remove('dash-sidebar-open');
+        if (typeof window.closeDashSidebar === 'function') window.closeDashSidebar();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        var activePanel = document.getElementById('section-' + id);
+        if (id === 'reports' || id === 'batches' || id === 'overview') animateBars(activePanel);
+        history.replaceState(null, '', '#' + id);
+    };
+    navBtns.forEach(function (b) {
+        b.addEventListener('click', function () { window.showSection(b.getAttribute('data-target')); });
+    });
+    var initial = (location.hash || '#overview').replace('#', '');
+    window.showSection(document.getElementById('section-' + initial) ? initial : 'overview');
+
+    // Sidebar toggle is handled once in script.js (initMobileSidebar) — do not double-bind
+    if (typeof window.initMobileSidebar === 'function') {
+        window.initMobileSidebar();
+    }
+    var settingsForm = document.getElementById('settingsForm');
+    if (settingsForm) {
+        var academyNameInput = settingsForm.querySelector('input[type="text"]');
+        var contactPhoneInput = settingsForm.querySelector('input[type="tel"]');
+        if (academyNameInput) {
+            academyNameInput.addEventListener('input', function () {
+                this.value = String(this.value || '').replace(/[0-9]/g, '').replace(/\s{2,}/g, ' ').trimStart();
+            });
+        }
+        if (contactPhoneInput) {
+            contactPhoneInput.addEventListener('input', function () {
+                this.value = String(this.value || '').replace(/\D/g, '').slice(0, 10);
+            });
+        }
+        settingsForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var academyName = academyNameInput ? academyNameInput.value.trim() : '';
+            var contactPhone = contactPhoneInput ? contactPhoneInput.value.replace(/\D/g, '') : '';
+            var nameOk = /^[A-Za-z\s.'-]{2,}$/.test(academyName);
+            var phoneOk = /^\d{10}$/.test(contactPhone);
+            if (!nameOk) {
+                if (academyNameInput) {
+                    academyNameInput.focus();
+                    academyNameInput.setAttribute('aria-invalid', 'true');
+                }
+                window.KickToast.show('Academy name must contain only letters and spaces.', 'error', 'Invalid Name');
+                return;
+            }
+            if (!phoneOk) {
+                if (contactPhoneInput) {
+                    contactPhoneInput.focus();
+                    contactPhoneInput.setAttribute('aria-invalid', 'true');
+                }
+                window.KickToast.show('Phone number must contain exactly 10 digits.', 'error', 'Invalid Phone');
+                return;
+            }
+            academyNameInput && academyNameInput.removeAttribute('aria-invalid');
+            contactPhoneInput && contactPhoneInput.removeAttribute('aria-invalid');
+            window.KickToast.show('Academy settings have been saved successfully.', 'success', 'Settings Saved');
+        });
+    }
+    var supportForm = document.getElementById('supportForm');
+    if (supportForm) {
+        supportForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            window.KickToast.show('Your ticket has been submitted. Our team replies within 24 hours.', 'success', 'Ticket Submitted');
+            supportForm.reset();
+        });
+    }
+    document.querySelectorAll('[data-sys-action]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.KickToast.show('Requested action has been queued.', 'info', 'Action Started');
+        });
+    });
+    document.querySelectorAll('[data-support-resource]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.KickToast.show('Support resource opened in the help center.', 'info', 'Support Center');
+        });
+    });
+    document.querySelectorAll('[data-booking-action]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var row = btn.closest('tr');
+            var action = btn.getAttribute('data-booking-action');
+            var cell = btn.closest('td');
+            if (row) {
+                var pill = row.querySelector('.pill');
+                if (pill) {
+                    pill.textContent = action === 'approve' ? 'Confirmed' : 'Declined';
+                    pill.className = 'pill' + (action === 'approve' ? '' : ' bad');
+                }
+            }
+            if (cell) {
+                cell.innerHTML = '<button class="btn btn-outline" style="padding: 6px 14px; font-size: .8rem;" disabled>' + (action === 'approve' ? 'Confirmed' : 'Declined') + '</button>';
+            }
+            window.KickToast.show(action === 'approve' ? 'Booking confirmed and athlete notified.' : 'Booking request declined.', action === 'approve' ? 'success' : 'info', action === 'approve' ? 'Booking Confirmed' : 'Booking Declined');
+        });
+    });
+    var markAllBtn = document.getElementById('markAllRead');
+    if (markAllBtn) {
+        markAllBtn.addEventListener('click', function () {
+            document.querySelectorAll('.notif-item.unread').forEach(function (n) { n.classList.remove('unread'); });
+            window.KickToast.show('All notifications marked as read.', 'info', 'Inbox Cleared');
+        });
+    }
+    document.querySelectorAll('.modal-backdrop').forEach(function (bd) {
+        bd.addEventListener('click', function (e) { if (e.target === bd) bd.classList.remove('show'); });
+    });
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('select, option, input:not([type="submit"]), textarea, label, details, summary, .form-group, .dash-mini-card, .dash-activity-row, .dash-info-row, .dash-faq-item')) {
+            return;
+        }
+        if (e.target.closest('#dashMenuToggle, #closeSidebarBtn, #dashSidebar, #dashOverlay, .dash-top, .dash-sidebar, .dash-sidebar-overlay')) {
+            return;
+        }
+        var target = e.target.closest('button, .btn, a:not(.nav-logo):not(.dash-top-logo)');
+        if (!target) return;
+        if (target.closest('form')) return;
+        if (
+            target.hasAttribute('data-target') ||
+            target.hasAttribute('data-logout') ||
+            target.hasAttribute('data-booking-action') ||
+            target.hasAttribute('data-sys-action') ||
+            target.hasAttribute('data-support-resource') ||
+            target.closest('.dash-top-logo') ||
+            target.classList.contains('dash-top-logo') ||
+            target.id === 'confirmLogout' ||
+            target.id === 'cancelLogout' ||
+            target.id === 'markAllRead' ||
+            target.classList.contains('close-modal') ||
+            target.closest('.modal-backdrop') ||
+            target.closest('.switch-toggle')
+        ) {
+            return;
+        }
+    }, false);
+})();
+</script>
+</body>
+</html>

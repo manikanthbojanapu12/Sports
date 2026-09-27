@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign in to your Stackly Sports Academy account to view training schedules, track performance, and access your player or admin dashboard.">
+    <meta name="theme-color" content="#00f0ff">
+    <title>Sign In | Stackly Sports Academy</title>
+    <link rel="icon" type="image/webp" href="assets/stacklylogo-transparent.webp">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="auth-shell">
+        <div class="auth-brand">
+            <a href="index.html" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#fff;width:fit-content;">
+                <img src="assets/stacklylogo-transparent.webp" alt="Stackly Sports Academy" style="height:46px;">
+            </a>
+            <span class="live-badge" style="margin-top:28px;width:fit-content;"><i class="fas fa-fire" style="color: var(--accent);"></i> Welcome Back, Champion</span>
+            <h1>Get Back In The Game</h1>
+            <p style="color:rgba(255,255,255,0.78);max-width:440px;line-height:1.7;font-size:1.05rem;">
+                Sign in to check your training schedule, track your telemetry biometrics, and stay connected with your coaches at Stackly Sports Academy.
+            </p>
+
+            <!-- 3 NEW ATHLETE PORTAL WIDGETS -->
+            <!-- Widget 1: Daily Athlete Streak & Telemetry -->
+            <div style="background: rgba(18,29,51,0.75); backdrop-filter: blur(14px); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 18px; padding: 18px 22px; margin-top: 24px; max-width: 440px;">
+                <div class="d-flex justify-between align-center" style="margin-bottom: 8px;">
+                    <span style="font-weight: 700; color: #fff; font-size: 0.95rem;"><i class="fas fa-fire" style="color: var(--accent); margin-right: 8px;"></i> 14-Day Workout Streak</span>
+                    <span class="sports-badge sports-badge-volt">+320 XP</span>
+                </div>
+                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden;">
+                    <div style="width: 82%; height: 100%; background: var(--gradient-accent);"></div>
+                </div>
+                <div class="d-flex justify-between" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 8px;">
+                    <span>Next Milestone: 15 Days</span>
+                    <span style="color: var(--accent-secondary); font-weight: 700;">Combine Readiness: 92%</span>
+                </div>
+            </div>
+
+            <!-- Widget 2: Digital RFID Campus Pass Preview -->
+            <div style="background: rgba(18,29,51,0.75); backdrop-filter: blur(14px); border: 1px solid rgba(0,240,255,0.3); border-radius: 18px; padding: 16px 20px; margin-top: 14px; max-width: 440px; display: flex; align-items: center; justify-content: space-between;">
+                <div class="d-flex align-center gap-2">
+                    <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(0,240,255,0.15); color: var(--accent-secondary); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <div style="color: #fff; font-weight: 700; font-size: 0.92rem;">Digital RFID Turnstile Pass</div>
+                        <div style="color: var(--text-muted); font-size: 0.82rem;">Instant contactless entry at all arena gates</div>
+                    </div>
+                </div>
+                <span class="pulse-indicator"></span>
+            </div>
+
+            <!-- Widget 3: Live Facility Occupancy Ticker -->
+            <div style="background: rgba(18,29,51,0.75); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 14px 20px; margin-top: 14px; max-width: 440px;">
+                <div class="d-flex justify-between align-center" style="font-size: 0.88rem;">
+                    <span style="color: #cbd5e1;"><i class="fas fa-dumbbell" style="color: var(--accent); margin-right: 8px;"></i> Main Weight Room:</span>
+                    <strong style="color: var(--accent);">58% Capacity (Moderate)</strong>
+                </div>
+                <div class="d-flex justify-between align-center" style="font-size: 0.88rem; margin-top: 6px;">
+                    <span style="color: #cbd5e1;"><i class="fas fa-futbol" style="color: var(--accent-secondary); margin-right: 8px;"></i> Turf Dome A:</span>
+                    <strong style="color: var(--accent-secondary);">Varsity Scrimmage Live</strong>
+                </div>
+            </div>
+
+            <div style="margin-top:28px;display:flex;align-items:center;gap:16px;">
+                <div style="display:flex;">
+                    <img src="assets/coach male1-optimized.webp" alt="Coach" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);">
+                    <img src="assets/coach female1-optimized.webp" alt="Coach" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);margin-left:-16px;">
+                    <img src="assets/coach male5-optimized.webp" alt="Coach" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);margin-left:-16px;">
+                </div>
+                <span style="color:rgba(255,255,255,0.85);font-size:0.92rem;font-weight:600;">Trusted by 500+ athletes</span>
+            </div>
+        </div>
+        <div class="auth-panel">
+            <div class="auth-card-box">
+                <div class="auth-card-header">
+                    <a href="index.html" class="auth-logo-link">
+                        <img src="assets/stacklylogo-transparent.webp" alt="Stackly" style="height:48px;">
+                    </a>
+                    <a href="index.html" class="auth-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> <span>Back to Home</span>
+                    </a>
+                </div>
+                <h2>Sign In to Your Account</h2>
+                <p class="sub">Choose your role and enter your credentials to open your dashboard.</p>
+                <div class="role-switch" id="roleSwitch">
+                    <label class="role-option active" id="roleOptionPlayer">
+                        <input type="radio" name="role" value="player" id="rolePlayer" checked>
+                        <i class="fa-solid fa-user"></i>
+                        <span>Player</span>
+                    </label>
+                    <label class="role-option" id="roleOptionAdmin">
+                        <input type="radio" name="role" value="admin" id="roleAdmin">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Admin</span>
+                    </label>
+                </div>
+                <form id="signinForm" novalidate>
+                    <div class="form-group" id="nameGroup">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" autocomplete="name" required>
+                        <span class="form-error">Name contains only alphabets</span>
+                    </div>
+                    <div class="form-group" id="emailGroup">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                        <span class="form-error">Please enter a valid email address</span>
+                    </div>
+                    <div class="form-group" id="passwordGroup">
+                        <label for="password">Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" minlength="8" required>
+                            <button type="button" class="password-toggle-btn" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                                <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                            </button>
+                        </div>
+                        <span class="form-error">Password must be at least 8 characters</span>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <span class="custom-checkbox"><i class="fa-solid fa-check"></i></span>
+                            <span>Remember me</span>
+                        </label>
+                        <a href="404.html" id="forgotPasswordBtn" class="forgot-password-link">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="signinSubmit" style="width:100%;">
+                        <span class="btn-text">Sign In</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </form>
+                <div style="display:flex;align-items:center;gap:14px;margin:28px 0;color:var(--text-muted);font-size:0.9rem;">
+                    <span style="flex:1;height:1px;background:rgba(255,255,255,0.12);"></span>
+                    or continue with
+                    <span style="flex:1;height:1px;background:rgba(255,255,255,0.12);"></span>
+                </div>
+                <div style="display:flex;gap:14px;margin-bottom:28px;">
+                    <button type="button" class="btn social-btn google-btn" id="googleSignin">
+                        <i class="fa-brands fa-google"></i> <span>Google</span>
+                    </button>
+                    <button type="button" class="btn social-btn apple-btn" id="appleSignin">
+                        <i class="fa-brands fa-apple"></i> <span>Apple</span>
+                    </button>
+                </div>
+                <p style="text-align:center;color:var(--text-muted);font-size:0.92rem;">
+                    New to Stackly? <a href="signup.html" style="color:var(--accent);font-weight:700;">Create an account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+(function () {
+    var roleSwitch = document.getElementById('roleSwitch');
+    var roleInputs = roleSwitch.querySelectorAll('input[name="role"]');
+    function syncRoleUI() {
+        roleInputs.forEach(function (input) {
+            var option = input.closest('.role-option');
+            if (input.checked) option.classList.add('active');
+            else option.classList.remove('active');
+        });
+    }
+    roleInputs.forEach(function (input) {
+        input.addEventListener('change', syncRoleUI);
+    });
+    syncRoleUI();
+
+    var nameInput = document.getElementById('fullName');
+    var emailInput = document.getElementById('email');
+    var passwordInput = document.getElementById('password');
+    var rememberCheckbox = document.getElementById('rememberMe');
+
+    // Load remembered login details if available
+    try {
+        var savedUser = localStorage.getItem('stackly_remembered_user');
+        if (savedUser) {
+            var parsed = JSON.parse(savedUser);
+            if (parsed && parsed.email) {
+                emailInput.value = parsed.email;
+                if (parsed.name) nameInput.value = parsed.name;
+                if (rememberCheckbox) rememberCheckbox.checked = true;
+            }
+        }
+    } catch (e) {}
+
+    // Password visibility toggle
+    var togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    if (togglePasswordBtn) {
+        togglePasswordBtn.addEventListener('click', function () {
+            var isPass = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isPass ? 'text' : 'password');
+            var icon = document.getElementById('togglePasswordIcon');
+            if (icon) {
+                icon.className = isPass ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            }
+        });
+    }
+
+    [nameInput, emailInput, passwordInput].forEach(function (input) {
+        input.addEventListener('input', function () {
+            this.closest('.form-group').classList.remove('has-error');
+        });
+    });
+
+    // Form submission
+    document.getElementById('signinForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var nameGroup = document.getElementById('nameGroup');
+        var emailGroup = document.getElementById('emailGroup');
+        var passwordGroup = document.getElementById('passwordGroup');
+        var name = nameInput.value.trim();
+        var email = emailInput.value.trim();
+        var password = passwordInput.value;
+        var role = document.querySelector('input[name="role"]:checked').value;
+        var isValid = true;
+        var errorMsg = '';
+
+        var nameOk = window.StacklyForms.isName(name);
+        window.StacklyForms.setGroupError(nameGroup, !nameOk);
+        if (!nameOk) { isValid = false; errorMsg = errorMsg || 'Please enter a valid name using letters only (min 2 characters).'; }
+
+        var emailOk = window.StacklyForms.isEmail(email);
+        window.StacklyForms.setGroupError(emailGroup, !emailOk);
+        if (!emailOk) { isValid = false; errorMsg = errorMsg || 'Please enter a valid email address.'; }
+
+        var passwordOk = window.StacklyForms.isPassword(password);
+        window.StacklyForms.setGroupError(passwordGroup, !passwordOk);
+        if (!passwordOk) { isValid = false; errorMsg = errorMsg || 'Password must be at least 8 characters.'; }
+
+        if (!isValid) {
+            window.KickToast.show(errorMsg, 'error', 'Offside');
+            return;
+        }
+
+        // Save or clear Remember Me
+        if (rememberCheckbox && rememberCheckbox.checked) {
+            try {
+                localStorage.setItem('stackly_remembered_user', JSON.stringify({ name: name, email: email }));
+            } catch (err) {}
+        } else {
+            try {
+                localStorage.removeItem('stackly_remembered_user');
+            } catch (err) {}
+        }
+
+        var submitBtn = document.getElementById('signinSubmit');
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+
+        setTimeout(function () {
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+            window.StacklyAuth.setUser({
+                name: name,
+                email: email,
+                role: role,
+                loggedIn: true,
+                loginTime: new Date().toISOString()
+            });
+            window.KickToast.show('Welcome back, ' + name.split(' ')[0] + '! Taking you to your dashboard...', 'success', 'Kickoff');
+            setTimeout(function () {
+                window.location.href = window.StacklyAuth.dashboardFor(role);
+            }, 1500);
+        }, 1500);
+    });
+
+    document.getElementById('forgotPasswordBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        window.location.href = '404.html';
+    });
+    document.getElementById('googleSignin').addEventListener('click', function () { window.location.href = '404.html'; });
+    document.getElementById('appleSignin').addEventListener('click', function () { window.location.href = '404.html'; });
+
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            var form = document.getElementById('signinForm');
+            if (form) form.reset();
+            document.querySelectorAll('.form-group').forEach(function (g) { g.classList.remove('has-error'); });
+            document.getElementById('rolePlayer').checked = true;
+            syncRoleUI();
+        }
+    });
+})();
+</script>
+</body>
+</html>
