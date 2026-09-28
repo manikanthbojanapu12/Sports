@@ -95,12 +95,12 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
                         <div class="form-group" id="firstNameGroup">
                             <label for="firstName">First Name</label>
-                            <input type="text" id="firstName" name="firstName" placeholder="First name" autocomplete="given-name" required>
+                            <input type="text" id="firstName" name="firstName" placeholder="First name" autocomplete="given-name" pattern="[A-Za-z\s]+" title="Letters only" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
                             <span class="form-error" id="firstNameError">Please enter your first name</span>
                         </div>
                         <div class="form-group" id="lastNameGroup">
                             <label for="lastName">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" placeholder="Last name" autocomplete="family-name" required>
+                            <input type="text" id="lastName" name="lastName" placeholder="Last name" autocomplete="family-name" pattern="[A-Za-z\s]+" title="Letters only" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
                             <span class="form-error" id="lastNameError">Please enter your last name</span>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="form-group" id="phoneGroup">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="9876543210" autocomplete="tel" required>
+                        <input type="tel" id="phone" name="phone" placeholder="9876543210" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10,15}" maxlength="15" title="Numbers only" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         <span class="form-error">Please enter a valid 10-digit phone number</span>
                     </div>
                     <div class="form-group" id="passwordGroup">
@@ -178,14 +178,37 @@
     var passwordInput = document.getElementById('password');
     var confirmPasswordInput = document.getElementById('confirmPassword');
     var termsInput = document.getElementById('terms');
-    [firstNameInput, lastNameInput, emailInput, phoneInput, passwordInput, confirmPasswordInput].forEach(function (input) {
-        input.addEventListener('input', function () {
+
+    if (firstNameInput) {
+        firstNameInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
             this.closest('.form-group').classList.remove('has-error');
         });
+    }
+    if (lastNameInput) {
+        lastNameInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+            this.closest('.form-group').classList.remove('has-error');
+        });
+    }
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            this.closest('.form-group').classList.remove('has-error');
+        });
+    }
+    [emailInput, passwordInput, confirmPasswordInput].forEach(function (input) {
+        if (input) {
+            input.addEventListener('input', function () {
+                this.closest('.form-group').classList.remove('has-error');
+            });
+        }
     });
-    termsInput.addEventListener('change', function () {
-        this.closest('.form-group').classList.remove('has-error');
-    });
+    if (termsInput) {
+        termsInput.addEventListener('change', function () {
+            this.closest('.form-group').classList.remove('has-error');
+        });
+    }
     document.getElementById('signupForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var firstNameGroup = document.getElementById('firstNameGroup');
@@ -210,61 +233,62 @@
         var fnErrorEl = document.getElementById('firstNameError') || firstNameGroup.querySelector('.form-error');
         if (!firstName) {
             if (fnErrorEl) fnErrorEl.textContent = 'Please enter your first name';
-            window.StacklyForms.setGroupError(firstNameGroup, true);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(firstNameGroup, true);
             isValid = false;
             errorMsg = errorMsg || 'Please enter your first name.';
         } else if (!isAlphabetic(firstName)) {
             if (fnErrorEl) fnErrorEl.textContent = 'Name contains only alphabets';
-            window.StacklyForms.setGroupError(firstNameGroup, true);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(firstNameGroup, true);
             isValid = false;
             errorMsg = errorMsg || 'First name contains only alphabets.';
         } else {
-            window.StacklyForms.setGroupError(firstNameGroup, false);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(firstNameGroup, false);
         }
         var lnErrorEl = document.getElementById('lastNameError') || lastNameGroup.querySelector('.form-error');
         if (!lastName) {
             if (lnErrorEl) lnErrorEl.textContent = 'Please enter your last name';
-            window.StacklyForms.setGroupError(lastNameGroup, true);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(lastNameGroup, true);
             isValid = false;
             errorMsg = errorMsg || 'Please enter your last name.';
         } else if (!isAlphabetic(lastName)) {
             if (lnErrorEl) lnErrorEl.textContent = 'Name contains only alphabets';
-            window.StacklyForms.setGroupError(lastNameGroup, true);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(lastNameGroup, true);
             isValid = false;
             errorMsg = errorMsg || 'Last name contains only alphabets.';
         } else {
-            window.StacklyForms.setGroupError(lastNameGroup, false);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(lastNameGroup, false);
         }
-        var emailOk = window.StacklyForms.isEmail(email);
-        window.StacklyForms.setGroupError(emailGroup, !emailOk);
+        var emailOk = window.StacklyForms ? window.StacklyForms.isEmail(email) : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (window.StacklyForms) window.StacklyForms.setGroupError(emailGroup, !emailOk);
         if (!emailOk) { isValid = false; errorMsg = errorMsg || 'Please enter a valid email address.'; }
-        var phoneOk = !phone || (phone.replace(/\D/g, '').length >= 7);
-        window.StacklyForms.setGroupError(phoneGroup, !phoneOk);
-        if (!phoneOk) { isValid = false; errorMsg = errorMsg || 'Please enter a valid phone number.'; }
-        var passwordOk = window.StacklyForms.isPassword(password);
-        window.StacklyForms.setGroupError(passwordGroup, !passwordOk);
+        var phoneOk = !phone || (phone.replace(/\D/g, '').length >= 10);
+        if (window.StacklyForms) window.StacklyForms.setGroupError(phoneGroup, !phoneOk);
+        if (!phoneOk) { isValid = false; errorMsg = errorMsg || 'Please enter a valid 10-digit phone number.'; }
+        var passwordOk = window.StacklyForms ? window.StacklyForms.isPassword(password) : (password && password.length >= 8);
+        if (window.StacklyForms) window.StacklyForms.setGroupError(passwordGroup, !passwordOk);
         if (!passwordOk) { isValid = false; errorMsg = errorMsg || 'Password must be at least 8 characters.'; }
         var confirmErrorEl = document.getElementById('confirmPasswordError') || confirmPasswordGroup.querySelector('.form-error');
         if (!confirmPassword || confirmPassword.length < 8) {
             if (confirmErrorEl) confirmErrorEl.textContent = 'Password must be at least 8 characters';
-            window.StacklyForms.setGroupError(confirmPasswordGroup, true);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(confirmPasswordGroup, true);
             isValid = false;
             errorMsg = errorMsg || 'Password must be at least 8 characters.';
         } else if (confirmPassword !== password) {
             if (confirmErrorEl) confirmErrorEl.textContent = 'Passwords do not match';
-            window.StacklyForms.setGroupError(confirmPasswordGroup, true);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(confirmPasswordGroup, true);
             isValid = false;
             errorMsg = errorMsg || 'Passwords do not match.';
         } else {
-            window.StacklyForms.setGroupError(confirmPasswordGroup, false);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(confirmPasswordGroup, false);
         }
         if (!termsChecked) {
             termsInput.checked = true;
             termsChecked = true;
-            window.StacklyForms.setGroupError(termsGroup, false);
+            if (window.StacklyForms) window.StacklyForms.setGroupError(termsGroup, false);
         }
         if (!isValid) {
-            window.KickToast.show(errorMsg, 'error', 'Offside');
+            if (window.KickToast) window.KickToast.show(errorMsg, 'error', 'Offside');
+            else alert(errorMsg);
             return;
         }
         var submitBtn = document.getElementById('signupSubmit');
@@ -273,20 +297,24 @@
         setTimeout(function () {
             submitBtn.classList.remove('loading');
             submitBtn.disabled = false;
-            window.StacklyAuth.setUser({
-                name: firstName + ' ' + lastName,
-                email: email,
-                phone: phone,
-                role: role,
-                membership: membership,
-                loggedIn: false,
-                signupTime: new Date().toISOString()
-            });
-            window.KickToast.show('Account created successfully! Redirecting to Sign In page...', 'success', 'Account Created');
+            if (window.StacklyAuth) {
+                window.StacklyAuth.setUser({
+                    name: firstName + ' ' + lastName,
+                    email: email,
+                    phone: phone,
+                    role: role,
+                    membership: 'Standard Plan',
+                    loggedIn: false,
+                    signupTime: new Date().toISOString()
+                });
+            }
+            if (window.KickToast) {
+                window.KickToast.show('Account created successfully! Redirecting to Sign In page...', 'success', 'Account Created');
+            }
             setTimeout(function () {
                 window.location.href = 'signin.html';
-            }, 1200);
-        }, 800);
+            }, 800);
+        }, 600);
     });
     var googleSignup = document.getElementById('googleSignup');
     var appleSignup = document.getElementById('appleSignup');
